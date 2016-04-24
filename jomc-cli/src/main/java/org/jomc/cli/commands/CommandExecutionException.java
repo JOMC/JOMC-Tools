@@ -1,8 +1,5 @@
-// SECTION-START[License Header]
-// <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
- * Java Object Management and Configuration
- * Copyright (C) Christian Schulte <cs@schulte.it>, 2009-206
+ * Copyright (C) 2009 Christian Schulte <cs@schulte.it>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,41 +28,28 @@
  * $JOMC$
  *
  */
-// </editor-fold>
-// SECTION-END
 package org.jomc.cli.commands;
 
-// SECTION-START[Documentation]
-// <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
  * Command execution exception.
  *
- * <dl>
- *   <dt><b>Identifier:</b></dt><dd>JOMC ⁑ CLI ⁑ Command Execution Exception</dd>
- *   <dt><b>Name:</b></dt><dd>JOMC ⁑ CLI ⁑ Command Execution Exception</dd>
- *   <dt><b>Abstract:</b></dt><dd>No</dd>
- *   <dt><b>Final:</b></dt><dd>No</dd>
- *   <dt><b>Stateless:</b></dt><dd>No</dd>
- * </dl>
- *
- * @author <a href="mailto:cs@schulte.it">Christian Schulte</a> 1.0
- * @version 1.10-SNAPSHOT
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  */
-// </editor-fold>
-// SECTION-END
-// SECTION-START[Annotations]
-// <editor-fold defaultstate="collapsed" desc=" Generated Annotations ">
-@javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-// </editor-fold>
-// SECTION-END
 public class CommandExecutionException extends Exception
 {
-    // SECTION-START[CommandExecutionException]
 
     /**
-     * Serial version UID for backwards compatibility with 1.2 object streams.
+     * Serial version UID for backwards compatibility with 1.x object streams.
      */
     private static final long serialVersionUID = 5113160867045764410L;
+
+    /**
+     * Creates a new {@code CommandExecutionException} instance.
+     */
+    public CommandExecutionException()
+    {
+        super();
+    }
 
     /**
      * Creates a new {@code CommandExecutionException} taking a message.
@@ -97,25 +81,5 @@ public class CommandExecutionException extends Exception
     {
         super( message, throwable );
     }
-
-    // SECTION-END
-    // SECTION-START[Constructors]
-    // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
-    /** Creates a new {@code CommandExecutionException} instance. */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    public CommandExecutionException()
-    {
-        // SECTION-START[Default Constructor]
-        super();
-        // SECTION-END
-    }
-    // </editor-fold>
-    // SECTION-END
-    // SECTION-START[Dependencies]
-    // SECTION-END
-    // SECTION-START[Properties]
-    // SECTION-END
-    // SECTION-START[Messages]
-    // SECTION-END
 
 }

@@ -1,8 +1,5 @@
-// SECTION-START[License Header]
-// <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
- * Java Object Management and Configuration
- * Copyright (C) Christian Schulte <cs@schulte.it>, 2009-206
+ * Copyright (C) 2009 Christian Schulte <cs@schulte.it>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,8 +28,6 @@
  * $JOMC$
  *
  */
-// </editor-fold>
-// SECTION-END
 package org.jomc.cli;
 
 import java.util.List;
@@ -41,33 +36,13 @@ import java.util.logging.Level;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 
-// SECTION-START[Documentation]
-// <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
  * Command.
  *
- * <dl>
- *   <dt><b>Identifier:</b></dt><dd>JOMC ⁑ CLI ⁑ Command</dd>
- *   <dt><b>Multiplicity:</b></dt><dd>Many</dd>
- *   <dt><b>Scope:</b></dt><dd>None</dd>
- * </dl>
- *
- * @author <a href="mailto:cs@schulte.it">Christian Schulte</a> 1.0
- * @version 1.0
- * @see org.jomc.ObjectManager#getObject(java.lang.Class) getObject(Command[].class)
- * @see org.jomc.ObjectManager#getObject(java.lang.Class,java.lang.String) getObject(Command.class, "<i>implementation name</i>")
- * @see org.jomc.ObjectManagerFactory
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  */
-// </editor-fold>
-// SECTION-END
-// SECTION-START[Annotations]
-// <editor-fold defaultstate="collapsed" desc=" Generated Annotations ">
-@javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-// </editor-fold>
-// SECTION-END
 public interface Command
 {
-    // SECTION-START[Command]
 
     /**
      * Listener interface.
@@ -180,5 +155,4 @@ public interface Command
      */
     int execute( CommandLine commandLine ) throws NullPointerException;
 
-    // SECTION-END
 }

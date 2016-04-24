@@ -46,7 +46,7 @@
   <specifications>
     <!-- *********************************************************************************************************** -->
     <specification identifier="${project.name} ⁑ Command"
-                   version="${jomc.cli.command.version}"
+                   version="${project.version}"
                    class="org.jomc.cli.Command"
                    classDeclaration="true"
                    vendor="${project.organization.name}"
@@ -64,7 +64,7 @@
     </specification>
     <!-- *********************************************************************************************************** -->
     <specification identifier="${project.name} ⁑ Application Option"
-                   version="${jomc.cli.application.option.version}"
+                   version="${project.version}"
                    class="org.apache.commons.cli.Option"
                    vendor="${project.organization.name}"
                    createDate="2009-07-25T19:56:45Z">
@@ -81,7 +81,7 @@
     </specification>
     <!-- *********************************************************************************************************** -->
     <specification identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    class="org.apache.commons.cli.Option"
                    vendor="${project.organization.name}"
                    createDate="2009-07-25T19:56:45Z">
@@ -106,11 +106,12 @@
     <implementation identifier="${project.name} ⁑ Option Factory"
                     name="${project.name} ⁑ Option Factory"
                     version="${project.version}"
-                    class="org.jomc.cli.model.OptionFactory"
+                    class="org.jomc.cli.commands.Options"
                     classDeclaration="true"
                     abstract="true"
                     vendor="${project.organization.name}"
                     createDate="2009-07-25T19:56:45Z">
+      <!-- class="org.jomc.cli.model.OptionFactory" -->
       <documentation defaultLanguage="en">
         <text language="en" type="text/x-javadoc">Creates {@code Option} objects describing a single command-line option by maintaining information regarding the short-name, the long-name, a flag indicating if an argument is required, and a self-documenting description.</text>
       </documentation>
@@ -199,7 +200,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -246,7 +247,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Application Option"
-                   version="${jomc.cli.application.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -286,7 +287,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Application Option"
-                   version="${jomc.cli.application.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -334,7 +335,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Application Option"
-                   version="${jomc.cli.application.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -374,7 +375,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -428,7 +429,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -482,7 +483,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -529,7 +530,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -576,7 +577,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -623,7 +624,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -670,7 +671,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -717,7 +718,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -764,7 +765,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -804,7 +805,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -844,7 +845,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -891,7 +892,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -938,7 +939,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -985,7 +986,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1032,7 +1033,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1079,7 +1080,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1126,7 +1127,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1159,20 +1160,29 @@
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} ⁑ Template Encoding Option"
                     name="${project.name} ⁑ Template Encoding Option"
+                    version="${project.version}"
                     class="org.jomc.cli.model.OptionFactory"
                     final="true"
                     deprecated="true"
-                    version="${project.version}" vendor="${project.organization.name}"
+                    vendor="${project.organization.name}"
                     createDate="2009-07-25T19:56:45Z">
-
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte"
+                version="1.0" mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z">
+        </author>
       </authors>
       <specifications>
-        <reference identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}" final="true"/>
+        <reference identifier="${project.name} ⁑ Command Option"
+                   version="${project.version}"
+                   final="true">
+        </reference>
       </specifications>
       <implementations>
-        <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
+        <reference identifier="${project.name} ⁑ Option Factory"
+                   version="${project.version}"
+                   final="true">
+        </reference>
       </implementations>
       <properties>
         <property name="Opt" value="te" override="true"/>
@@ -1211,7 +1221,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1258,7 +1268,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1305,7 +1315,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1352,7 +1362,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1399,7 +1409,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1446,7 +1456,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1493,7 +1503,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1540,7 +1550,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1587,7 +1597,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1634,7 +1644,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1681,7 +1691,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1735,7 +1745,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1789,7 +1799,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1836,7 +1846,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1883,7 +1893,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1930,7 +1940,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -1977,7 +1987,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -2024,7 +2034,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -2078,7 +2088,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -2132,7 +2142,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -2179,7 +2189,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -2226,7 +2236,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -2273,7 +2283,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -2320,7 +2330,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -2367,7 +2377,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -2414,7 +2424,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -2461,7 +2471,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -2501,7 +2511,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -2541,7 +2551,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -2581,7 +2591,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -2635,7 +2645,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -2675,7 +2685,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -2715,7 +2725,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command Option"
-                   version="${jomc.cli.command.option.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -2788,17 +2798,17 @@
         </dependency -->
         <dependency name="Debug Option"
                     identifier="${project.name} ⁑ Application Option"
-                    version="${jomc.cli.application.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Debug Option">
         </dependency>
         <dependency name="Fail On Warnings Option"
                     identifier="${project.name} ⁑ Application Option"
-                    version="${jomc.cli.application.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Fail-On-Warnings Option">
         </dependency>
         <dependency name="Verbose Option"
                     identifier="${project.name} ⁑ Application Option"
-                    version="${jomc.cli.application.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Verbose Option">
         </dependency>
       </dependencies>
@@ -2959,7 +2969,7 @@
       </authors>
       <specifications>
         <reference identifier="${project.name} ⁑ Command"
-                   version="${jomc.cli.command.version}"
+                   version="${project.version}"
                    final="true">
         </reference>
       </specifications>
@@ -3042,13 +3052,6 @@
       </messages>
       <source-files xmlns="http://jomc.org/tools/model">
         <source-file identifier="Default">
-          <source-sections>
-            <source-section name="Generated Command"
-                            head-template="command-implementation.vm"
-                            editable="false"
-                            indentationLevel="1">
-            </source-section>
-          </source-sections>
         </source-file>
       </source-files>
     </implementation>
@@ -3080,47 +3083,47 @@
       <dependencies>
         <dependency name="Classpath Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Classpath Option">
         </dependency>
         <dependency name="Documents Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Documents Option">
         </dependency>
         <dependency name="Model Context Factory Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ ModelContextFactory Class Name Option">
         </dependency>
         <dependency name="Model Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Model Option">
         </dependency>
         <dependency name="Modlet Schema System Id Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Modlet Schema System Id Option">
         </dependency>
         <dependency name="Modlet Location Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Modlet Location Option">
         </dependency>
         <dependency name="Provider Location Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Provider Location Option">
         </dependency>
         <dependency name="Platform Provider Location Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Platform Provider Location Option">
         </dependency>
         <dependency name="No Modlet Resource Validation"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ No Modlet Resource Validation Option">
         </dependency>
       </dependencies>
@@ -3286,32 +3289,32 @@
       <dependencies>
         <dependency name="Module Location Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Module Location Option">
         </dependency>
         <dependency name="Transformer Location Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Transformer Location Option">
         </dependency>
         <dependency name="No Classpath Resolution Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ No Classpath Resolution Option">
         </dependency>
         <dependency name="No Model Processing Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ No Model Processing Option">
         </dependency>
         <dependency name="No Model Resource Validation"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ No Model Resource Validation Option">
         </dependency>
         <dependency name="No Java Validation Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ No Java Validation Option">
         </dependency>
       </dependencies>
@@ -3344,78 +3347,78 @@
       <dependencies>
         <dependency name="Template Profile Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Template Profile Option">
         </dependency>
         <dependency name="Default Template Encoding Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Default Template Encoding Option">
         </dependency>
         <dependency name="Default Template Profile Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Default Template Profile Option">
         </dependency>
         <dependency name="Template Encoding Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Template Encoding Option"
                     deprecated="true">
         </dependency>
         <dependency name="Template Location Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Template Location Option">
         </dependency>
         <dependency name="Output Encoding Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Output Encoding Option">
         </dependency>
         <dependency name="Input Encoding Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Input Encoding Option">
         </dependency>
         <dependency name="Indentation String Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Indentation String Option">
         </dependency>
         <dependency name="Line Separator Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Line Separator Option">
         </dependency>
         <dependency name="Language Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Language Option">
         </dependency>
         <dependency name="Country Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Country Option">
         </dependency>
         <dependency name="Locale Variant Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Locale Variant Option">
         </dependency>
         <dependency name="Implementation Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Implementation Option">
         </dependency>
         <dependency name="Module Name Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Module Name Option">
         </dependency>
         <dependency name="Specification Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Specification Option">
         </dependency>
       </dependencies>
@@ -3472,12 +3475,12 @@
       <dependencies>
         <dependency name="Class File Processor Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ ClassFileProcessor Class Name Option">
         </dependency>
         <dependency name="No Class Processing Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ No Class File Processing Option">
         </dependency>
       </dependencies>
@@ -3518,17 +3521,17 @@
       <dependencies>
         <dependency name="Resource File Processor Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ ResourceFileProcessor Class Name Option">
         </dependency>
         <dependency name="No Resource Processing Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ No Resource File Processing Option">
         </dependency>
         <dependency name="Resource Directory Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Resource Directory Option">
           <properties>
             <property name="Required" type="boolean" value="true" override="true"/>
@@ -3572,17 +3575,17 @@
       <dependencies>
         <dependency name="Source File Processor Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ SourceFileProcessor Class Name Option">
         </dependency>
         <dependency name="No Source Processing Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ No Source File Processing Option">
         </dependency>
         <dependency name="Source Directory Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Source Directory Option">
           <properties>
             <property name="Required" type="boolean" value="true" override="true"/>
@@ -3775,7 +3778,7 @@
       <dependencies>
         <dependency name="Classes Directory Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Classes Directory Option">
           <properties>
             <property name="Required" type="boolean" value="true" override="true"/>
@@ -3783,7 +3786,7 @@
         </dependency>
         <dependency name="Stylesheet Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Stylesheet Option">
         </dependency>
       </dependencies>
@@ -3971,7 +3974,7 @@
       <dependencies>
         <dependency name="Document Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Document Option">
           <properties>
             <property name="Required" type="boolean" value="true" override="true"/>
@@ -3979,17 +3982,17 @@
         </dependency>
         <dependency name="Document Encoding Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Document Encoding Option">
         </dependency>
         <dependency name="Stylesheet Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Stylesheet Option">
         </dependency>
         <dependency name="Module Name Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Module Name Option">
           <properties>
             <property name="Required" type="boolean" value="true" override="true"/>
@@ -3997,27 +4000,27 @@
         </dependency>
         <dependency name="Module Version Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Module Version Option">
         </dependency>
         <dependency name="Module Vendor Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Module Vendor Option">
         </dependency>
         <dependency name="Module Includes Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Module Includes Option">
         </dependency>
         <dependency name="Module Excludes Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Module Excludes Option">
         </dependency>
         <dependency name="Resources Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Resources Option">
         </dependency>
       </dependencies>
@@ -4109,7 +4112,7 @@
       <dependencies>
         <dependency name="Document Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Document Option">
           <properties>
             <property name="Required" type="boolean" value="true" override="true"/>
@@ -4117,17 +4120,17 @@
         </dependency>
         <dependency name="Document Encoding Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Document Encoding Option">
         </dependency>
         <dependency name="Stylesheet Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Stylesheet Option">
         </dependency>
         <dependency name="Modlet Name Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Modlet Name Option">
           <properties>
             <property name="Required" type="boolean" value="true" override="true"/>
@@ -4135,27 +4138,27 @@
         </dependency>
         <dependency name="Modlet Version Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Modlet Version Option">
         </dependency>
         <dependency name="Modlet Vendor Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Modlet Vendor Option">
         </dependency>
         <dependency name="Modlet Includes Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Modlet Includes Option">
         </dependency>
         <dependency name="Modlet Excludes Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Modlet Excludes Option">
         </dependency>
         <dependency name="Resources Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Resources Option">
         </dependency>
       </dependencies>
@@ -4245,27 +4248,27 @@
       <dependencies>
         <dependency name="Document Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Document Option">
         </dependency>
         <dependency name="Document Encoding Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Document Encoding Option">
         </dependency>
         <dependency name="Implementation Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Implementation Option">
         </dependency>
         <dependency name="Module Name Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Module Name Option">
         </dependency>
         <dependency name="Specification Option"
                     identifier="${project.name} ⁑ Command Option"
-                    version="${jomc.cli.command.option.version}"
+                    version="${project.version}"
                     implementationName="${project.name} ⁑ Specification Option">
         </dependency>
       </dependencies>

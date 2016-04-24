@@ -1,8 +1,5 @@
-// SECTION-START[License Header]
-// <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
- * Java Object Management and Configuration
- * Copyright (C) Christian Schulte <cs@schulte.it>, 2009-206
+ * Copyright (C) 2009 Christian Schulte <cs@schulte.it>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,52 +28,68 @@
  * $JOMC$
  *
  */
-// </editor-fold>
-// SECTION-END
 package org.jomc.cli;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang.StringUtils;
-import org.jomc.model.modlet.DefaultModelProcessor;
-import org.jomc.model.modlet.DefaultModelProvider;
-import org.jomc.modlet.DefaultModletProvider;
+import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
-// SECTION-START[Documentation]
-// <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
  * JOMC command line interface.
  *
- * <dl>
- *   <dt><b>Identifier:</b></dt><dd>JOMC ⁑ CLI ⁑ Application</dd>
- *   <dt><b>Name:</b></dt><dd>JOMC ⁑ CLI ⁑ Application</dd>
- *   <dt><b>Abstract:</b></dt><dd>No</dd>
- *   <dt><b>Final:</b></dt><dd>No</dd>
- *   <dt><b>Stateless:</b></dt><dd>No</dd>
- * </dl>
- *
- * @author <a href="mailto:cs@schulte.it">Christian Schulte</a> 1.0
- * @version 1.10-SNAPSHOT
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  */
-// </editor-fold>
-// SECTION-END
-// SECTION-START[Annotations]
-// <editor-fold defaultstate="collapsed" desc=" Generated Annotations ">
-@javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-// </editor-fold>
-// SECTION-END
 public final class Jomc
 {
-    // SECTION-START[Jomc]
+
+    /**
+     * Command line option.
+     */
+    private static final Option DEBUG_OPTION;
+
+    /**
+     * Command line option.
+     */
+    private static final Option VERBOSE_OPTION;
+
+    /**
+     * Command line option.
+     */
+    private static final Option FAIL_ON_WARNINGS_OPTION;
+
+    static
+    {
+        DEBUG_OPTION = new Option( "D", Messages.getMessage( "debugOptionDescription" ) );
+        DEBUG_OPTION.setLongOpt( "debug" );
+        DEBUG_OPTION.setArgs( 1 );
+        DEBUG_OPTION.setOptionalArg( true );
+        DEBUG_OPTION.setArgName( Messages.getMessage( "debugOptionArgumentDescription" ) );
+
+        VERBOSE_OPTION = new Option( "v", Messages.getMessage( "verboseOptionDescription" ) );
+        VERBOSE_OPTION.setLongOpt( "verbose" );
+
+        FAIL_ON_WARNINGS_OPTION = new Option( "fw", Messages.getMessage( "failOnWarningsOptionDescription" ) );
+        FAIL_ON_WARNINGS_OPTION.setLongOpt( "fail-on-warnings" );
+    }
 
     /**
      * Log level events are logged at by default.
@@ -106,18 +119,43 @@ public final class Jomc
     private Level severity = Level.ALL;
 
     /**
+     * Creates a new {@code Jomc} instance.
+     */
+    public Jomc()
+    {
+        super();
+    }
+
+    /**
      * Gets the print writer of the instance.
      *
      * @return The print writer of the instance.
      *
      * @see #setPrintWriter(java.io.PrintWriter)
      */
+    @IgnoreJRERequirement
     public PrintWriter getPrintWriter()
     {
         if ( this.printWriter == null )
         {
-            // JDK: As of JDK 6, "this.printWriter = System.console().writer()".
-            this.printWriter = new PrintWriter( System.out, true );
+            try
+            {
+                // As of Java 6, "System.console()", if any.
+                Class.forName( "java.io.Console" );
+                this.printWriter = System.console() != null
+                                       ? System.console().writer()
+                                       : new PrintWriter( System.out, true );
+
+            }
+            catch ( final ClassNotFoundException e )
+            {
+                if ( this.isLoggable( Level.FINEST ) )
+                {
+                    this.log( Level.FINEST, Messages.getMessage( e ), e );
+                }
+
+                this.printWriter = new PrintWriter( System.out, true );
+            }
         }
 
         return this.printWriter;
@@ -138,8 +176,8 @@ public final class Jomc
     /**
      * Gets the default log level events are logged at.
      * <p>
-     * The default log level is controlled by system property {@code org.jomc.cli.Jomc.defaultLogLevel} holding the
-     * log level to log events at by default. If that property is not set, the {@code WARNING} default is returned.
+     * The default log level is controlled by system property {@code org.jomc.cli.Jomc.defaultLogLevel} holding
+     * the log level to log events at by default. If that property is not set, the {@code WARNING} default is returned.
      * </p>
      *
      * @return The log level events are logged at by default.
@@ -188,8 +226,8 @@ public final class Jomc
 
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG,
-                          this.getDefaultLogLevelInfo( this.getLocale(), this.logLevel.getLocalizedName() ), null );
+                this.log( Level.CONFIG, Messages.getMessage( "defaultLogLevelInfo", this.logLevel.getLocalizedName() ),
+                          null );
 
             }
         }
@@ -250,10 +288,6 @@ public final class Jomc
 
         try
         {
-            DefaultModelProvider.setDefaultModuleLocation( "META-INF/jomc-cli.xml" );
-            DefaultModelProcessor.setDefaultTransformerLocation( "META-INF/jomc-cli.xsl" );
-            DefaultModletProvider.setDefaultModletLocation( "META-INF/jomc-modlet.xml" );
-
             final StringBuilder commandInfo = new StringBuilder();
 
             for ( final Command c : this.getCommands() )
@@ -264,15 +298,19 @@ public final class Jomc
                     cmd = c;
                 }
 
-                commandInfo.append( StringUtils.rightPad( c.getName(), 25 ) ).append( " : " ).
-                    append( c.getShortDescription( this.getLocale() ) ).append( " (" ).append( c.getAbbreviatedName() ).
-                    append( ")" ).append( System.getProperty( "line.separator", "\n" ) );
+                commandInfo.append( StringUtils.rightPad( c.getName(), 25 ) ).
+                    append( " : " ).
+                    append( c.getShortDescription( Locale.getDefault() ) ).
+                    append( " (" ).
+                    append( c.getAbbreviatedName() ).
+                    append( ")" ).
+                    append( System.getProperty( "line.separator", "\n" ) );
 
             }
 
             if ( cmd == null )
             {
-                this.getPrintWriter().println( this.getUsage( this.getLocale(), this.getHelpCommandName() ) );
+                this.getPrintWriter().println( Messages.getMessage( "usage", "help" ) );
                 this.getPrintWriter().println();
                 this.getPrintWriter().println( commandInfo.toString() );
                 return Command.STATUS_FAILURE;
@@ -282,32 +320,32 @@ public final class Jomc
             System.arraycopy( args, 1, commandArguments, 0, commandArguments.length );
 
             final Options options = cmd.getOptions();
-            options.addOption( this.getDebugOption() );
-            options.addOption( this.getVerboseOption() );
-            options.addOption( this.getFailOnWarningsOption() );
+            options.addOption( DEBUG_OPTION );
+            options.addOption( VERBOSE_OPTION );
+            options.addOption( FAIL_ON_WARNINGS_OPTION );
 
-            if ( commandArguments.length > 0 && this.getHelpCommandName().equals( commandArguments[0] ) )
+            if ( commandArguments.length > 0 && "help".equals( commandArguments[0] ) )
             {
                 final StringWriter usage = new StringWriter();
                 final StringWriter opts = new StringWriter();
                 final HelpFormatter formatter = new HelpFormatter();
 
                 PrintWriter pw = new PrintWriter( usage );
-                formatter.printUsage( pw, this.getWidth(), cmd.getName(), options );
+                formatter.printUsage( pw, 80, cmd.getName(), options );
                 pw.close();
                 assert !pw.checkError() : "Unexpected error printing usage.";
 
                 pw = new PrintWriter( opts );
-                formatter.printOptions( pw, this.getWidth(), options, this.getLeftPad(), this.getDescPad() );
+                formatter.printOptions( pw, 80, options, 2, 2 );
                 pw.close();
                 assert !pw.checkError() : "Unexpected error printing options.";
 
-                this.getPrintWriter().println( cmd.getShortDescription( this.getLocale() ) );
+                this.getPrintWriter().println( cmd.getShortDescription( Locale.getDefault() ) );
                 this.getPrintWriter().println();
                 this.getPrintWriter().println( usage.toString() );
                 this.getPrintWriter().println( opts.toString() );
                 this.getPrintWriter().println();
-                this.getPrintWriter().println( cmd.getLongDescription( this.getLocale() ) );
+                this.getPrintWriter().println( cmd.getLongDescription( Locale.getDefault() ) );
                 this.getPrintWriter().println();
                 return Command.STATUS_SUCCESS;
             }
@@ -322,18 +360,16 @@ public final class Jomc
 
             } );
 
-            DefaultModelProvider.setDefaultModuleLocation( null );
-            DefaultModelProcessor.setDefaultTransformerLocation( null );
-            DefaultModletProvider.setDefaultModletLocation( null );
-
-            final CommandLine commandLine = this.getCommandLineParser().parse( options, commandArguments );
-            final boolean debug = commandLine.hasOption( this.getDebugOption().getOpt() );
-            final boolean verbose = commandLine.hasOption( this.getVerboseOption().getOpt() );
+            // https://issues.apache.org/jira/browse/CLI-255
+            final CommandLine commandLine = new GnuParser().parse( options, commandArguments );
+            final boolean debug = commandLine.hasOption( DEBUG_OPTION.getOpt() );
+            final boolean verbose = commandLine.hasOption( VERBOSE_OPTION.getOpt() );
             Level debugLevel = Level.ALL;
 
             if ( debug )
             {
-                final String debugOption = commandLine.getOptionValue( this.getDebugOption().getOpt() );
+                final String debugOption = commandLine.getOptionValue( DEBUG_OPTION.getOpt() );
+
                 if ( debugOption != null )
                 {
                     debugLevel = Level.parse( debugOption );
@@ -358,9 +394,10 @@ public final class Jomc
                 }
             }
 
-            final boolean failOnWarnings = commandLine.hasOption( this.getFailOnWarningsOption().getOpt() );
+            final boolean failOnWarnings = commandLine.hasOption( FAIL_ON_WARNINGS_OPTION.getOpt() );
 
             final int status = cmd.execute( commandLine );
+
             if ( status == Command.STATUS_SUCCESS && failOnWarnings
                      && this.severity.intValue() >= Level.WARNING.intValue() )
             {
@@ -371,9 +408,7 @@ public final class Jomc
         }
         catch ( final ParseException e )
         {
-            this.log( Level.SEVERE, this.getIllegalArgumentsInfo(
-                      this.getLocale(), cmd.getName(), this.getHelpCommandName() ), e );
-
+            this.log( Level.SEVERE, Messages.getMessage( "illegalArgumentsInformation", cmd.getName(), "help" ), e );
             return Command.STATUS_FAILURE;
         }
         catch ( final Throwable t )
@@ -383,9 +418,6 @@ public final class Jomc
         }
         finally
         {
-            DefaultModelProvider.setDefaultModuleLocation( null );
-            DefaultModelProcessor.setDefaultTransformerLocation( null );
-            DefaultModletProvider.setDefaultModletLocation( null );
             this.getPrintWriter().flush();
             this.severity = Level.ALL;
         }
@@ -448,7 +480,7 @@ public final class Jomc
             if ( throwable != null )
             {
                 this.getPrintWriter().print( this.formatLogLines( level, "" ) );
-                final String m = getMessage( throwable );
+                final String m = Messages.getMessage( throwable );
 
                 if ( m != null && m.length() > 0 )
                 {
@@ -457,7 +489,7 @@ public final class Jomc
                 else
                 {
                     this.getPrintWriter().print( this.formatLogLines(
-                        level, this.getDefaultExceptionMessage( this.getLocale() ) ) );
+                        level, Messages.getMessage( "defaultExceptionMessage" ) ) );
 
                 }
 
@@ -478,15 +510,13 @@ public final class Jomc
     private String formatLogLines( final Level level, final String text )
     {
         BufferedReader reader = null;
-        boolean suppressExceptionOnClose = true;
 
         try
         {
             final StringBuilder lines = new StringBuilder( text.length() );
             reader = new BufferedReader( new StringReader( text ) );
 
-            String line;
-            while ( ( line = reader.readLine() ) != null )
+            for ( String line = reader.readLine(); line != null; line = reader.readLine() )
             {
                 final boolean debug = this.getLogLevel().intValue() < Level.INFO.intValue();
                 lines.append( "[" ).append( level.getLocalizedName() );
@@ -494,14 +524,16 @@ public final class Jomc
                 if ( debug )
                 {
                     lines.append( "|" ).append( Thread.currentThread().getName() ).append( "|" ).
-                        append( this.getTimeInfo( this.getLocale(), new Date( System.currentTimeMillis() ) ) );
+                        append( Messages.getMessage( "timePattern", new Date( System.currentTimeMillis() ) ) );
 
                 }
 
                 lines.append( "] " ).append( line ).append( System.getProperty( "line.separator", "\n" ) );
             }
 
-            suppressExceptionOnClose = false;
+            reader.close();
+            reader = null;
+
             return lines.toString();
         }
         catch ( final IOException e )
@@ -519,341 +551,72 @@ public final class Jomc
             }
             catch ( final IOException e )
             {
-                if ( suppressExceptionOnClose )
-                {
-                    this.log( Level.SEVERE, getMessage( e ), e );
-                }
-                else
-                {
-                    throw new AssertionError( e );
-                }
+                this.log( Level.SEVERE, Messages.getMessage( e ), e );
             }
         }
     }
 
-    private static String getMessage( final Throwable t )
+    /**
+     * Gets the {@code Command}s of the instance.
+     *
+     * @return The {@code Command}s of the instance.
+     *
+     * @throws IOException if discovering {@code Command} implementations fails.
+     */
+    private List<Command> getCommands() throws IOException
     {
-        return t != null
-                   ? t.getMessage() != null && t.getMessage().trim().length() > 0
-                         ? t.getMessage()
-                         : getMessage( t.getCause() )
-                   : null;
+        final List<Command> commands = new ArrayList<Command>();
 
-    }
+        final Enumeration<URL> serviceResources =
+            this.getClass().getClassLoader().getResources( "META-INF/services/org.jomc.tools.cli.Command" );
 
-    // SECTION-END
-    // SECTION-START[Constructors]
-    // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
-    /** Creates a new {@code Jomc} instance. */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    public Jomc()
-    {
-        // SECTION-START[Default Constructor]
-        super();
-        // SECTION-END
+        if ( serviceResources != null )
+        {
+            for ( final URL serviceResource : Collections.list( serviceResources ) )
+            {
+                BufferedReader reader = null;
+                try
+                {
+                    reader = new BufferedReader( new InputStreamReader( serviceResource.openStream(), "UTF-8" ) );
+
+                    for ( String line = reader.readLine(); line != null; line = reader.readLine() )
+                    {
+                        if ( !line.contains( "#" ) )
+                        {
+                            commands.add( Class.forName( line.trim() ).asSubclass( Command.class ).newInstance() );
+                        }
+                    }
+                }
+                catch ( final ClassNotFoundException e )
+                {
+                    throw new AssertionError( e );
+                }
+                catch ( final InstantiationException e )
+                {
+                    throw new AssertionError( e );
+                }
+                catch ( final IllegalAccessException e )
+                {
+                    throw new AssertionError( e );
+                }
+                finally
+                {
+                    try
+                    {
+                        if ( reader != null )
+                        {
+                            reader.close();
+                        }
+                    }
+                    catch ( final IOException e )
+                    {
+                        this.log( Level.WARNING, Messages.getMessage( e ), e );
+                    }
+                }
+            }
+        }
+
+        return Collections.unmodifiableList( commands );
     }
-    // </editor-fold>
-    // SECTION-END
-    // SECTION-START[Dependencies]
-    // <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
-    /**
-     * Gets the {@code <Command Line Parser>} dependency.
-     * <p>
-     *   This method returns the {@code <Commons CLI - GNU Command Line Parser>} object of the {@code <org.apache.commons.cli.CommandLineParser>} specification at any specification level.
-     *   That specification does not apply to any scope. A new object is returned whenever requested.
-     * </p>
-     * <dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
-     * @return The {@code <Command Line Parser>} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private org.apache.commons.cli.CommandLineParser getCommandLineParser()
-    {
-        final org.apache.commons.cli.CommandLineParser _d = (org.apache.commons.cli.CommandLineParser) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Command Line Parser" );
-        assert _d != null : "'Command Line Parser' dependency not found.";
-        return _d;
-    }
-    /**
-     * Gets the {@code <Commands>} dependency.
-     * <p>
-     *   This method returns any available object of the {@code <JOMC ⁑ CLI ⁑ Command>} specification at specification level 1.0.
-     *   That specification does not apply to any scope. A new object is returned whenever requested.
-     * </p>
-     * <dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
-     * @return The {@code <Commands>} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private org.jomc.cli.Command[] getCommands()
-    {
-        final org.jomc.cli.Command[] _d = (org.jomc.cli.Command[]) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Commands" );
-        assert _d != null : "'Commands' dependency not found.";
-        return _d;
-    }
-    /**
-     * Gets the {@code <Debug Option>} dependency.
-     * <p>
-     *   This method returns the {@code <JOMC ⁑ CLI ⁑ Debug Option>} object of the {@code <JOMC ⁑ CLI ⁑ Application Option>} specification at specification level 1.2.
-     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
-     * </p>
-     * <dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
-     * @return The {@code <Debug Option>} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private org.apache.commons.cli.Option getDebugOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Debug Option" );
-        assert _d != null : "'Debug Option' dependency not found.";
-        return _d;
-    }
-    /**
-     * Gets the {@code <Fail On Warnings Option>} dependency.
-     * <p>
-     *   This method returns the {@code <JOMC ⁑ CLI ⁑ Fail-On-Warnings Option>} object of the {@code <JOMC ⁑ CLI ⁑ Application Option>} specification at specification level 1.2.
-     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
-     * </p>
-     * <dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
-     * @return The {@code <Fail On Warnings Option>} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private org.apache.commons.cli.Option getFailOnWarningsOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Fail On Warnings Option" );
-        assert _d != null : "'Fail On Warnings Option' dependency not found.";
-        return _d;
-    }
-    /**
-     * Gets the {@code <Locale>} dependency.
-     * <p>
-     *   This method returns the {@code <default>} object of the {@code <java.util.Locale>} specification at specification level 1.1.
-     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
-     * </p>
-     * <dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
-     * @return The {@code <Locale>} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.util.Locale getLocale()
-    {
-        final java.util.Locale _d = (java.util.Locale) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Locale" );
-        assert _d != null : "'Locale' dependency not found.";
-        return _d;
-    }
-    /**
-     * Gets the {@code <Verbose Option>} dependency.
-     * <p>
-     *   This method returns the {@code <JOMC ⁑ CLI ⁑ Verbose Option>} object of the {@code <JOMC ⁑ CLI ⁑ Application Option>} specification at specification level 1.2.
-     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
-     * </p>
-     * <dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
-     * @return The {@code <Verbose Option>} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private org.apache.commons.cli.Option getVerboseOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Verbose Option" );
-        assert _d != null : "'Verbose Option' dependency not found.";
-        return _d;
-    }
-    // </editor-fold>
-    // SECTION-END
-    // SECTION-START[Properties]
-    // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
-    /**
-     * Gets the value of the {@code <Desc Pad>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return The number of characters of padding to be prefixed to each description line.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private int getDescPad()
-    {
-        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Desc Pad" );
-        assert _p != null : "'Desc Pad' property not found.";
-        return _p.intValue();
-    }
-    /**
-     * Gets the value of the {@code <Help Command Name>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return The name of the command used to request help.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.lang.String getHelpCommandName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Help Command Name" );
-        assert _p != null : "'Help Command Name' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Left Pad>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return The number of characters of padding to be prefixed to each line.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private int getLeftPad()
-    {
-        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Left Pad" );
-        assert _p != null : "'Left Pad' property not found.";
-        return _p.intValue();
-    }
-    /**
-     * Gets the value of the {@code <width>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return The number of characters per line for the usage statement.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private int getWidth()
-    {
-        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "width" );
-        assert _p != null : "'width' property not found.";
-        return _p.intValue();
-    }
-    // </editor-fold>
-    // SECTION-END
-    // SECTION-START[Messages]
-    // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
-    /**
-     * Gets the text of the {@code <Default Exception Message>} message.
-     * <p><dl>
-     *   <dt><b>Languages:</b></dt>
-     *     <dd>English (default)</dd>
-     *     <dd>Deutsch</dd>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code <Default Exception Message>} message for {@code locale}.
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private String getDefaultExceptionMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Default Exception Message", locale );
-        assert _m != null : "'Default Exception Message' message not found.";
-        return _m;
-    }
-    /**
-     * Gets the text of the {@code <Default Log Level Info>} message.
-     * <p><dl>
-     *   <dt><b>Languages:</b></dt>
-     *     <dd>English (default)</dd>
-     *     <dd>Deutsch</dd>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @param locale The locale of the message to return.
-     * @param defaultLogLevel Format argument.
-     * @return The text of the {@code <Default Log Level Info>} message for {@code locale}.
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private String getDefaultLogLevelInfo( final java.util.Locale locale, final java.lang.String defaultLogLevel )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Default Log Level Info", locale, defaultLogLevel );
-        assert _m != null : "'Default Log Level Info' message not found.";
-        return _m;
-    }
-    /**
-     * Gets the text of the {@code <Illegal Arguments Info>} message.
-     * <p><dl>
-     *   <dt><b>Languages:</b></dt>
-     *     <dd>English (default)</dd>
-     *     <dd>Deutsch</dd>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @param locale The locale of the message to return.
-     * @param command Format argument.
-     * @param helpCommandName Format argument.
-     * @return The text of the {@code <Illegal Arguments Info>} message for {@code locale}.
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private String getIllegalArgumentsInfo( final java.util.Locale locale, final java.lang.String command, final java.lang.String helpCommandName )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Illegal Arguments Info", locale, command, helpCommandName );
-        assert _m != null : "'Illegal Arguments Info' message not found.";
-        return _m;
-    }
-    /**
-     * Gets the text of the {@code <Time Info>} message.
-     * <p><dl>
-     *   <dt><b>Languages:</b></dt>
-     *     <dd>English (default)</dd>
-     *     <dd>Deutsch</dd>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @param locale The locale of the message to return.
-     * @param time Format argument.
-     * @return The text of the {@code <Time Info>} message for {@code locale}.
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private String getTimeInfo( final java.util.Locale locale, final java.util.Date time )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Time Info", locale, time );
-        assert _m != null : "'Time Info' message not found.";
-        return _m;
-    }
-    /**
-     * Gets the text of the {@code <Usage>} message.
-     * <p><dl>
-     *   <dt><b>Languages:</b></dt>
-     *     <dd>English (default)</dd>
-     *     <dd>Deutsch</dd>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @param locale The locale of the message to return.
-     * @param helpCommandName Format argument.
-     * @return The text of the {@code <Usage>} message for {@code locale}.
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private String getUsage( final java.util.Locale locale, final java.lang.String helpCommandName )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Usage", locale, helpCommandName );
-        assert _m != null : "'Usage' message not found.";
-        return _m;
-    }
-    // </editor-fold>
-    // SECTION-END
 
 }

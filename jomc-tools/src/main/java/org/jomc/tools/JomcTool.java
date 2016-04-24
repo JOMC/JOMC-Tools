@@ -33,6 +33,7 @@ package org.jomc.tools;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -2143,11 +2144,9 @@ public class JomcTool
      */
     public String getBooleanString( final Boolean b )
     {
-        final MessageFormat messageFormat = new MessageFormat( ResourceBundle.getBundle(
-            JomcTool.class.getName().replace( '.', '/' ), this.getLocale() ).
-            getString( b ? "booleanStringTrue" : "booleanStringFalse" ), this.getLocale() );
+        return ResourceBundle.getBundle( JomcTool.class.getName(), this.getLocale() ).
+            getString( b ? "booleanStringTrue" : "booleanStringFalse" );
 
-        return messageFormat.format( null );
     }
 
     /**
@@ -2437,8 +2436,10 @@ public class JomcTool
             throw new NullPointerException( "calendar" );
         }
 
-        // JDK: As of JDK 7, "yyyy-MM-dd'T'HH:mm:ssXXX".
-        return new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ", this.getLocale() ).format( calendar.getTime() );
+        return Closeable.class.isAssignableFrom( ClassLoader.class )
+                   ? new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssXXX", this.getLocale() ).format( calendar.getTime() )
+                   : new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ", this.getLocale() ).format( calendar.getTime() );
+
     }
 
     /**
@@ -2648,10 +2649,10 @@ public class JomcTool
         ctx.put( "toolVersion", getMessage( "projectVersion" ) );
         ctx.put( "toolUrl", getMessage( "projectUrl" ) );
         ctx.put( "calendar", now.getTime() );
-
-        // JDK: As of JDK 7, "yyyy-MM-dd'T'HH:mm:ss.SSSXXX".
         ctx.put( "now",
-                 new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ", this.getLocale() ).format( now.getTime() ) );
+                 Closeable.class.isAssignableFrom( ClassLoader.class )
+                     ? new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", this.getLocale() ).format( now.getTime() )
+                     : new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ", this.getLocale() ).format( now.getTime() ) );
 
         ctx.put( "year", new SimpleDateFormat( "yyyy", this.getLocale() ).format( now.getTime() ) );
         ctx.put( "month", new SimpleDateFormat( "MM", this.getLocale() ).format( now.getTime() ) );
@@ -2659,7 +2660,11 @@ public class JomcTool
         ctx.put( "hour", new SimpleDateFormat( "HH", this.getLocale() ).format( now.getTime() ) );
         ctx.put( "minute", new SimpleDateFormat( "mm", this.getLocale() ).format( now.getTime() ) );
         ctx.put( "second", new SimpleDateFormat( "ss", this.getLocale() ).format( now.getTime() ) );
-        ctx.put( "timezone", new SimpleDateFormat( "Z", this.getLocale() ).format( now.getTime() ) );
+        ctx.put( "timezone",
+                 Closeable.class.isAssignableFrom( ClassLoader.class )
+                     ? new SimpleDateFormat( "XXX", this.getLocale() ).format( now.getTime() )
+                     : new SimpleDateFormat( "Z", this.getLocale() ).format( now.getTime() ) );
+
         ctx.put( "shortDate", this.getShortDate( now ) );
         ctx.put( "mediumDate", this.getMediumDate( now ) );
         ctx.put( "longDate", this.getLongDate( now ) );

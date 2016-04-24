@@ -1,8 +1,5 @@
-// SECTION-START[License Header]
-// <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
- * Java Object Management and Configuration
- * Copyright (C) Christian Schulte <cs@schulte.it>, 2012-013
+ * Copyright (C) 2012 Christian Schulte <cs@schulte.it>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,77 +28,78 @@
  * $JOMC$
  *
  */
-// </editor-fold>
-// SECTION-END
 package org.jomc.cli.commands.test;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import org.jomc.cli.commands.CommandExecutionException;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
-// SECTION-START[Documentation]
-// <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
- * Test cases for class {@code org.jomc.cli.commands.CommandExecutionException}.
+ * Test cases for class {@code org.jomc.tools.cli.commands.CommandExecutionException}.
  *
- * <dl>
- *   <dt><b>Identifier:</b></dt><dd>JOMC ⁑ CLI ⁑ Tests ⁑ Command Execution Exception Test</dd>
- *   <dt><b>Name:</b></dt><dd>JOMC ⁑ CLI ⁑ Tests ⁑ Command Execution Exception Test</dd>
- *   <dt><b>Abstract:</b></dt><dd>No</dd>
- *   <dt><b>Final:</b></dt><dd>No</dd>
- *   <dt><b>Stateless:</b></dt><dd>No</dd>
- * </dl>
- *
- * @author <a href="mailto:cs@schulte.it">Christian Schulte</a> 1.2
- * @version 1.10-SNAPSHOT
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  */
-// </editor-fold>
-// SECTION-END
-// SECTION-START[Annotations]
-// <editor-fold defaultstate="collapsed" desc=" Generated Annotations ">
-@javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-// </editor-fold>
-// SECTION-END
 public class CommandExecutionExceptionTest
 {
-    // SECTION-START[CommandExecutionExceptionTest]
 
     /**
      * Constant to prefix relative resource names with.
      */
     private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/cli/commands/test/";
 
-    @Test
-    public final void testCommandExecutionException() throws Exception
-    {
-        final ObjectInputStream in = new ObjectInputStream( this.getClass().getResourceAsStream(
-            ABSOLUTE_RESOURCE_NAME_PREFIX + "CommandExecutionException.ser" ) );
-
-        final CommandExecutionException e = (CommandExecutionException) in.readObject();
-        in.close();
-
-        assertEquals( "TEST", e.getMessage() );
-    }
-
-    // SECTION-END
-    // SECTION-START[Constructors]
-    // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
-    /** Creates a new {@code CommandExecutionExceptionTest} instance. */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
+    /**
+     * Creates a new {@code CommandExecutionExceptionTest} instance.
+     */
     public CommandExecutionExceptionTest()
     {
-        // SECTION-START[Default Constructor]
         super();
-        // SECTION-END
     }
-    // </editor-fold>
-    // SECTION-END
-    // SECTION-START[Dependencies]
-    // SECTION-END
-    // SECTION-START[Properties]
-    // SECTION-END
-    // SECTION-START[Messages]
-    // SECTION-END
+
+    @Test
+    public final void testSerializable() throws Exception
+    {
+        ObjectInputStream in = null;
+
+        try
+        {
+            in = new ObjectInputStream( this.getClass().getResourceAsStream( ABSOLUTE_RESOURCE_NAME_PREFIX
+                                                                                 + "CommandExecutionException.ser" ) );
+
+            final CommandExecutionException e = (CommandExecutionException) in.readObject();
+
+            in.close();
+            in = null;
+
+            assertEquals( "TEST", e.getMessage() );
+        }
+        finally
+        {
+
+            try
+            {
+                if ( in != null )
+                {
+                    in.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                // Suppressed
+            }
+        }
+    }
+
+    public static void main( final String[] args ) throws Exception
+    {
+        final ObjectOutputStream out =
+            new ObjectOutputStream( new FileOutputStream( "CommandExecutionException.ser" ) );
+
+        out.writeObject( new CommandExecutionException( "TEST" ) );
+        out.close();
+    }
 
 }

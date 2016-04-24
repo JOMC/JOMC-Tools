@@ -1,8 +1,5 @@
-// SECTION-START[License Header]
-// <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
- * Java Object Management and Configuration
- * Copyright (C) Christian Schulte <cs@schulte.it>, 2005-206
+ * Copyright 2009 (C) Christian Schulte <cs@schulte.it>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,14 +28,11 @@
  * $JOMC$
  *
  */
-// </editor-fold>
-// SECTION-END
 package org.jomc.cli.test;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URI;
 import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -48,10 +42,9 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.jomc.ObjectManagerFactory;
+import org.jomc.model.ModelObject;
 import org.jomc.cli.Command;
 import org.jomc.cli.Jomc;
-import org.jomc.model.ModelObject;
 import org.jomc.model.Module;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelContextFactory;
@@ -60,37 +53,17 @@ import org.jomc.modlet.ModletObject;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-// SECTION-START[Documentation]
-// <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
  * Tests the {@code Jomc} CLI class.
  *
- * <dl>
- *   <dt><b>Identifier:</b></dt><dd>org.jomc.cli.test.JomcTest</dd>
- *   <dt><b>Name:</b></dt><dd>JOMC ⁑ CLI ⁑ Tests ⁑ JomcTest</dd>
- *   <dt><b>Abstract:</b></dt><dd>No</dd>
- *   <dt><b>Final:</b></dt><dd>No</dd>
- *   <dt><b>Stateless:</b></dt><dd>No</dd>
- * </dl>
- *
- * @author <a href="mailto:cs@schulte.it">Christian Schulte</a> 1.0
- * @version 1.10-SNAPSHOT
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  */
-// </editor-fold>
-// SECTION-END
-// SECTION-START[Annotations]
-// <editor-fold defaultstate="collapsed" desc=" Generated Annotations ">
-@javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-// </editor-fold>
-// SECTION-END
 public class JomcTest
 {
-    // SECTION-START[JomcTest]
 
     /**
      * Constant to prefix relative resource names with.
@@ -172,7 +145,8 @@ public class JomcTest
     @Test
     public final void testGenerateResources() throws Exception
     {
-        final File testResourcesDirectory = this.getTestResourcesDirectory();
+        final File resourcesDirectory = new File( this.getOutputDirectory(), "resources" );
+        final File testResourcesDirectory = new File( this.getOutputDirectory(), "generated-resources" );
         assertTrue( testResourcesDirectory.isAbsolute() );
 
         if ( testResourcesDirectory.exists() )
@@ -187,8 +161,8 @@ public class JomcTest
 
         final String[] args = new String[]
         {
-            "generate-resources", "-rd", '"' + this.getTestResourcesDirectory().getAbsolutePath() + '"', "-df",
-            '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-D"
+            "generate-resources", "-rd", '"' + testResourcesDirectory.getAbsolutePath() + '"', "-df",
+            '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-D"
         };
 
         final String[] unsupportedOption = new String[]
@@ -198,9 +172,9 @@ public class JomcTest
 
         final String[] failOnWarnings = new String[]
         {
-            "generate-resources", "-rd", '"' + this.getTestResourcesDirectory().getAbsolutePath() + '"', "-df",
-            '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings",
-            "-D"
+            "generate-resources", "-rd", '"' + testResourcesDirectory.getAbsolutePath() + '"', "-df",
+            '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-mn", "DOES_NOT_EXIST",
+            "--fail-on-warnings", "-D"
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
@@ -215,7 +189,8 @@ public class JomcTest
     @Test
     public final void testManageSources() throws Exception
     {
-        final File testSourcesDirectory = this.getTestSourcesDirectory();
+        final File resourcesDirectory = new File( this.getOutputDirectory(), "resources" );
+        final File testSourcesDirectory = new File( this.getOutputDirectory(), "generated-sources" );
         assertTrue( testSourcesDirectory.isAbsolute() );
 
         if ( testSourcesDirectory.exists() )
@@ -230,10 +205,9 @@ public class JomcTest
 
         final String[] args = new String[]
         {
-            "manage-sources", "-sd", '"' + this.getTestSourcesDirectory().getAbsolutePath() + '"', "-df",
-            '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-mn", '"' + this.getTestModuleName() + '"',
-            "-D", "-ls", "\r\n", "-idt", "\t", "-tp", "jomc-cli", "-tl",
-            '"' + this.getTemplatesDirectory().getAbsolutePath() + '"'
+            "manage-sources", "-sd", '"' + testSourcesDirectory.getAbsolutePath() + '"', "-df",
+            '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-mn",
+            "\"JOMC Tools ⁑ CLI\"", "-D", "-ls", "\r\n", "-idt", "\t"
         };
 
         final String[] unsupportedOption = new String[]
@@ -243,9 +217,9 @@ public class JomcTest
 
         final String[] failOnWarnings = new String[]
         {
-            "manage-sources", "-sd", '"' + this.getTestSourcesDirectory().getAbsolutePath() + '"', "-df",
-            '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings",
-            "-D", "-tp", "jomc-cli", "-tl", '"' + this.getTemplatesDirectory().getAbsolutePath() + '"'
+            "manage-sources", "-sd", '"' + testSourcesDirectory.getAbsolutePath() + '"', "-df",
+            '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-mn", "DOES_NOT_EXIST",
+            "--fail-on-warnings", "-D"
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
@@ -260,12 +234,14 @@ public class JomcTest
     @Test
     public final void testCommitValidateClasses() throws Exception
     {
-        final File testClassesDirectory = this.getTestClassesDirectory();
-        assertTrue( testClassesDirectory.isAbsolute() );
+        final File resourcesDirectory = new File( this.getOutputDirectory(), "resources" );
+        final File classesDirectory = new File( this.getOutputDirectory(), "classes" );
+        final File nonExistentDirectory = new File( this.getOutputDirectory(), "does-not-exist" );
+        assertTrue( nonExistentDirectory.isAbsolute() );
 
-        if ( testClassesDirectory.exists() )
+        if ( nonExistentDirectory.exists() )
         {
-            FileUtils.deleteDirectory( testClassesDirectory );
+            FileUtils.deleteDirectory( nonExistentDirectory );
         }
 
         final String[] commitHelp = new String[]
@@ -280,27 +256,25 @@ public class JomcTest
 
         final String[] commitArgs = new String[]
         {
-            "commit-classes", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-cd",
-            '"' + this.getClassesDirectory().getAbsolutePath() + '"', "-mn",
-            '"' + this.getTestModuleName() + '"', "-D"
+            "commit-classes", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-cd",
+            '"' + classesDirectory.getAbsolutePath() + '"', "-mn", "\"JOMC Tools ⁑ CLI\"", "-D"
         };
 
         final String[] commitArgsNoDirectory = new String[]
         {
-            "commit-classes", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-cd",
-            '"' + this.getTestClassesDirectory().getAbsolutePath() + '"', "-mn", '"' + this.getTestModuleName() + '"',
-            "-D"
+            "commit-classes", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-cd",
+            '"' + nonExistentDirectory.getAbsolutePath() + '"', "-mn", "\"JOMC Tools ⁑ CLI\"", "-D"
         };
 
         final String[] validateArgs = new String[]
         {
-            "validate-classes", "-cp", '"' + this.getClassesDirectory().getAbsolutePath() + '"', "-D"
+            "validate-classes", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-D"
         };
 
         final String[] validateArgsNonExistentClasses = new String[]
         {
-            "validate-classes", "-df", '"' + this.getTestModelDocumentNonExistentClasses().getAbsolutePath() + '"',
-            "-cp", '"' + this.getClassesDirectory().getAbsolutePath() + '"', "-D"
+            "validate-classes", "-df", '"' + new File( resourcesDirectory, "module-nonexistent-classes.xml" ).
+            getAbsolutePath() + '"', "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-D"
         };
 
         final String[] commitUnsupportedOption = new String[]
@@ -315,23 +289,23 @@ public class JomcTest
 
         final String[] commitFailOnWarnings = new String[]
         {
-            "commit-classes", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-cd",
-            '"' + this.getClassesDirectory().getAbsolutePath() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings",
+            "commit-classes", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-cd",
+            '"' + classesDirectory.getAbsolutePath() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings",
             "-D"
         };
 
         final String[] validateFailOnWarnings = new String[]
         {
-            "validate-classes", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-cp",
-            '"' + this.getClassesDirectory().getAbsolutePath() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings",
+            "validate-classes", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-cp",
+            '"' + classesDirectory.getAbsolutePath() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings",
             "-D"
         };
 
         final String[] commitWithStylesheet = new String[]
         {
-            "commit-classes", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-cd",
-            '"' + this.getClassesDirectory().getAbsolutePath() + '"', "-mn", '"' + this.getTestModuleName() + '"',
-            "-D", "-stylesheet", '"' + this.getTestModelStylesheet().getAbsolutePath() + '"'
+            "commit-classes", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-cd",
+            '"' + classesDirectory.getAbsolutePath() + '"', "-mn", "\"JOMC Tools ⁑ CLI\"",
+            "-D", "-stylesheet", '"' + new File( resourcesDirectory, "model-relocations.xsl" ).getAbsolutePath() + '"'
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( commitHelp ) );
@@ -351,6 +325,8 @@ public class JomcTest
     @Test
     public final void testMergeModules() throws Exception
     {
+        final File resourcesDirectory = new File( this.getOutputDirectory(), "resources" );
+        final File targetDocument = new File( this.getOutputDirectory(), "transformed-model.xml" );
         final ModelContext context = ModelContextFactory.newInstance().newModelContext();
         final Unmarshaller unmarshaller = context.createUnmarshaller( ModelObject.MODEL_PUBLIC_ID );
         final Schema schema = context.createSchema( ModelObject.MODEL_PUBLIC_ID );
@@ -363,23 +339,25 @@ public class JomcTest
 
         final String[] args = new String[]
         {
-            "merge-modules", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-xs",
-            '"' + this.getTestModelStylesheet().getAbsolutePath() + '"', "-mn", '"' + this.getTestModuleName() + '"',
-            "-d", '"' + this.getTestModelOutputDocument().getAbsolutePath() + '"', "-D"
+            "merge-modules", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-xs",
+            '"' + new File( resourcesDirectory, "model-relocations.xsl" ).getAbsolutePath() + '"', "-mn",
+            "\"JOMC Tools ⁑ CLI\"", "-d", '"' + targetDocument.getAbsolutePath() + '"', "-D"
         };
 
         final String[] includesArg = new String[]
         {
-            "merge-modules", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-xs",
-            '"' + this.getTestModelStylesheet().getAbsolutePath() + '"', "-mn", '"' + this.getTestModuleName() + '"',
-            "-d", '"' + this.getTestModelOutputDocument().getAbsolutePath() + '"', "-minc=\"JOMC ⁑ CLI\"", "-D"
+            "merge-modules", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-xs",
+            '"' + new File( resourcesDirectory, "model-relocations.xsl" ).getAbsolutePath() + '"', "-mn",
+            "\"JOMC Tools ⁑ CLI\"", "-d", '"' + targetDocument.getAbsolutePath() + '"', "-minc", "\"JOMC Tools ⁑ CLI\"",
+            "-D"
         };
 
         final String[] excludesArg = new String[]
         {
-            "merge-modules", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-xs",
-            '"' + this.getTestModelStylesheet().getAbsolutePath() + '"', "-mn", '"' + this.getTestModuleName() + '"',
-            "-d", '"' + this.getTestModelOutputDocument().getAbsolutePath() + '"', "-mexc=\"JOMC ⁑ CLI\"", "-D"
+            "merge-modules", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-xs",
+            '"' + new File( resourcesDirectory, "model-relocations.xsl" ).getAbsolutePath() + '"', "-mn",
+            "\"JOMC Tools ⁑ CLI\"", "-d", '"' + targetDocument.getAbsolutePath() + '"', "-mexc", "\"JOMC Tools ⁑ CLI\"",
+            "-D"
         };
 
         final String[] unsupportedOption = new String[]
@@ -389,32 +367,32 @@ public class JomcTest
 
         final String[] illegalDoc = new String[]
         {
-            "merge-modules", "-df", '"' + this.getTestModelDocumentIllegalSchemaConstraints().getAbsolutePath() + '"',
-            "-xs", '"' + this.getTestModelStylesheet().getAbsolutePath() + '"', "-mn",
-            '"' + this.getTestModuleName() + '"', "-d", '"' + this.getTestModelOutputDocument().getAbsolutePath() + '"',
+            "merge-modules", "-df", '"' + new File( resourcesDirectory, "illegal-module-document.xml" ).
+            getAbsolutePath() + '"', "-xs", '"' + new File( resourcesDirectory, "model-relocations.xsl" ).
+            getAbsolutePath() + '"', "-mn", "\"JOMC Tools ⁑ CLI\"", "-d", '"' + targetDocument.getAbsolutePath() + '"',
             "-D"
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
 
-        unmarshaller.unmarshal( new StreamSource( this.getTestModelOutputDocument() ), Module.class );
+        unmarshaller.unmarshal( new StreamSource( targetDocument ), Module.class );
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( includesArg ) );
 
         final JAXBElement<Module> includedModule =
-            unmarshaller.unmarshal( new StreamSource( this.getTestModelOutputDocument() ), Module.class );
+            unmarshaller.unmarshal( new StreamSource( targetDocument ), Module.class );
 
         assertNotNull( "Merged module does not contain any included specifications.",
                        includedModule.getValue().getSpecifications() );
 
-        assertNotNull( "Merged module does not contain included 'org.jomc.cli.Command' specification.",
+        assertNotNull( "Merged module does not contain included 'org.jomc.tools.cli.Command' specification.",
                        includedModule.getValue().getSpecifications().getSpecification( Command.class ) );
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( excludesArg ) );
 
         final JAXBElement<Module> excludedModule =
-            unmarshaller.unmarshal( new StreamSource( this.getTestModelOutputDocument() ), Module.class );
+            unmarshaller.unmarshal( new StreamSource( targetDocument ), Module.class );
 
         assertNull( "Merged module contains excluded specifications.",
                     excludedModule.getValue().getSpecifications() );
@@ -426,6 +404,7 @@ public class JomcTest
     @Test
     public final void testValidateModel() throws Exception
     {
+        final File resourcesDirectory = new File( this.getOutputDirectory(), "resources" );
         final String[] help = new String[]
         {
             "validate-model", "help"
@@ -433,7 +412,7 @@ public class JomcTest
 
         final String[] args = new String[]
         {
-            "validate-model", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-D"
+            "validate-model", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-D"
         };
 
         final String[] unsupportedOption = new String[]
@@ -443,7 +422,8 @@ public class JomcTest
 
         final String[] illegalDoc = new String[]
         {
-            "validate-model", "-df", '"' + this.getTestModelDocumentIllegal().getAbsolutePath() + '"', "-D"
+            "validate-model", "-df", '"' + new File( resourcesDirectory, "illegal-module.xml" ).getAbsolutePath() + '"',
+            "-D"
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
@@ -455,6 +435,8 @@ public class JomcTest
     @Test
     public final void testMergeModlets() throws Exception
     {
+        final File resourcesDirectory = new File( this.getOutputDirectory(), "resources" );
+        final File targetDocument = new File( this.getOutputDirectory(), "transformed-modlet.xml" );
         final ModelContext context = ModelContextFactory.newInstance().newModelContext();
         final Unmarshaller unmarshaller = context.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
         final Schema schema = context.createSchema( ModletObject.MODEL_PUBLIC_ID );
@@ -467,26 +449,25 @@ public class JomcTest
 
         final String[] args = new String[]
         {
-            "merge-modlets", "-xs", '"' + this.getTestModletStylesheet().getAbsolutePath() + '"', "-mdn",
-            '"' + this.getTestModletName() + '"', "-d",
-            '"' + this.getTestModletOutputDocument().getAbsolutePath() + '"', "-cp", "."
+            "merge-modlets", "-xs", '"' + new File( resourcesDirectory, "modlet-relocations.xsl" ).
+            getAbsolutePath() + '"', "-mdn", "\"JOMC Tools ⁑ CLI ⁑ Tests\"", "-d",
+            '"' + targetDocument.getAbsolutePath() + '"', "-cp", "."
         };
 
         final String[] includeArgs = new String[]
         {
-            "merge-modlets", "-xs", '"' + this.getTestModletStylesheet().getAbsolutePath() + '"', "-mdn",
-            '"' + this.getTestModletName() + '"', "-d",
-            '"' + this.getTestModletOutputDocument().getAbsolutePath() + '"', "-mdinc=\"JOMC ⁑ Model\"", "-cp", "."
+            "merge-modlets", "-xs", '"' + new File( resourcesDirectory, "modlet-relocations.xsl" ).
+            getAbsolutePath() + '"', "-mdn", "\"JOMC Tools ⁑ CLI ⁑ Tests\"", "-d",
+            '"' + targetDocument.getAbsolutePath() + '"', "-mdinc", "\"JOMC ⁑ Model\"", "-cp", "."
         };
 
         final String[] excludeArgs = new String[]
         {
-            "merge-modlets", "-xs", '"' + this.getTestModletStylesheet().getAbsolutePath() + '"', "-mdn",
-            '"' + this.getTestModletName() + '"', "-d",
-            '"' + this.getTestModletOutputDocument().getAbsolutePath() + '"',
-            "-mdexc=\"JOMC ⁑ Model" + File.pathSeparatorChar + "JOMC Tools ⁑ Tools"
-            + File.pathSeparatorChar + "JOMC ⁑ Tools" // < JOMC Tools 1.10
-            + File.pathSeparatorChar + "JOMC ⁑ Modlet\"", "-cp", "."
+            "merge-modlets", "-xs", '"' + new File( resourcesDirectory, "modlet-relocations.xsl" ).
+            getAbsolutePath() + '"', "-mdn", "\"JOMC Tools ⁑ CLI ⁑ Tests\"", "-d",
+            '"' + targetDocument.getAbsolutePath() + '"',
+            "-mdexc", "\"JOMC ⁑ Model" + File.pathSeparatorChar + "JOMC ⁑ Tools" + File.pathSeparatorChar
+                      + "JOMC ⁑ Modlet\"", "-cp", "."
         };
 
         final String[] unsupportedOption = new String[]
@@ -498,17 +479,14 @@ public class JomcTest
         assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
-        Modlet merged = unmarshaller.unmarshal(
-            new StreamSource( this.getTestModletOutputDocument() ), Modlet.class ).getValue();
+        Modlet merged = unmarshaller.unmarshal( new StreamSource( targetDocument ), Modlet.class ).getValue();
 
         assertNotNull( merged );
-        assertEquals( this.getTestModletName(), merged.getName() );
+        assertEquals( "JOMC Tools ⁑ CLI ⁑ Tests", merged.getName() );
         assertNotNull( merged.getSchemas() );
         assertNotNull( merged.getServices() );
         assertEquals( 2, merged.getSchemas().getSchema().size() );
         assertEquals( 6, merged.getServices().getService().size() );
-        assertFalse( merged.getSchemas().getSchemasByPublicId( new URI( "http://jomc.org/model" ) ).isEmpty() );
-        assertFalse( merged.getSchemas().getSchemasByPublicId( new URI( "http://jomc.org/tools/model" ) ).isEmpty() );
         assertNotNull( merged.getSchemas().getSchemaByPublicId( "http://jomc.org/model" ) );
         assertNotNull( merged.getSchemas().getSchemaByPublicId( "http://jomc.org/tools/model" ) );
         assertEquals( 2, merged.getServices().getServices( "org.jomc.modlet.ModelProvider" ).size() );
@@ -516,15 +494,13 @@ public class JomcTest
         assertEquals( 2, merged.getServices().getServices( "org.jomc.modlet.ModelValidator" ).size() );
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( includeArgs ) );
-        merged = unmarshaller.unmarshal(
-            new StreamSource( this.getTestModletOutputDocument() ), Modlet.class ).getValue();
+        merged = unmarshaller.unmarshal( new StreamSource( targetDocument ), Modlet.class ).getValue();
 
         assertNotNull( merged );
-        assertEquals( this.getTestModletName(), merged.getName() );
+        assertEquals( "JOMC Tools ⁑ CLI ⁑ Tests", merged.getName() );
         assertNotNull( merged.getSchemas() );
         assertNotNull( merged.getServices() );
         assertEquals( 1, merged.getSchemas().getSchema().size() );
-        assertFalse( merged.getSchemas().getSchemasByPublicId( new URI( "http://jomc.org/model" ) ).isEmpty() );
         assertNotNull( merged.getSchemas().getSchemaByPublicId( "http://jomc.org/model" ) );
         assertEquals( 3, merged.getServices().getService().size() );
         assertEquals( 1, merged.getServices().getServices( "org.jomc.modlet.ModelProvider" ).size() );
@@ -532,11 +508,10 @@ public class JomcTest
         assertEquals( 1, merged.getServices().getServices( "org.jomc.modlet.ModelValidator" ).size() );
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( excludeArgs ) );
-        merged = unmarshaller.unmarshal(
-            new StreamSource( this.getTestModletOutputDocument() ), Modlet.class ).getValue();
+        merged = unmarshaller.unmarshal( new StreamSource( targetDocument ), Modlet.class ).getValue();
 
         assertNotNull( merged );
-        assertEquals( this.getTestModletName(), merged.getName() );
+        assertEquals( "JOMC Tools ⁑ CLI ⁑ Tests", merged.getName() );
         assertNull( merged.getSchemas() );
         assertNull( merged.getServices() );
     }
@@ -545,6 +520,7 @@ public class JomcTest
     public final void testShowModel() throws Exception
     {
         final File classesDirectory = new File( this.getOutputDirectory(), "jomc-test-classes" );
+        final File targetDocument = new File( this.getOutputDirectory(), "model.xml" );
 
         final String[] help = new String[]
         {
@@ -559,45 +535,46 @@ public class JomcTest
         final String[] writeModel = new String[]
         {
             "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-d",
-            '"' + this.getTestShowModelOutputDocument().getAbsolutePath() + '"'
+            '"' + targetDocument.getAbsolutePath() + '"'
         };
 
         final String[] showSpecification = new String[]
         {
-            "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-spec=\"JOMC ⁑ CLI ⁑ Command\""
+            "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-spec",
+            "\"JOMC Tools ⁑ CLI ⁑ Command\""
         };
 
         final String[] writeSpecification = new String[]
         {
-            "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-spec=\"JOMC ⁑ CLI ⁑ Command\"",
-            "-d", '"' + this.getTestShowSpecificationOutputDocument().getAbsolutePath() + '"'
+            "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-spec",
+            "\"JOMC Tools ⁑ CLI ⁑ Command\"", "-d", '"' + targetDocument.getAbsolutePath() + '"'
         };
 
         final String[] showInstance = new String[]
         {
             "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"',
-            "-impl=\"JOMC ⁑ CLI ⁑ Default show-model Command\""
+            "-impl", "\"JOMC Tools ⁑ CLI ⁑ Default show-model Command\""
         };
 
         final String[] writeInstance = new String[]
         {
             "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"',
-            "-impl=\"JOMC ⁑ CLI ⁑ Default show-model Command\"",
-            "-d", '"' + this.getTestShowInstanceOutputDocument().getAbsolutePath() + '"'
+            "-impl", "\"JOMC Tools ⁑ CLI ⁑ Default show-model Command\"",
+            "-d", '"' + targetDocument.getAbsolutePath() + '"'
         };
 
         final String[] showSpecificationAndInstance = new String[]
         {
-            "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-spec=\"JOMC ⁑ CLI ⁑ Command\"",
-            "-impl=\"JOMC ⁑ CLI ⁑ Default show-model Command\""
+            "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-spec",
+            "\"JOMC Tools ⁑ CLI ⁑ Command\"", "-impl", "\"JOMC Tools ⁑ CLI ⁑ Default show-model Command\""
         };
 
         final String[] writeSpecificationAndInstance = new String[]
         {
             "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"',
-            "-spec=\"JOMC ⁑ CLI ⁑ Command\"",
-            "-impl=\"JOMC ⁑ CLI ⁑ Default show-model Command\"", "-d",
-            '"' + this.getTestShowSpecificationAndInstanceOutputDocument().getAbsolutePath() + '"'
+            "-spec", "\"JOMC Tools ⁑ CLI ⁑ Command\"",
+            "-impl", "\"JOMC Tools ⁑ CLI ⁑ Default show-model Command\"", "-d",
+            '"' + targetDocument.getAbsolutePath() + '"'
         };
 
         final String[] unsupportedOption = new String[]
@@ -620,16 +597,10 @@ public class JomcTest
     @Before
     public void setUp() throws IOException
     {
-        // Ensures the singleton is initialized prior to class Jomc switching resource locations.
-        ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() );
-
         final File f = this.getOutputDirectory();
-        if ( !f.exists() )
-        {
-            assertTrue( f.mkdirs() );
-        }
+        assertTrue( f.exists() || f.mkdirs() );
 
-        final File resourcesDirectory = this.getResourcesDirectory();
+        final File resourcesDirectory = new File( this.getOutputDirectory(), "resources" );
         assertTrue( resourcesDirectory.isAbsolute() );
         FileUtils.deleteDirectory( resourcesDirectory );
         assertTrue( resourcesDirectory.mkdirs() );
@@ -641,11 +612,8 @@ public class JomcTest
             FileUtils.copyURLToFile( rsrc, new File( resourcesDirectory, testResourceName ) );
         }
 
-        final File classesDirectory = this.getClassesDirectory();
+        final File classesDirectory = new File( this.getOutputDirectory(), "classes" );
         this.unzipResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "classfiles.zip", classesDirectory );
-
-        final File templatesDirectory = this.getTemplatesDirectory();
-        this.unzipResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "templates.zip", templatesDirectory );
     }
 
     private void unzipResource( final String resourceName, final File targetDirectory ) throws IOException
@@ -659,14 +627,13 @@ public class JomcTest
         assertTrue( targetDirectory.mkdirs() );
 
         ZipInputStream in = null;
-        boolean suppressExceptionOnClose = true;
+        OutputStream out = null;
 
         try
         {
             in = new ZipInputStream( resource.openStream() );
-            ZipEntry e;
 
-            while ( ( e = in.getNextEntry() ) != null )
+            for ( ZipEntry e = in.getNextEntry(); e != null; e = in.getNextEntry() )
             {
                 if ( e.isDirectory() )
                 {
@@ -676,398 +643,42 @@ public class JomcTest
                 final File dest = new File( targetDirectory, e.getName() );
                 assertTrue( dest.isAbsolute() );
 
-                OutputStream out = null;
-
-                try
-                {
-                    out = FileUtils.openOutputStream( dest );
-                    IOUtils.copy( in, out );
-                    suppressExceptionOnClose = false;
-                }
-                finally
-                {
-                    try
-                    {
-                        if ( out != null )
-                        {
-                            out.close();
-                        }
-
-                        suppressExceptionOnClose = true;
-                    }
-                    catch ( final IOException ex )
-                    {
-                        if ( !suppressExceptionOnClose )
-                        {
-                            throw ex;
-                        }
-                    }
-                }
+                out = FileUtils.openOutputStream( dest );
+                IOUtils.copy( in, out );
+                out.close();
+                out = null;
 
                 in.closeEntry();
             }
-
-            suppressExceptionOnClose = false;
         }
         finally
         {
             try
             {
-                if ( in != null )
+                if ( out != null )
                 {
-                    in.close();
+                    out.close();
                 }
             }
             catch ( final IOException e )
             {
-                if ( !suppressExceptionOnClose )
+                // Suppressed
+            }
+            finally
+            {
+                try
                 {
-                    throw e;
+                    if ( in != null )
+                    {
+                        in.close();
+                    }
+                }
+                catch ( final IOException e )
+                {
+                    // Suppressed
                 }
             }
         }
     }
-
-    // SECTION-END
-    // SECTION-START[Constructors]
-    // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
-    /** Creates a new {@code JomcTest} instance. */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    public JomcTest()
-    {
-        // SECTION-START[Default Constructor]
-        super();
-        // SECTION-END
-    }
-    // </editor-fold>
-    // SECTION-END
-    // SECTION-START[Dependencies]
-    // SECTION-END
-    // SECTION-START[Properties]
-    // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
-    /**
-     * Gets the value of the {@code <Classes Directory>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return Directory holding class files.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.io.File getClassesDirectory()
-    {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Classes Directory" );
-        assert _p != null : "'Classes Directory' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Resources Directory>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return Directory holding resources.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.io.File getResourcesDirectory()
-    {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Resources Directory" );
-        assert _p != null : "'Resources Directory' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Templates Directory>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return Directory holding templates.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.io.File getTemplatesDirectory()
-    {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Templates Directory" );
-        assert _p != null : "'Templates Directory' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Test Classes Directory>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return Directory holding class files to commit to and to validate.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.io.File getTestClassesDirectory()
-    {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Classes Directory" );
-        assert _p != null : "'Test Classes Directory' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Test Model Document>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return Valid model document.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.io.File getTestModelDocument()
-    {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Model Document" );
-        assert _p != null : "'Test Model Document' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Test Model Document Illegal>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return Model document with invalid model.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.io.File getTestModelDocumentIllegal()
-    {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Model Document Illegal" );
-        assert _p != null : "'Test Model Document Illegal' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Test Model Document Illegal Schema Constraints>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return Model document not valid to the JOMC JAXP schema.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.io.File getTestModelDocumentIllegalSchemaConstraints()
-    {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Model Document Illegal Schema Constraints" );
-        assert _p != null : "'Test Model Document Illegal Schema Constraints' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Test Model Document Non Existent Classes>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return Model document referencing non-existent classes.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.io.File getTestModelDocumentNonExistentClasses()
-    {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Model Document Non Existent Classes" );
-        assert _p != null : "'Test Model Document Non Existent Classes' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Test Model Output Document>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return File to write a transformed model to.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.io.File getTestModelOutputDocument()
-    {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Model Output Document" );
-        assert _p != null : "'Test Model Output Document' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Test Model Stylesheet>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return Valid model object stylesheet.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.io.File getTestModelStylesheet()
-    {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Model Stylesheet" );
-        assert _p != null : "'Test Model Stylesheet' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Test Modlet Name>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return Test module name.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.lang.String getTestModletName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Modlet Name" );
-        assert _p != null : "'Test Modlet Name' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Test Modlet Output Document>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return File to write a transformed modlet to.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.io.File getTestModletOutputDocument()
-    {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Modlet Output Document" );
-        assert _p != null : "'Test Modlet Output Document' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Test Modlet Stylesheet>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return Valid modlet object stylesheet.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.io.File getTestModletStylesheet()
-    {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Modlet Stylesheet" );
-        assert _p != null : "'Test Modlet Stylesheet' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Test Module Name>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return Test module name.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.lang.String getTestModuleName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Module Name" );
-        assert _p != null : "'Test Module Name' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Test Resources Directory>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return Directory to generate resources to.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.io.File getTestResourcesDirectory()
-    {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Resources Directory" );
-        assert _p != null : "'Test Resources Directory' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Test Show Instance Output Document>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return File to write an instance to.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.io.File getTestShowInstanceOutputDocument()
-    {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Show Instance Output Document" );
-        assert _p != null : "'Test Show Instance Output Document' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Test Show Model Output Document>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return File to write a model to.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.io.File getTestShowModelOutputDocument()
-    {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Show Model Output Document" );
-        assert _p != null : "'Test Show Model Output Document' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Test Show Specification And Instance Output Document>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return File to write a model holding a specification and an instance to.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.io.File getTestShowSpecificationAndInstanceOutputDocument()
-    {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Show Specification And Instance Output Document" );
-        assert _p != null : "'Test Show Specification And Instance Output Document' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Test Show Specification Output Document>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return File to write a specification to.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.io.File getTestShowSpecificationOutputDocument()
-    {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Show Specification Output Document" );
-        assert _p != null : "'Test Show Specification Output Document' property not found.";
-        return _p;
-    }
-    /**
-     * Gets the value of the {@code <Test Sources Directory>} property.
-     * <p><dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl></p>
-     * @return Directory holding source code files to manage.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.9", comments = "See http://www.jomc.org/jomc/1.9/jomc-tools-1.9" )
-    private java.io.File getTestSourcesDirectory()
-    {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Sources Directory" );
-        assert _p != null : "'Test Sources Directory' property not found.";
-        return _p;
-    }
-    // </editor-fold>
-    // SECTION-END
-    // SECTION-START[Messages]
-    // SECTION-END
 
 }
