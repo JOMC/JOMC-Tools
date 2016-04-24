@@ -568,7 +568,7 @@ public final class Jomc
         final List<Command> commands = new ArrayList<Command>();
 
         final Enumeration<URL> serviceResources =
-            this.getClass().getClassLoader().getResources( "META-INF/services/org.jomc.tools.cli.Command" );
+            this.getClass().getClassLoader().getResources( "META-INF/services/org.jomc.cli.Command" );
 
         if ( serviceResources != null )
         {
