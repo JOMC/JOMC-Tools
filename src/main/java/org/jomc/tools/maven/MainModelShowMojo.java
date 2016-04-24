@@ -32,6 +32,9 @@ package org.jomc.tools.maven;
 
 import javax.xml.bind.JAXBElement;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.jomc.modlet.ModelContext;
 
 /**
@@ -39,20 +42,20 @@ import org.jomc.modlet.ModelContext;
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
- *
- * @goal show-main-model
- * @threadSafe
- * @requiresDependencyResolution test
  * @since 1.1
  */
+@Mojo( name = "show-main-model",
+       requiresDependencyResolution = ResolutionScope.TEST,
+       threadSafe = true )
 public final class MainModelShowMojo extends AbstractModelShowMojo
 {
 
     /**
      * Execution strategy of the goal ({@code always} or {@code once-per-session}).
-     *
-     * @parameter default-value="once-per-session" expression="${jomc.showMainModelExecutionStrategy}"
      */
+    @Parameter( name = "showMainModelExecutionStrategy",
+                property = "jomc.showMainModelExecutionStrategy",
+                defaultValue = "once-per-session" )
     private String showMainModelExecutionStrategy;
 
     /**

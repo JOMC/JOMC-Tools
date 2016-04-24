@@ -39,6 +39,8 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.descriptor.MojoDescriptor;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 
@@ -63,46 +65,48 @@ public abstract class AbstractAttachMojo extends AbstractMojo
 
     /**
      * The Maven project of the instance.
-     *
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
      */
+    @Parameter( name = "mavenProject",
+                defaultValue = "${project}",
+                readonly = true,
+                required = true )
     private MavenProject mavenProject;
 
     /**
      * The Maven ProjectHelper of the instance.
-     *
-     * @component
-     * @required
-     * @readonly
      */
+    @Component
     private MavenProjectHelper mavenProjectHelper;
 
     /**
      * The Maven session of the instance.
      *
-     * @parameter expression="${session}"
-     * @required
-     * @readonly
      * @since 1.1
      */
+    @Parameter( name = "mavenSession",
+                defaultValue = "${session}",
+                readonly = true,
+                required = true )
     private MavenSession mavenSession;
 
     /**
      * Directory holding the session related files of the project.
      *
-     * @parameter default-value="${project.build.directory}/jomc-sessions" expression="${jomc.sessionDirectory}"
      * @since 1.1
      */
+    @Parameter( name = "sessionDirectory",
+                property = "jomc.sessionDirectory",
+                defaultValue = "${project.build.directory}/jomc-sessions" )
     private String sessionDirectory;
 
     /**
      * Controls verbosity of the plugin.
      *
-     * @parameter expression="${jomc.verbose}" default-value="false"
      * @since 1.1
      */
+    @Parameter( name = "verbose",
+                property = "jomc.verbose",
+                defaultValue = "false" )
     private boolean verbose;
 
     /**

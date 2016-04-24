@@ -31,47 +31,53 @@
 package org.jomc.tools.maven;
 
 import java.io.File;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 /**
  * Attaches a project's test module artifact.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
- *
- * @phase process-test-resources
- * @goal attach-test-module
  */
+@Mojo( name = "attach-test-module",
+       defaultPhase = LifecyclePhase.PROCESS_TEST_RESOURCES )
 public final class TestModuleAttachMojo extends AbstractAttachMojo
 {
 
     /**
      * File of the attached module artifact.
-     *
-     * @parameter expression="${jomc.testModuleArtifactFile}"
-     * default-value="${project.build.testOutputDirectory}/META-INF/jomc.xml"
      */
+    @Parameter( name = "testModuleArtifactFile",
+                property = "jomc.testModuleArtifactFile",
+                defaultValue = "${project.build.testOutputDirectory}/META-INF/jomc.xml" )
     private File testModuleArtifactFile;
 
     /**
      * Classifier of the attached module artifact.
-     *
-     * @parameter expression="${jomc.testModuleArtifactClassifier}" default-value="jomc-test-module"
      */
+    @Parameter( name = "testModuleArtifactClassifier",
+                property = "jomc.testModuleArtifactClassifier",
+                defaultValue = "jomc-test-module" )
     private String testModuleArtifactClassifier;
 
     /**
      * Type of the attached module artifact.
-     *
-     * @parameter expression="${jomc.testModuleArtifactType}" default-value="xml"
      */
+    @Parameter( name = "testModuleArtifactType",
+                property = "jomc.testModuleArtifactType",
+                defaultValue = "xml" )
     private String testModuleArtifactType;
 
     /**
      * Execution strategy of the goal ({@code always} or {@code once-per-session}).
      *
-     * @parameter default-value="once-per-session" expression="${jomc.attachTestModuleExecutionStrategy}"
      * @since 1.1
      */
+    @Parameter( name = "attachTestModuleExecutionStrategy",
+                property = "jomc.attachTestModuleExecutionStrategy",
+                defaultValue = "once-per-session" )
     private String attachTestModuleExecutionStrategy;
 
     /**

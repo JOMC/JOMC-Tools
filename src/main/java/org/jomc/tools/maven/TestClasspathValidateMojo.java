@@ -31,27 +31,31 @@
 package org.jomc.tools.maven;
 
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 
 /**
  * Validates a projects' test class path class file model objects.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
- *
- * @phase verify
- * @goal validate-test-classpath
- * @threadSafe
- * @requiresDependencyResolution test
  * @since 1.1
  */
+@Mojo( name = "validate-test-classpath",
+       defaultPhase = LifecyclePhase.VERIFY,
+       requiresDependencyResolution = ResolutionScope.TEST,
+       threadSafe = true )
 public final class TestClasspathValidateMojo extends AbstractClasspathValidateMojo
 {
 
     /**
      * Execution strategy of the goal ({@code always} or {@code once-per-session}).
-     *
-     * @parameter default-value="once-per-session" expression="${jomc.validateTestClasspathExecutionStrategy}"
      */
+    @Parameter( name = "validateTestClasspathExecutionStrategy",
+                property = "jomc.validateTestClasspathExecutionStrategy",
+                defaultValue = "once-per-session" )
     private String validateTestClasspathExecutionStrategy;
 
     /**

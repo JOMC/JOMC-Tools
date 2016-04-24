@@ -70,6 +70,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.descriptor.MojoDescriptor;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
@@ -104,18 +105,19 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     /**
      * The encoding to use for reading and writing files.
-     *
-     * @parameter default-value="${project.build.sourceEncoding}" expression="${jomc.sourceEncoding}"
      */
+    @Parameter( name = "sourceEncoding",
+                property = "jomc.sourceEncoding",
+                defaultValue = "${project.build.sourceEncoding}" )
     private String sourceEncoding;
 
     /**
      * The encoding to use for reading templates.
      *
-     * @parameter expression="${jomc.defaultTemplateEncoding}"
-     *
      * @since 1.3
      */
+    @Parameter( name = "defaultTemplateEncoding",
+                property = "jomc.defaultTemplateEncoding" )
     private String defaultTemplateEncoding;
 
     /**
@@ -127,95 +129,99 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * logged.
      * </p>
      *
-     * @parameter expression="${jomc.templateLocation}"
      * @since 1.2
      */
+    @Parameter( name = "templateLocation",
+                property = "jomc.templateLocation" )
     private String templateLocation;
 
     /**
      * The template profile to use when accessing templates.
-     *
-     * @parameter expression="${jomc.templateProfile}"
      */
+    @Parameter( name = "templateProfile",
+                property = "jomc.templateProfile" )
     private String templateProfile;
 
     /**
      * The default template profile to use when accessing templates.
-     *
-     * @parameter expression="${jomc.defaultTemplateProfile}"
      */
+    @Parameter( name = "defaultTemplateProfile",
+                property = "jomc.defaultTemplateProfile" )
     private String defaultTemplateProfile;
 
     /**
      * The location to search for providers.
-     *
-     * @parameter expression="${jomc.providerLocation}"
      */
+    @Parameter( name = "providerLocation",
+                property = "jomc.providerLocation" )
     private String providerLocation;
 
     /**
      * The location to search for platform providers.
-     *
-     * @parameter expression="${jomc.platformProviderLocation}"
      */
+    @Parameter( name = "platformProviderLocation",
+                property = "jomc.platformProviderLocation" )
     private String platformProviderLocation;
 
     /**
      * The identifier of the model to process.
-     *
-     * @parameter default-value="http://jomc.org/model" expression="${jomc.model}"
      */
+    @Parameter( name = "model",
+                property = "jomc.model",
+                defaultValue = "http://jomc.org/model" )
     private String model;
 
     /**
      * The name of the {@code ModelContextFactory} implementation class backing the task.
      *
-     * @parameter expression="${jomc.modelContextFactoryClassName}"
      * @since 1.2
      */
+    @Parameter( name = "modelContextFactoryClassName",
+                property = "jomc.modelContextFactoryClassName" )
     private String modelContextFactoryClassName;
 
     /**
      * The location to search for modlets.
-     *
-     * @parameter expression="${jomc.modletLocation}"
      */
+    @Parameter( name = "modletLocation",
+                property = "jomc.modletLocation" )
     private String modletLocation;
 
     /**
      * The {@code http://jomc.org/modlet} namespace schema system id.
      *
-     * @parameter expression="${jomc.modletSchemaSystemId}"
      * @since 1.2
      */
+    @Parameter( name = "modletSchemaSystemId",
+                property = "jomc.modletSchemaSystemId" )
     private String modletSchemaSystemId;
 
     /**
      * The location to search for modules.
-     *
-     * @parameter expression="${jomc.moduleLocation}"
      */
+    @Parameter( name = "moduleLocation",
+                property = "jomc.moduleLocation" )
     private String moduleLocation;
 
     /**
      * The location to search for transformers.
-     *
-     * @parameter expression="${jomc.transformerLocation}"
      */
+    @Parameter( name = "transformerLocation",
+                property = "jomc.transformerLocation" )
     private String transformerLocation;
 
     /**
      * The indentation string ('\t' for tab).
-     *
-     * @parameter expression="${jomc.indentation}"
      */
+    @Parameter( name = "indentation",
+                property = "jomc.indentation" )
     private String indentation;
 
     /**
      * The line separator ('\r\n' for DOS, '\r' for Mac, '\n' for Unix).
-     *
-     * @parameter expression="${jomc.lineSeparator}"
      */
+    @Parameter( name = "lineSeparator",
+                property = "jomc.lineSeparator" )
     private String lineSeparator;
 
     /**
@@ -228,114 +234,134 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * &lt;/locale>
      * </pre>
      *
-     * @parameter
      * @since 1.2
      * @see Locale
      */
+    @Parameter( name = "locale" )
     private LocaleType locale;
 
     /**
      * Controls verbosity of the plugin.
-     *
-     * @parameter expression="${jomc.verbose}" default-value="false"
      */
+    @Parameter( name = "verbose",
+                property = "jomc.verbose",
+                defaultValue = "false" )
     private boolean verbose;
 
     /**
      * Controls processing of source code files.
-     *
-     * @parameter expression="${jomc.sourceProcessing}" default-value="true"
      */
+    @Parameter( name = "sourceProcessingEnabled",
+                property = "jomc.sourceProcessing",
+                defaultValue = "true" )
     private boolean sourceProcessingEnabled;
 
     /**
      * Controls processing of resource files.
-     *
-     * @parameter expression="${jomc.resourceProcessing}" default-value="true"
      */
+    @Parameter( name = "resourceProcessingEnabled",
+                property = "jomc.resourceProcessing",
+                defaultValue = "true" )
     private boolean resourceProcessingEnabled;
 
     /**
      * Controls processing of class files.
-     *
-     * @parameter expression="${jomc.classProcessing}" default-value="true"
      */
+    @Parameter( name = "classProcessingEnabled",
+                property = "jomc.classProcessing",
+                defaultValue = "true" )
     private boolean classProcessingEnabled;
 
     /**
      * Controls processing of models.
-     *
-     * @parameter expression="${jomc.modelProcessing}" default-value="true"
      */
+    @Parameter( name = "modelProcessingEnabled",
+                property = "jomc.modelProcessing",
+                defaultValue = "true" )
     private boolean modelProcessingEnabled;
 
     /**
      * Controls model object class path resolution.
-     *
-     * @parameter expression="${jomc.modelObjectClasspathResolution}" default-value="true"
      */
+    @Parameter( name = "modelObjectClasspathResolutionEnabled",
+                property = "jomc.modelObjectClasspathResolution",
+                defaultValue = "true" )
     private boolean modelObjectClasspathResolutionEnabled;
 
     /**
      * Name of the module to process.
-     *
-     * @parameter default-value="${project.name}" expression="${jomc.moduleName}"
      */
+    @Parameter( name = "moduleName",
+                property = "jomc.moduleName",
+                defaultValue = "${project.name}" )
     private String moduleName;
 
     /**
      * Name of the test module to process.
-     *
-     * @parameter default-value="${project.name} Tests" expression="${jomc.testModuleName}"
      */
+    @Parameter( name = "testModuleName",
+                property = "jomc.testModuleName",
+                defaultValue = "${project.name} ⁑ Tests" )
     private String testModuleName;
 
     /**
      * Output directory of the project.
      *
-     * @parameter default-value="${project.build.outputDirectory}" expression="${jomc.outputDirectory}"
      * @since 1.1
      */
+    @Parameter( name = "outputDirectory",
+                property = "jomc.outputDirectory",
+                defaultValue = "${project.build.outputDirectory}" )
     private String outputDirectory;
 
     /**
      * Test output directory of the project.
      *
-     * @parameter default-value="${project.build.testOutputDirectory}" expression="${jomc.testOutputDirectory}"
      * @since 1.1
      */
+    @Parameter( name = "testOutputDirectory",
+                property = "jomc.testOutputDirectory",
+                defaultValue = "${project.build.testOutputDirectory}" )
     private String testOutputDirectory;
 
     /**
      * Directory holding the source files of the project.
      *
-     * @parameter default-value="${project.build.sourceDirectory}" expression="${jomc.sourceDirectory}"
      * @since 1.1
      */
+    @Parameter( name = "sourceDirectory",
+                property = "jomc.sourceDirectory",
+                defaultValue = "${project.build.sourceDirectory}" )
     private String sourceDirectory;
 
     /**
      * Directory holding the test source files of the project.
      *
-     * @parameter default-value="${project.build.testSourceDirectory}" expression="${jomc.testSourceDirectory}"
      * @since 1.1
      */
+    @Parameter( name = "testSourceDirectory",
+                property = "jomc.testSourceDirectory",
+                defaultValue = "${project.build.testSourceDirectory}" )
     private String testSourceDirectory;
 
     /**
      * Directory holding the session related files of the project.
      *
-     * @parameter default-value="${project.build.directory}/jomc-sessions" expression="${jomc.sessionDirectory}"
      * @since 1.1
      */
+    @Parameter( name = "sessionDirectory",
+                property = "jomc.sessionDirectory",
+                defaultValue = "${project.build.directory}/jomc-sessions" )
     private String sessionDirectory;
 
     /**
      * Directory holding the reports of the project.
      *
-     * @parameter default-value="${project.reporting.outputDirectory}" expression="${jomc.reportOutputDirectory}"
      * @since 1.1
      */
+    @Parameter( name = "reportOutputDirectory",
+                property = "jomc.reportOutputDirectory",
+                defaultValue = "${project.reporting.outputDirectory}" )
     private String reportOutputDirectory;
 
     /**
@@ -350,9 +376,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * &lt;/velocityProperties>
      * </pre>
      *
-     * @parameter
      * @since 1.2
      */
+    @Parameter( name = "velocityProperties" )
     private List<VelocityProperty> velocityProperties;
 
     /**
@@ -395,9 +421,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * <b>Default value is:</b> 60000
      * </p>
      *
-     * @parameter
      * @since 1.2
      */
+    @Parameter( name = "velocityPropertyResources" )
     private List<VelocityPropertyResource> velocityPropertyResources;
 
     /**
@@ -412,9 +438,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * &lt;/templateParameters>
      * </pre>
      *
-     * @parameter
      * @since 1.2
      */
+    @Parameter( name = "templateParameters" )
     private List<TemplateParameter> templateParameters;
 
     /**
@@ -457,9 +483,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * <b>Default value is:</b> 60000
      * </p>
      *
-     * @parameter
      * @since 1.2
      */
+    @Parameter( name = "templateParameterResources" )
     private List<TemplateParameterResource> templateParameterResources;
 
     /**
@@ -474,9 +500,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * &lt;/transformationParameters>
      * </pre>
      *
-     * @parameter
      * @since 1.2
      */
+    @Parameter( name = "transformationParameters" )
     private List<TransformationParameter> transformationParameters;
 
     /**
@@ -491,9 +517,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * &lt;/transformationOutputProperties>
      * </pre>
      *
-     * @parameter
      * @since 1.2
      */
+    @Parameter( name = "transformationOutputProperties" )
     private List<TransformationOutputProperty> transformationOutputProperties;
 
     /**
@@ -536,34 +562,39 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * <b>Default value is:</b> 60000
      * </p>
      *
-     * @parameter
      * @since 1.2
      */
+    @Parameter( name = "transformationParameterResources" )
     private List<TransformationParameterResource> transformationParameterResources;
 
     /**
      * Class name of the {@code ClassFileProcessor} backing the goal.
      *
-     * @parameter default-value="org.jomc.tools.ClassFileProcessor" expression="${jomc.classFileProcessorClassName}"
      * @since 1.2
      */
+    @Parameter( name = "classFileProcessorClassName",
+                property = "jomc.classFileProcessorClassName",
+                defaultValue = "org.jomc.tools.ClassFileProcessor" )
     private String classFileProcessorClassName;
 
     /**
      * Class name of the {@code ResourceFileProcessor} backing the goal.
      *
-     * @parameter default-value="org.jomc.tools.ResourceFileProcessor"
-     * expression="${jomc.resourceFileProcessorClassName}"
      * @since 1.2
      */
+    @Parameter( name = "resourceFileProcessorClassName",
+                property = "jomc.resourceFileProcessorClassName",
+                defaultValue = "org.jomc.tools.ResourceFileProcessor" )
     private String resourceFileProcessorClassName;
 
     /**
      * Class name of the {@code SourceFileProcessor} backing the goal.
      *
-     * @parameter default-value="org.jomc.tools.SourceFileProcessor" expression="${jomc.sourceFileProcessorClassName}"
      * @since 1.2
      */
+    @Parameter( name = "sourceFileProcessorClassName",
+                property = "jomc.sourceFileProcessorClassName",
+                defaultValue = "org.jomc.tools.SourceFileProcessor" )
     private String sourceFileProcessorClassName;
 
     /**
@@ -578,82 +609,86 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * &lt;/modelContextAttributes>
      * </pre>
      *
-     * @parameter
      * @since 1.2
      */
+    @Parameter( name = "modelContextAttributes" )
     private List<ModelContextAttribute> modelContextAttributes;
 
     /**
      * Flag controlling JAXP schema validation of model resources.
      *
-     * @parameter default-value="true" expression="${jomc.modelResourceValidationEnabled}"
-     *
      * @since 1.2
      */
+    @Parameter( name = "modelResourceValidationEnabled",
+                property = "jomc.modelResourceValidationEnabled",
+                defaultValue = "true" )
     private boolean modelResourceValidationEnabled;
 
     /**
      * Flag controlling JAXP schema validation of modlet resources.
      *
-     * @parameter default-value="true" expression="${jomc.modletResourceValidationEnabled}"
-     *
      * @since 1.2
      */
+    @Parameter( name = "modletResourceValidationEnabled",
+                property = "jomc.modletResourceValidationEnabled",
+                defaultValue = "true" )
     private boolean modletResourceValidationEnabled;
 
     /**
      * Flag controlling Java validation.
      *
-     * @parameter default-value="true" expression="${jomc.javaValidationEnabled}"
-     *
      * @since 1.4
      */
+    @Parameter( name = "javaValidationEnabled",
+                property = "jomc.javaValidationEnabled",
+                defaultValue = "true" )
     private boolean javaValidationEnabled;
 
     /**
      * Names of modlets to exclude.
      *
-     * @parameter expression="${jomc.modletExcludes}"
-     *
      * @since 1.6
      */
+    @Parameter( name = "modletExcludes",
+                property = "jomc.modletExcludes" )
     private List<String> modletExcludes;
 
     /**
      * Names of modlets to include.
      *
-     * @parameter expression="${jomc.modletIncludes}"
-     *
      * @since 1.6
      */
+    @Parameter( name = "modletIncludes",
+                property = "jomc.modletIncludes" )
     private List<String> modletIncludes;
 
     /**
      * The Maven project of the instance.
-     *
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
      */
+    @Parameter( name = "mavenProject",
+                defaultValue = "${project}",
+                readonly = true,
+                required = true )
     private MavenProject mavenProject;
 
     /**
      * List of plugin artifacts.
-     *
-     * @parameter expression="${plugin.artifacts}"
-     * @required
-     * @readonly
      */
+    @Parameter( name = "pluginArtifacts",
+                defaultValue = "${plugin.artifacts}",
+                readonly = true,
+                required = true )
     private List<Artifact> pluginArtifacts;
 
     /**
      * The Maven session of the instance.
      *
-     * @parameter expression="${session}"
-     * @required
-     * @readonly
      * @since 1.1
      */
+    @Parameter( name = "mavenSession",
+                defaultValue = "${session}",
+                readonly = true,
+                required = true )
     private MavenSession mavenSession;
 
     /**

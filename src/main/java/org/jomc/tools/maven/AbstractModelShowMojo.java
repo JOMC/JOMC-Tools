@@ -36,6 +36,7 @@ import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.jomc.modlet.ModelContext;
 
 /**
@@ -55,16 +56,17 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
 
     /**
      * File to write the model to.
-     *
-     * @parameter expression="${jomc.document}"
      */
+    @Parameter( name = "document",
+                property = "jomc.document" )
     private File document;
 
     /**
      * Encoding of the document to write.
-     *
-     * @parameter default-value="${project.build.sourceEncoding}" expression="${jomc.documentEncoding}"
      */
+    @Parameter( name = "documentEncoding",
+                property = "jomc.documentEncoding",
+                defaultValue = "${project.build.sourceEncoding}" )
     private String documentEncoding;
 
     /**
