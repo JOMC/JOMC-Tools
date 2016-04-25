@@ -223,7 +223,7 @@ public abstract class AbstractCommand implements Command
             throw new NullPointerException( "commandLine" );
         }
 
-        int status;
+        int status = Command.STATUS_FAILURE;
 
         try
         {

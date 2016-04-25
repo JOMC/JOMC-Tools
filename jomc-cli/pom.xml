@@ -88,6 +88,18 @@
                 </descriptors>
               </configuration>
             </execution>
+            <execution>
+              <id>default-bin-single</id>
+              <phase>package</phase>
+              <goals>
+                <goal>single</goal>
+              </goals>
+              <configuration>
+                <descriptors>
+                  <descriptor>src/main/assembly/bin-release.xml</descriptor>
+                </descriptors>
+              </configuration>
+            </execution>
           </executions>
         </plugin>
         <plugin>
@@ -121,6 +133,10 @@
       </plugins>
     </pluginManagement>
     <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>appassembler-maven-plugin</artifactId>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>

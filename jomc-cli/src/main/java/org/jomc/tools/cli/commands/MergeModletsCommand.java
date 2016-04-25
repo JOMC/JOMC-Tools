@@ -115,7 +115,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
 
     public String getLongDescription( final Locale locale )
     {
-        return Messages.getMessage( "mergeModletsLongDescription" );
+        return null;
     }
 
     protected void executeCommand( final CommandLine commandLine ) throws CommandExecutionException

@@ -345,8 +345,13 @@ public final class Jomc
                 this.getPrintWriter().println( usage.toString() );
                 this.getPrintWriter().println( opts.toString() );
                 this.getPrintWriter().println();
-                this.getPrintWriter().println( cmd.getLongDescription( Locale.getDefault() ) );
-                this.getPrintWriter().println();
+
+                if ( cmd.getLongDescription( Locale.getDefault() ) != null )
+                {
+                    this.getPrintWriter().println( cmd.getLongDescription( Locale.getDefault() ) );
+                    this.getPrintWriter().println();
+                }
+
                 return Command.STATUS_SUCCESS;
             }
 

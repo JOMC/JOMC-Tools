@@ -30,10 +30,8 @@
  */
 package org.jomc.tools.cli.commands.test;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import org.jomc.tools.cli.commands.CommandExecutionException;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
@@ -91,15 +89,6 @@ public class CommandExecutionExceptionTest
                 // Suppressed
             }
         }
-    }
-
-    public static void main( final String[] args ) throws Exception
-    {
-        final ObjectOutputStream out =
-            new ObjectOutputStream( new FileOutputStream( "CommandExecutionException.ser" ) );
-
-        out.writeObject( new CommandExecutionException( "TEST" ) );
-        out.close();
     }
 
 }

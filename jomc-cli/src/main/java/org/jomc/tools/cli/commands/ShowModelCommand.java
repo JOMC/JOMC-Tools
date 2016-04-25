@@ -98,7 +98,7 @@ public final class ShowModelCommand extends AbstractModelCommand
 
     public String getLongDescription( final Locale locale )
     {
-        return Messages.getMessage( "showModelLongDescription" );
+        return null;
     }
 
     protected void executeCommand( final CommandLine commandLine ) throws CommandExecutionException

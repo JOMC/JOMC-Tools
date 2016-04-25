@@ -85,7 +85,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
 
     public String getLongDescription( final Locale locale )
     {
-        return Messages.getMessage( "generateResourcesLongDescription" );
+        return null;
     }
 
     protected void processResourceFiles( final CommandLine commandLine ) throws CommandExecutionException

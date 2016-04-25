@@ -96,7 +96,7 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
 
     public String getLongDescription( final Locale locale )
     {
-        return Messages.getMessage( "commitClassesLongDescription" );
+        return null;
     }
 
     protected void processClassFiles( final CommandLine commandLine ) throws CommandExecutionException
