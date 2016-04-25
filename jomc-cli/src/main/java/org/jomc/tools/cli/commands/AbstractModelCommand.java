@@ -183,11 +183,8 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
                 }
             }
 
-            if ( commandLine.hasOption( Options.CLASSPATH_OPTION.getOpt() ) )
-            {
-                model = context.findModel( model );
-                modules = ModelHelper.getModules( model );
-            }
+            model = context.findModel( model );
+            modules = ModelHelper.getModules( model );
 
             if ( modules != null && !commandLine.hasOption( Options.NO_CLASSPATH_RESOLUTION_OPTION.getOpt() ) )
             {
