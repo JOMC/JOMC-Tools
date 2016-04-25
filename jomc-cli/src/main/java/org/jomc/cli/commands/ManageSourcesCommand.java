@@ -83,7 +83,7 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
 
     public String getLongDescription( final Locale locale )
     {
-        return Messages.getMessage( "manageSourcesLongDescription" );
+        return null;
     }
 
     protected void processSourceFiles( final CommandLine commandLine ) throws CommandExecutionException

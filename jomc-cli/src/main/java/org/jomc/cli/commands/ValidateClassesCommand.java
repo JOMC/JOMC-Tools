@@ -82,7 +82,7 @@ public final class ValidateClassesCommand extends AbstractClassFileProcessorComm
 
     public String getLongDescription( final Locale locale )
     {
-        return Messages.getMessage( "validateClassesLongDescription" );
+        return null;
     }
 
     protected void processClassFiles( final CommandLine commandLine ) throws CommandExecutionException

@@ -72,7 +72,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
 
     public String getLongDescription( final Locale locale )
     {
-        return Messages.getMessage( "validateModelLongDescription" );
+        return null;
     }
 
     protected void executeCommand( final CommandLine commandLine ) throws CommandExecutionException
