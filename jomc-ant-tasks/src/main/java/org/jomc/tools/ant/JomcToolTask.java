@@ -43,9 +43,6 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
-import org.jomc.tools.ant.types.KeyValueType;
-import org.jomc.tools.ant.types.LocaleType;
-import org.jomc.tools.ant.types.PropertiesResourceType;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
@@ -53,6 +50,9 @@ import org.jomc.model.Specification;
 import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
 import org.jomc.tools.JomcTool;
+import org.jomc.tools.ant.types.KeyValueType;
+import org.jomc.tools.ant.types.LocaleType;
+import org.jomc.tools.ant.types.PropertiesResourceType;
 
 /**
  * Base class for executing tool based tasks.

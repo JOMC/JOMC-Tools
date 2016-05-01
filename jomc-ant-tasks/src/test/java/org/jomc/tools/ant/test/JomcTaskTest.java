@@ -45,6 +45,14 @@ import org.apache.tools.ant.BuildEvent;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
+import org.jomc.model.ModelObject;
+import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelContextFactory;
+import org.jomc.modlet.ModelException;
+import org.jomc.modlet.Modlet;
+import org.jomc.modlet.ModletObject;
+import org.jomc.modlet.Modlets;
+import org.jomc.modlet.ObjectFactory;
 import org.jomc.tools.ant.JomcTask;
 import org.jomc.tools.ant.test.support.AntExecutionRequest;
 import org.jomc.tools.ant.test.support.AntExecutionResult;
@@ -54,22 +62,14 @@ import org.jomc.tools.ant.types.KeyValueType;
 import org.jomc.tools.ant.types.NameType;
 import org.jomc.tools.ant.types.PropertiesResourceType;
 import org.jomc.tools.ant.types.TransformerResourceType;
-import org.jomc.model.ModelObject;
-import org.jomc.modlet.ModelContext;
-import org.jomc.modlet.ModelContextFactory;
-import org.jomc.modlet.ModelException;
-import org.jomc.modlet.Modlet;
-import org.jomc.modlet.ModletObject;
-import org.jomc.modlet.Modlets;
-import org.jomc.modlet.ObjectFactory;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import static org.jomc.tools.ant.test.support.Assert.assertException;
 import static org.jomc.tools.ant.test.support.Assert.assertExceptionMessage;
 import static org.jomc.tools.ant.test.support.Assert.assertMessageLogged;
 import static org.jomc.tools.ant.test.support.Assert.assertMessageNotLogged;
 import static org.jomc.tools.ant.test.support.Assert.assertNoException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -88,7 +88,8 @@ public class JomcTaskTest
     /**
      * Constant to prefix relative resource names with.
      */
-    private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/tools/ant/test/";
+    private static final String ABSOLUTE_RESOURCE_NAME_PREFIX =
+        "/" + JomcTaskTest.class.getPackage().getName().replace( '.', '/' ) + "/";
 
     /**
      * Cached default locale.
@@ -256,8 +257,14 @@ public class JomcTaskTest
                 assertTrue( servicesDir.mkdirs() );
             }
 
-            final File modletProviderService = new File( servicesDir, "org.jomc.modlet.ModletProvider" );
-            FileUtils.writeStringToFile( modletProviderService, "org.jomc.modlet.DefaultModletProvider\n", "UTF-8" );
+            File providerFile = new File( servicesDir, "org.jomc.modlet.ModletProvider" );
+            FileUtils.writeStringToFile( providerFile, "org.jomc.modlet.DefaultModletProvider\n", "UTF-8" );
+            providerFile = new File( servicesDir, "org.jomc.modlet.ModletProcessor" );
+            FileUtils.writeStringToFile( providerFile, "org.jomc.modlet.DefaultModletProcessor\n", "UTF-8" );
+            providerFile = new File( servicesDir, "org.jomc.modlet.ModletValidator" );
+            FileUtils.writeStringToFile( providerFile, "org.jomc.modlet.DefaultModletValidator\n", "UTF-8" );
+            providerFile = new File( servicesDir, "org.jomc.modlet.ServiceFactory" );
+            FileUtils.writeStringToFile( providerFile, "org.jomc.modlet.DefaultServiceFactory\n", "UTF-8" );
 
             p.setProperty( "basedir", buildFile.getParentFile().getAbsolutePath() );
             p.setUserProperty( "ant.file", buildFile.getAbsolutePath() );

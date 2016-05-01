@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URI;
@@ -67,12 +68,6 @@ import org.apache.tools.ant.PropertyHelper;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Reference;
-import org.jomc.tools.ant.types.KeyValueType;
-import org.jomc.tools.ant.types.NameType;
-import org.jomc.tools.ant.types.PropertiesFormatType;
-import org.jomc.tools.ant.types.PropertiesResourceType;
-import org.jomc.tools.ant.types.ResourceType;
-import org.jomc.tools.ant.types.TransformerResourceType;
 import org.jomc.model.ModelObject;
 import org.jomc.modlet.DefaultModelContext;
 import org.jomc.modlet.DefaultModletProvider;
@@ -85,6 +80,12 @@ import org.jomc.modlet.ModletProcessor;
 import org.jomc.modlet.ModletProvider;
 import org.jomc.modlet.ModletValidator;
 import org.jomc.modlet.ServiceFactory;
+import org.jomc.tools.ant.types.KeyValueType;
+import org.jomc.tools.ant.types.NameType;
+import org.jomc.tools.ant.types.PropertiesFormatType;
+import org.jomc.tools.ant.types.PropertiesResourceType;
+import org.jomc.tools.ant.types.ResourceType;
+import org.jomc.tools.ant.types.TransformerResourceType;
 
 /**
  * Base class for executing tasks.
@@ -982,6 +983,7 @@ public class JomcTask extends Task
             throw new NullPointerException( "resource" );
         }
 
+        URLConnection con = null;
         InputStream in = null;
         final URL url = this.getResource( resource.getLocation() );
 
@@ -1012,7 +1014,7 @@ public class JomcTask extends Task
 
                 };
 
-                final URLConnection con = url.openConnection();
+                con = url.openConnection();
                 con.setConnectTimeout( resource.getConnectTimeout() );
                 con.setReadTimeout( resource.getReadTimeout() );
                 con.connect();
@@ -1145,6 +1147,13 @@ public class JomcTask extends Task
             {
                 this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
             }
+            finally
+            {
+                if ( con instanceof HttpURLConnection )
+                {
+                    ( (HttpURLConnection) con ).disconnect();
+                }
+            }
         }
 
         return null;
@@ -1167,6 +1176,7 @@ public class JomcTask extends Task
             throw new NullPointerException( "propertiesResourceType" );
         }
 
+        URLConnection con = null;
         InputStream in = null;
         final Properties properties = new Properties();
         final URL url = this.getResource( propertiesResourceType.getLocation() );
@@ -1175,7 +1185,7 @@ public class JomcTask extends Task
         {
             if ( url != null )
             {
-                final URLConnection con = url.openConnection();
+                con = url.openConnection();
                 con.setConnectTimeout( propertiesResourceType.getConnectTimeout() );
                 con.setReadTimeout( propertiesResourceType.getReadTimeout() );
                 con.connect();
@@ -1254,6 +1264,13 @@ public class JomcTask extends Task
             {
                 this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
             }
+            finally
+            {
+                if ( con instanceof HttpURLConnection )
+                {
+                    ( (HttpURLConnection) con ).disconnect();
+                }
+            }
         }
 
         return properties;
@@ -1271,28 +1288,20 @@ public class JomcTask extends Task
         try
         {
             final ProjectClassLoader classLoader = new ProjectClassLoader( this.getProject(), this.getClasspath() );
+
+            // Assumes the default modlet location matches the location of resources of the tasks' dependencies.
+            classLoader.getModletResourceLocations().add( DefaultModletProvider.getDefaultModletLocation() );
             classLoader.getModletExcludes().addAll( ProjectClassLoader.getDefaultModletExcludes() );
-            classLoader.getProviderExcludes().addAll( ProjectClassLoader.getDefaultProviderExcludes() );
             classLoader.getSchemaExcludes().addAll( ProjectClassLoader.getDefaultSchemaExcludes() );
             classLoader.getServiceExcludes().addAll( ProjectClassLoader.getDefaultServiceExcludes() );
 
-            if ( this.getModletLocation() != null )
-            {
-                classLoader.getModletResourceLocations().add( this.getModletLocation() );
-            }
-            else
-            {
-                classLoader.getModletResourceLocations().add( DefaultModletProvider.getDefaultModletLocation() );
-            }
-
-            final String providerLocationPrefix = this.getProviderLocation() != null
-                                                      ? this.getProviderLocation() + "/"
-                                                      : DefaultModelContext.getDefaultProviderLocation() + "/";
-
+            // Assumes the default provider location matches the location of resources of the tasks' dependencies.
+            final String providerLocationPrefix = DefaultModelContext.getDefaultProviderLocation() + "/";
             classLoader.getProviderResourceLocations().add( providerLocationPrefix + ModletProcessor.class.getName() );
             classLoader.getProviderResourceLocations().add( providerLocationPrefix + ModletProvider.class.getName() );
             classLoader.getProviderResourceLocations().add( providerLocationPrefix + ModletValidator.class.getName() );
             classLoader.getProviderResourceLocations().add( providerLocationPrefix + ServiceFactory.class.getName() );
+            classLoader.getProviderExcludes().addAll( ProjectClassLoader.getDefaultProviderExcludes() );
 
             return classLoader;
         }

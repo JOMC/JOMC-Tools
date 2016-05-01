@@ -33,9 +33,9 @@ package org.jomc.tools.ant.test;
 import org.apache.tools.ant.BuildException;
 import org.jomc.tools.ant.JomcModelTask;
 import org.jomc.tools.ant.test.support.AntExecutionResult;
+import org.junit.Test;
 import static org.jomc.tools.ant.test.support.Assert.assertException;
 import static org.jomc.tools.ant.test.support.Assert.assertExceptionMessage;
-import org.junit.Test;
 
 /**
  * Test cases for class {@code org.jomc.tools.ant.JomcModelTask}.

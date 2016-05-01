@@ -41,7 +41,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Source;
 import org.apache.commons.cli.CommandLine;
-import org.jomc.tools.cli.commands.AbstractModletCommand.CommandLineClassLoader;
 import org.jomc.model.Instance;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
@@ -52,6 +51,7 @@ import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.ModelValidationReport;
 import org.jomc.modlet.ObjectFactory;
+import org.jomc.tools.cli.commands.AbstractModletCommand.CommandLineClassLoader;
 
 /**
  * {@code show-model} command implementation.

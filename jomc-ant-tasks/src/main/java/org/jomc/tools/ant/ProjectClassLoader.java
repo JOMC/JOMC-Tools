@@ -41,6 +41,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -48,6 +50,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import javax.xml.bind.JAXBElement;
@@ -82,7 +85,8 @@ public class ProjectClassLoader extends URLClassLoader
     /**
      * Constant to prefix relative resource names with.
      */
-    private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/tools/ant/";
+    private static final String ABSOLUTE_RESOURCE_NAME_PREFIX =
+        "/" + ProjectClassLoader.class.getPackage().getName().replace( '.', '/' ) + "/";
 
     /**
      * Empty URL array.
@@ -158,8 +162,9 @@ public class ProjectClassLoader extends URLClassLoader
      * @param classpath The class path to use for loading.
      *
      * @throws MalformedURLException if {@code classpath} contains unsupported elements.
+     * @throws IOException if reading configuration resources fails.
      */
-    public ProjectClassLoader( final Project project, final Path classpath ) throws MalformedURLException
+    public ProjectClassLoader( final Project project, final Path classpath ) throws MalformedURLException, IOException
     {
         super( NO_URLS, ProjectClassLoader.class.getClassLoader() );
 
@@ -191,7 +196,7 @@ public class ProjectClassLoader extends URLClassLoader
      * found.
      */
     @Override
-    public URL findResource( final String name )
+    public URL findResource( final String name ) //JDK: As of JDK 23 throws IOException
     {
         try
         {
@@ -235,88 +240,88 @@ public class ProjectClassLoader extends URLClassLoader
     }
 
     /**
-     * Gets all resources matching a given name.
+     * Finds all resources matching a given name.
      *
-     * @param name The name of the resources to get.
+     * @param name The name of the resources to search.
      *
-     * @return An enumeration of {@code URL} objects of found resources.
+     * @return An enumeration of {@code URL} objects of resources matching name.
      *
      * @throws IOException if getting resources fails.
      */
     @Override
     public Enumeration<URL> findResources( final String name ) throws IOException
     {
-        final Enumeration<URL> allResources = super.findResources( name );
-        Enumeration<URL> enumeration = allResources;
-
-        if ( this.getProviderResourceLocations().contains( name ) )
+        try
         {
-            enumeration = new Enumeration<URL>()
+            Enumeration<URL> resources = super.findResources( name );
+
+            if ( this.getProviderResourceLocations().contains( name )
+                     || this.getModletResourceLocations().contains( name ) )
             {
+                final List<URI> filtered = new LinkedList<URI>();
 
-                public boolean hasMoreElements()
+                while ( resources.hasMoreElements() )
                 {
-                    return allResources.hasMoreElements();
-                }
+                    final URL resource = resources.nextElement();
 
-                public URL nextElement()
-                {
-                    try
+                    if ( this.getProviderResourceLocations().contains( name ) )
                     {
-                        return filterProviders( allResources.nextElement() );
+                        filtered.add( this.filterProviders( resource ).toURI() );
                     }
-                    catch ( final IOException e )
+                    else if ( this.getModletResourceLocations().contains( name ) )
                     {
-                        getProject().log( Messages.getMessage( e ), Project.MSG_ERR );
-                        return null;
+                        filtered.add( this.filterModlets( resource ).toURI() );
                     }
                 }
 
-            };
-        }
-        else if ( this.getModletResourceLocations().contains( name ) )
-        {
-            enumeration = new Enumeration<URL>()
-            {
+                final Iterator<URI> it = filtered.iterator();
 
-                public boolean hasMoreElements()
+                resources = new Enumeration<URL>()
                 {
-                    return allResources.hasMoreElements();
-                }
 
-                public URL nextElement()
-                {
-                    try
+                    public boolean hasMoreElements()
                     {
-                        return filterModlets( allResources.nextElement() );
+                        return it.hasNext();
                     }
-                    catch ( final IOException e )
+
+                    public URL nextElement()
                     {
-                        getProject().log( Messages.getMessage( e ), Project.MSG_ERR );
-                        return null;
-                    }
-                    catch ( final JAXBException e )
-                    {
-                        String message = Messages.getMessage( e );
-                        if ( message == null && e.getLinkedException() != null )
+                        try
                         {
-                            message = Messages.getMessage( e.getLinkedException() );
+                            return it.next().toURL();
                         }
-
-                        getProject().log( message, Project.MSG_ERR );
-                        return null;
+                        catch ( final MalformedURLException e )
+                        {
+                            throw new AssertionError( e );
+                        }
                     }
-                    catch ( final ModelException e )
-                    {
-                        getProject().log( Messages.getMessage( e ), Project.MSG_ERR );
-                        return null;
-                    }
-                }
 
-            };
+                };
+            }
+
+            return resources;
         }
+        catch ( final URISyntaxException e )
+        {
+            // JDK: As of JDK 6, new IOException( message, e );
+            throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
+        }
+        catch ( final JAXBException e )
+        {
+            String message = Messages.getMessage( e );
+            if ( message == null && e.getLinkedException() != null )
+            {
+                message = Messages.getMessage( e.getLinkedException() );
+            }
 
-        return enumeration;
+            // JDK: As of JDK 6, new IOException( message, e );
+            throw (IOException) new IOException( message ).initCause( e );
+        }
+        catch ( final ModelException e )
+        {
+            // JDK: As of JDK 6, new IOException( message, e );
+            throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
+        }
     }
 
     /**

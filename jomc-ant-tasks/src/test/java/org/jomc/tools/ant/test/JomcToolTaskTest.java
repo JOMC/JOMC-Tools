@@ -33,9 +33,9 @@ package org.jomc.tools.ant.test;
 import org.apache.tools.ant.BuildException;
 import org.jomc.tools.ant.JomcToolTask;
 import org.jomc.tools.ant.test.support.AntExecutionResult;
+import org.junit.Test;
 import static org.jomc.tools.ant.test.support.Assert.assertException;
 import static org.jomc.tools.ant.test.support.Assert.assertExceptionMessage;
-import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 

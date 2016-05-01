@@ -42,7 +42,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -50,6 +52,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -93,6 +96,12 @@ import org.jomc.modlet.Services;
  */
 public abstract class AbstractModletCommand extends AbstractCommand
 {
+
+    /**
+     * Constant to prefix relative resource names with.
+     */
+    private static final String ABSOLUTE_RESOURCE_NAME_PREFIX =
+        "/" + AbstractModletCommand.class.getPackage().getName().replace( '.', '/' ) + "/";
 
     /**
      * Creates a new {@code AbstractModletCommand} instance.
@@ -483,11 +492,6 @@ public abstract class AbstractModletCommand extends AbstractCommand
         private final Set<File> temporaryResources = new HashSet<File>();
 
         /**
-         * Constant to prefix relative resource names with.
-         */
-        private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/tools/cli/commands/";
-
-        /**
          * Creates a new {@code CommandLineClassLoader} taking a command line backing the class loader.
          *
          * @param commandLine The command line backing the class loader.
@@ -593,21 +597,17 @@ public abstract class AbstractModletCommand extends AbstractCommand
                         this.addURL( uri.toURL() );
                     }
 
-                    final String providerLocation =
-                        commandLine.hasOption( Options.PROVIDER_LOCATION_OPTION.getOpt() )
-                            ? commandLine.getOptionValue( Options.PROVIDER_LOCATION_OPTION.getOpt() ) + "/"
-                            : DefaultModelContext.getDefaultProviderLocation() + "/";
+                    // Assumes the default modlet location matches the location of resources of the applications'
+                    // dependencies.
+                    this.modletResourceLocations.add( DefaultModletProvider.getDefaultModletLocation() );
 
-                    this.providerResourceLocations.add( providerLocation + ModletProcessor.class.getName() );
-                    this.providerResourceLocations.add( providerLocation + ModletProvider.class.getName() );
-                    this.providerResourceLocations.add( providerLocation + ModletValidator.class.getName() );
-                    this.providerResourceLocations.add( providerLocation + ServiceFactory.class.getName() );
-
-                    this.modletResourceLocations.add(
-                        commandLine.hasOption( Options.MODLET_LOCATION_OPTION.getOpt() )
-                            ? commandLine.getOptionValue( Options.MODLET_LOCATION_OPTION.getOpt() )
-                            : DefaultModletProvider.getDefaultModletLocation() );
-
+                    // Assumes the default provider location matches the location of resources of the applications'
+                    // dependencies.
+                    final String providerLocationPrefix = DefaultModelContext.getDefaultProviderLocation() + "/";
+                    this.providerResourceLocations.add( providerLocationPrefix + ModletProcessor.class.getName() );
+                    this.providerResourceLocations.add( providerLocationPrefix + ModletProvider.class.getName() );
+                    this.providerResourceLocations.add( providerLocationPrefix + ModletValidator.class.getName() );
+                    this.providerResourceLocations.add( providerLocationPrefix + ServiceFactory.class.getName() );
                 }
             }
             catch ( final IOException e )
@@ -632,14 +632,15 @@ public abstract class AbstractModletCommand extends AbstractCommand
         }
 
         /**
-         * Finds the resource with the specified name on the URL search path.
+         * Finds a resource with a given name.
          *
-         * @param name The name of the resource.
+         * @param name The name of the resource to search.
          *
-         * @return A {@code URL} for the resource or {@code null}, if the resource could not be found.
+         * @return An {@code URL} object for reading the resource or {@code null}, if no resource matching {@code name} is
+         * found.
          */
         @Override
-        public URL findResource( final String name )
+        public URL findResource( final String name ) //JDK: As of JDK 23 throws IOException
         {
             try
             {
@@ -677,84 +678,88 @@ public abstract class AbstractModletCommand extends AbstractCommand
         }
 
         /**
-         * Returns an {@code Enumeration} of {@code URL}s representing all of the resources on the URL search path
-         * having the specified name.
+         * Finds all resources matching a given name.
          *
-         * @param name The resource name.
+         * @param name The name of the resources to search.
          *
-         * @throws IOException if an I/O exception occurs
+         * @return An enumeration of {@code URL} objects of resources matching name.
          *
-         * @return An {@code Enumeration} of {@code URL}s.
+         * @throws IOException if getting resources fails.
          */
         @Override
         public Enumeration<URL> findResources( final String name ) throws IOException
         {
-            final Enumeration<URL> allResources = super.findResources( name );
-
-            Enumeration<URL> enumeration = allResources;
-
-            if ( this.providerResourceLocations.contains( name ) )
+            try
             {
-                enumeration = new Enumeration<URL>()
+                Enumeration<URL> resources = super.findResources( name );
+
+                if ( this.providerResourceLocations.contains( name )
+                         || this.modletResourceLocations.contains( name ) )
                 {
+                    final List<URI> filtered = new LinkedList<URI>();
 
-                    public boolean hasMoreElements()
+                    while ( resources.hasMoreElements() )
                     {
-                        return allResources.hasMoreElements();
-                    }
+                        final URL resource = resources.nextElement();
 
-                    public URL nextElement()
-                    {
-                        try
+                        if ( this.providerResourceLocations.contains( name ) )
                         {
-                            return filterProviders( allResources.nextElement() );
+                            filtered.add( this.filterProviders( resource ).toURI() );
                         }
-                        catch ( final IOException e )
+                        else if ( this.modletResourceLocations.contains( name ) )
                         {
-                            log( Level.SEVERE, Messages.getMessage( e ), e );
-                            return null;
+                            filtered.add( this.filterModlets( resource ).toURI() );
                         }
                     }
 
-                };
+                    final Iterator<URI> it = filtered.iterator();
+
+                    resources = new Enumeration<URL>()
+                    {
+
+                        public boolean hasMoreElements()
+                        {
+                            return it.hasNext();
+                        }
+
+                        public URL nextElement()
+                        {
+                            try
+                            {
+                                return it.next().toURL();
+                            }
+                            catch ( final MalformedURLException e )
+                            {
+                                throw new AssertionError( e );
+                            }
+                        }
+
+                    };
+                }
+
+                return resources;
             }
-            else if ( this.modletResourceLocations.contains( name ) )
+            catch ( final URISyntaxException e )
             {
-                enumeration = new Enumeration<URL>()
-                {
-
-                    public boolean hasMoreElements()
-                    {
-                        return allResources.hasMoreElements();
-                    }
-
-                    public URL nextElement()
-                    {
-                        try
-                        {
-                            return filterModlets( allResources.nextElement() );
-                        }
-                        catch ( final IOException e )
-                        {
-                            log( Level.SEVERE, Messages.getMessage( e ), e );
-                            return null;
-                        }
-                        catch ( final JAXBException e )
-                        {
-                            log( Level.SEVERE, Messages.getMessage( e ), e );
-                            return null;
-                        }
-                        catch ( final ModelException e )
-                        {
-                            log( Level.SEVERE, Messages.getMessage( e ), e );
-                            return null;
-                        }
-                    }
-
-                };
+                // JDK: As of JDK 6, new IOException( message, e );
+                throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
             }
+            catch ( final JAXBException e )
+            {
+                String message = Messages.getMessage( e );
+                if ( message == null && e.getLinkedException() != null )
+                {
+                    message = Messages.getMessage( e.getLinkedException() );
+                }
 
-            return enumeration;
+                // JDK: As of JDK 6, new IOException( message, e );
+                throw (IOException) new IOException( message ).initCause( e );
+            }
+            catch ( final ModelException e )
+            {
+                // JDK: As of JDK 6, new IOException( message, e );
+                throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
+            }
         }
 
         /**

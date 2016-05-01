@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -59,9 +60,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
-import org.jomc.tools.ant.types.NameType;
-import org.jomc.tools.ant.types.ResourceType;
-import org.jomc.tools.ant.types.TransformerResourceType;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.ObjectFactory;
@@ -69,6 +67,9 @@ import org.jomc.model.modlet.DefaultModelProvider;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.ModelValidationReport;
+import org.jomc.tools.ant.types.NameType;
+import org.jomc.tools.ant.types.ResourceType;
+import org.jomc.tools.ant.types.TransformerResourceType;
 
 /**
  * Task for merging module resources.
@@ -432,13 +433,14 @@ public final class MergeModulesTask extends JomcModelTask
 
                 for ( int i = urls.length - 1; i >= 0; i-- )
                 {
+                    URLConnection con = null;
                     InputStream in = null;
 
                     try
                     {
                         this.logMessage( Level.FINEST, Messages.getMessage( "reading", urls[i].toExternalForm() ) );
 
-                        final URLConnection con = urls[i].openConnection();
+                        con = urls[i].openConnection();
                         con.setConnectTimeout( resource.getConnectTimeout() );
                         con.setReadTimeout( resource.getReadTimeout() );
                         con.connect();
@@ -510,6 +512,13 @@ public final class MergeModulesTask extends JomcModelTask
                         catch ( final IOException e )
                         {
                             this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
+                        }
+                        finally
+                        {
+                            if ( con instanceof HttpURLConnection )
+                            {
+                                ( (HttpURLConnection) con ).disconnect();
+                            }
                         }
                     }
                 }

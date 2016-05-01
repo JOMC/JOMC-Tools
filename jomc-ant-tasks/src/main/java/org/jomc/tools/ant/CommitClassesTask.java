@@ -43,7 +43,6 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import org.apache.tools.ant.BuildException;
-import org.jomc.tools.ant.types.TransformerResourceType;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
@@ -53,6 +52,7 @@ import org.jomc.modlet.ModelException;
 import org.jomc.modlet.ModelValidationReport;
 import org.jomc.modlet.ObjectFactory;
 import org.jomc.tools.ClassFileProcessor;
+import org.jomc.tools.ant.types.TransformerResourceType;
 
 /**
  * Task for committing model objects to class files.

@@ -247,8 +247,6 @@ public final class MergeModletsCommand extends AbstractModletCommand
                 }
             }
 
-            modlets.getModlet().addAll( classLoader.getExcludedModlets().getModlet() );
-
             if ( commandLine.hasOption( Options.MODLET_INCLUDES_OPTION.getOpt() ) )
             {
                 final String[] values = commandLine.getOptionValues( Options.MODLET_INCLUDES_OPTION.getOpt() );
@@ -260,6 +258,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
                     for ( final Iterator<Modlet> it = modlets.getModlet().iterator(); it.hasNext(); )
                     {
                         final Modlet m = it.next();
+
                         if ( !includes.contains( m.getName() ) )
                         {
                             this.log( Level.INFO,

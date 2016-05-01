@@ -43,13 +43,13 @@ import javax.xml.validation.Schema;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jomc.model.ModelObject;
-import org.jomc.tools.cli.Command;
-import org.jomc.tools.cli.Jomc;
 import org.jomc.model.Module;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.Modlet;
 import org.jomc.modlet.ModletObject;
+import org.jomc.tools.cli.Command;
+import org.jomc.tools.cli.Jomc;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
@@ -68,7 +68,8 @@ public class JomcTest
     /**
      * Constant to prefix relative resource names with.
      */
-    private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/tools/cli/test/";
+    private static final String ABSOLUTE_RESOURCE_NAME_PREFIX =
+        "/" + JomcTest.class.getPackage().getName().replace( '.', '/' ) + "/";
 
     /**
      * Constant for the name of the system property holding the output directory for the test.

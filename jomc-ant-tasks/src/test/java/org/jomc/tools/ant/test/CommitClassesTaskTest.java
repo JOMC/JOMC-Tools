@@ -35,12 +35,12 @@ import org.apache.tools.ant.Project;
 import org.jomc.tools.ant.ClassProcessingException;
 import org.jomc.tools.ant.CommitClassesTask;
 import org.jomc.tools.ant.test.support.AntExecutionResult;
+import org.junit.Test;
 import static org.jomc.tools.ant.test.support.Assert.assertException;
 import static org.jomc.tools.ant.test.support.Assert.assertExceptionMessage;
 import static org.jomc.tools.ant.test.support.Assert.assertMessageLogged;
 import static org.jomc.tools.ant.test.support.Assert.assertMessageNotLogged;
 import static org.jomc.tools.ant.test.support.Assert.assertNoException;
-import org.junit.Test;
 
 /**
  * Test cases for class {@code org.jomc.tools.ant.CommitClassesTask}.

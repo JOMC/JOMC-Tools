@@ -32,6 +32,7 @@ package org.jomc.tools.ant;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -46,9 +47,6 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
-import org.jomc.tools.ant.types.KeyValueType;
-import org.jomc.tools.ant.types.ModuleResourceType;
-import org.jomc.tools.ant.types.ResourceType;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.modlet.DefaultModelProcessor;
@@ -58,6 +56,9 @@ import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
+import org.jomc.tools.ant.types.KeyValueType;
+import org.jomc.tools.ant.types.ModuleResourceType;
+import org.jomc.tools.ant.types.ResourceType;
 import org.jomc.tools.modlet.ToolsModelProcessor;
 import org.jomc.tools.modlet.ToolsModelProvider;
 
@@ -321,13 +322,14 @@ public class JomcModelTask extends JomcTask
 
             for ( int i = urls.length - 1; i >= 0; i-- )
             {
+                URLConnection con = null;
                 InputStream in = null;
 
                 try
                 {
                     this.logMessage( Level.FINEST, Messages.getMessage( "reading", urls[i].toExternalForm() ) );
 
-                    final URLConnection con = urls[i].openConnection();
+                    con = urls[i].openConnection();
                     con.setConnectTimeout( resource.getConnectTimeout() );
                     con.setReadTimeout( resource.getReadTimeout() );
                     con.connect();
@@ -418,6 +420,13 @@ public class JomcModelTask extends JomcTask
                     catch ( final IOException e )
                     {
                         this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
+                    }
+                    finally
+                    {
+                        if ( con instanceof HttpURLConnection )
+                        {
+                            ( (HttpURLConnection) con ).disconnect();
+                        }
                     }
                 }
             }

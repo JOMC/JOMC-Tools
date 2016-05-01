@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URI;
@@ -1858,6 +1859,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             throw new NullPointerException( "resource" );
         }
 
+        URLConnection con = null;
         InputStream in = null;
         final URL url = this.getResource( modelContext, resource.getLocation() );
         final ErrorListener errorListener = new ErrorListener()
@@ -1917,7 +1919,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     this.log( Level.FINER, Messages.getMessage( "loadingTransformer", url.toExternalForm() ), null );
                 }
 
-                final URLConnection con = url.openConnection();
+                con = url.openConnection();
                 con.setConnectTimeout( resource.getConnectTimeout() );
                 con.setReadTimeout( resource.getReadTimeout() );
                 con.connect();
@@ -2088,6 +2090,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 this.getLog().error( e );
             }
+            finally
+            {
+                if ( con instanceof HttpURLConnection )
+                {
+                    ( (HttpURLConnection) con ).disconnect();
+                }
+            }
         }
 
         return null;
@@ -2120,6 +2129,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             throw new NullPointerException( "propertiesResourceType" );
         }
 
+        URLConnection con = null;
         InputStream in = null;
         final URL url = this.getResource( modelContext, propertiesResourceType.getLocation() );
         final Properties properties = new Properties();
@@ -2133,7 +2143,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     this.log( Level.FINER, Messages.getMessage( "loadingProperties", url.toExternalForm() ), null );
                 }
 
-                final URLConnection con = url.openConnection();
+                con = url.openConnection();
                 con.setConnectTimeout( propertiesResourceType.getConnectTimeout() );
                 con.setReadTimeout( propertiesResourceType.getReadTimeout() );
                 con.connect();
@@ -2222,6 +2232,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             catch ( final IOException e )
             {
                 this.getLog().error( e );
+            }
+            finally
+            {
+                if ( con instanceof HttpURLConnection )
+                {
+                    ( (HttpURLConnection) con ).disconnect();
+                }
             }
         }
 

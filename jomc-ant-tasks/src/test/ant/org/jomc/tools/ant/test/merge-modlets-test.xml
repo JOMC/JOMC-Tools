@@ -58,46 +58,47 @@
 
   <!-- ************************************************************************************************************* -->
   <target name="test-execute-task">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
+    <jomc:merge-modlets modletFile="${empty.dir}/test-execute-task.xml" modletName="TEST"
                         classpathref="redundant.classpath"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-execute-task-if">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
+    <jomc:merge-modlets modletFile="${empty.dir}/test-execute-task-if.xml" modletName="TEST"
                         classpathref="redundant.classpath" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-execute-task-unless">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
+    <jomc:merge-modlets modletFile="${empty.dir}/test-execute-task-unless.xml" modletName="TEST"
                         classpathref="redundant.classpath" unless="off"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-model-context-attribute-missing-key">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-model-context-attribute-missing-key.xml" modletName="TEST">
       <jomc:modelContextAttribute/>
     </jomc:merge-modlets>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-transformation-parameter-missing-key">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-transformation-parameter-missing-key.xml" modletName="TEST">
       <jomc:transformationParameter/>
     </jomc:merge-modlets>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-transformation-parameter-resource-missing-location">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-transformation-parameter-resource-missing-location.xml"
+                        modletName="TEST">
       <jomc:transformationParameterResource/>
     </jomc:merge-modlets>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-transformation-output-property-missing-key">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-transformation-output-property-missing-key.xml" modletName="TEST">
       <jomc:transformationOutputProperty/>
     </jomc:merge-modlets>
   </target>
@@ -109,38 +110,42 @@
 
   <!-- ************************************************************************************************************* -->
   <target name="test-missing-modlet-name">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" if="${jomc.enabled}"/>
+    <jomc:merge-modlets modletFile="${empty.dir}/test-missing-modlet-name.xml" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-exclusion-missing-modlet-name">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" if="${jomc.enabled}">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-exclusion-missing-modlet-name.xml" modletName="TEST"
+                        if="${jomc.enabled}">
       <jomc:modletExclude/>
     </jomc:merge-modlets>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-inclusion-missing-modlet-name">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" if="${jomc.enabled}">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-inclusion-missing-modlet-name.xml"
+                        modletName="TEST" if="${jomc.enabled}">
       <jomc:modletInclude/>
     </jomc:merge-modlets>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-modlet-resource-missing-locatiom">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" if="${jomc.enabled}">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet-resource-missing-locatiom.xml"
+                        modletName="TEST" if="${jomc.enabled}">
       <jomc:modletResource/>
     </jomc:merge-modlets>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" if="${jomc.enabled}"/>
+    <jomc:merge-modlets modletFile="${empty.dir}/test-merge-modlets.xml" modletName="TEST" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets-with-no-op-stylesheet">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" if="${jomc.enabled}">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-merge-modlets-with-no-op-stylesheet.xml"
+                        modletName="TEST" if="${jomc.enabled}">
       <jomc:modletObjectStylesheetResource location="${no.op.stylesheet}" optional="false" connectTimeout="0"
                                            readTimeout="0"/>
     </jomc:merge-modlets>
@@ -148,13 +153,14 @@
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets-with-redundant-resources">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" classpathref="redundant.classpath"
-                        if="${jomc.enabled}"/>
+    <jomc:merge-modlets modletFile="${empty.dir}/test-merge-modlets-with-redundant-resources.xml" modletName="TEST"
+                        classpathref="redundant.classpath" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets-with-illegal-transformation-result-stylesheet">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" if="${jomc.enabled}">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-merge-modlets-with-illegal-transformation-result-stylesheet.xml"
+                        modletName="TEST" if="${jomc.enabled}">
       <jomc:modletObjectStylesheetResource location="${modlets.stylesheet}" optional="false" connectTimeout="0"
                                            readTimeout="0"/>
     </jomc:merge-modlets>
@@ -162,31 +168,31 @@
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets-unsupported-resource">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" classpathref="redundant.classpath"
-                        if="${jomc.enabled}">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-merge-modlets-unsupported-resource.xml" modletName="TEST"
+                        classpathref="redundant.classpath" if="${jomc.enabled}">
       <jomc:modletResource location="${unsupported.modlet}"/>
     </jomc:merge-modlets>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets-exclusion">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" classpathref="redundant.classpath"
-                        if="${jomc.enabled}">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-merge-modlets-exclusion.xml" modletName="TEST"
+                        classpathref="redundant.classpath" if="${jomc.enabled}">
       <jomc:modletExclude name="JOMC Ant Tasks Tests"/>
     </jomc:merge-modlets>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets-inclusion">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" classpathref="redundant.classpath"
-                        if="${jomc.enabled}">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-merge-modlets-inclusion.xml" modletName="TEST"
+                        classpathref="redundant.classpath" if="${jomc.enabled}">
       <jomc:modletInclude name="JOMC Ant Tasks Tests"/>
     </jomc:merge-modlets>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets-all-attributes">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml"
+    <jomc:merge-modlets modletFile="${empty.dir}/test-merge-modlets-all-attributes.xml"
                         modletName="TEST"
                         modletVersion="TEST"
                         modletVendor="TEST"
