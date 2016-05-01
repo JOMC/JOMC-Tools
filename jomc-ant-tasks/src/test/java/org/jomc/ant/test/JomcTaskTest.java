@@ -62,14 +62,14 @@ import org.jomc.modlet.Modlet;
 import org.jomc.modlet.ModletObject;
 import org.jomc.modlet.Modlets;
 import org.jomc.modlet.ObjectFactory;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import static org.jomc.ant.test.support.Assert.assertException;
 import static org.jomc.ant.test.support.Assert.assertExceptionMessage;
 import static org.jomc.ant.test.support.Assert.assertMessageLogged;
 import static org.jomc.ant.test.support.Assert.assertMessageNotLogged;
 import static org.jomc.ant.test.support.Assert.assertNoException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -256,8 +256,14 @@ public class JomcTaskTest
                 assertTrue( servicesDir.mkdirs() );
             }
 
-            final File modletProviderService = new File( servicesDir, "org.jomc.modlet.ModletProvider" );
-            FileUtils.writeStringToFile( modletProviderService, "org.jomc.modlet.DefaultModletProvider\n", "UTF-8" );
+            File providerFile = new File( servicesDir, "org.jomc.modlet.ModletProvider" );
+            FileUtils.writeStringToFile( providerFile, "org.jomc.modlet.DefaultModletProvider\n", "UTF-8" );
+            providerFile = new File( servicesDir, "org.jomc.modlet.ModletProcessor" );
+            FileUtils.writeStringToFile( providerFile, "org.jomc.modlet.DefaultModletProcessor\n", "UTF-8" );
+            providerFile = new File( servicesDir, "org.jomc.modlet.ModletValidator" );
+            FileUtils.writeStringToFile( providerFile, "org.jomc.modlet.DefaultModletValidator\n", "UTF-8" );
+            providerFile = new File( servicesDir, "org.jomc.modlet.ServiceFactory" );
+            FileUtils.writeStringToFile( providerFile, "org.jomc.modlet.DefaultServiceFactory\n", "UTF-8" );
 
             p.setProperty( "basedir", buildFile.getParentFile().getAbsolutePath() );
             p.setUserProperty( "ant.file", buildFile.getAbsolutePath() );

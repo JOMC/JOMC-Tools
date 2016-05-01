@@ -32,6 +32,7 @@ package org.jomc.ant;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -321,13 +322,14 @@ public class JomcModelTask extends JomcTask
 
             for ( int i = urls.length - 1; i >= 0; i-- )
             {
+                URLConnection con = null;
                 InputStream in = null;
 
                 try
                 {
                     this.logMessage( Level.FINEST, Messages.getMessage( "reading", urls[i].toExternalForm() ) );
 
-                    final URLConnection con = urls[i].openConnection();
+                    con = urls[i].openConnection();
                     con.setConnectTimeout( resource.getConnectTimeout() );
                     con.setReadTimeout( resource.getReadTimeout() );
                     con.connect();
@@ -418,6 +420,13 @@ public class JomcModelTask extends JomcTask
                     catch ( final IOException e )
                     {
                         this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
+                    }
+                    finally
+                    {
+                        if ( con instanceof HttpURLConnection )
+                        {
+                            ( (HttpURLConnection) con ).disconnect();
+                        }
                     }
                 }
             }

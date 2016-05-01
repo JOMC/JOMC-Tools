@@ -63,7 +63,8 @@ public class SourceFileProcessorTest extends JomcToolTest
     /**
      * Constant to prefix relative resource names with.
      */
-    private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/tools/test/";
+    private static final String ABSOLUTE_RESOURCE_NAME_PREFIX =
+        "/" + SourceFileProcessorTest.class.getPackage().getName().replace( '.', '/' ) + "/";
 
     /**
      * Creates a new {@code SourceFileProcessorTest} instance.

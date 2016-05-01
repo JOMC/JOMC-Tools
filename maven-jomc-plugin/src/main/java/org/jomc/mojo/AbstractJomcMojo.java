@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URI;
@@ -2065,8 +2066,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             throw new NullPointerException( "resource" );
         }
 
+        URLConnection con = null;
         InputStream in = null;
-        boolean suppressExceptionOnClose = true;
         final URL url = this.getResource( resource.getLocation() );
         final ErrorListener errorListener = new ErrorListener()
         {
@@ -2125,7 +2126,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     this.log( Level.FINER, Messages.getMessage( "loadingTransformer", url.toExternalForm() ), null );
                 }
 
-                final URLConnection con = url.openConnection();
+                con = url.openConnection();
                 con.setConnectTimeout( resource.getConnectTimeout() );
                 con.setReadTimeout( resource.getReadTimeout() );
                 con.connect();
@@ -2198,7 +2199,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     transformer.setOutputProperty( e.getKey(), e.getValue() );
                 }
 
-                suppressExceptionOnClose = false;
+                in.close();
+                in = null;
+
                 return transformer;
             }
             else if ( resource.isOptional() )
@@ -2292,13 +2295,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
             catch ( final IOException e )
             {
-                if ( suppressExceptionOnClose )
+                this.getLog().error( e );
+            }
+            finally
+            {
+                if ( con instanceof HttpURLConnection )
                 {
-                    this.getLog().error( e );
-                }
-                else
-                {
-                    throw new MojoExecutionException( Messages.getMessage( e ), e );
+                    ( (HttpURLConnection) con ).disconnect();
                 }
             }
         }
@@ -2333,6 +2336,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             throw new NullPointerException( "resource" );
         }
 
+        URLConnection con = null;
         InputStream in = null;
         final URL url = this.getResource( modelContext, resource.getLocation() );
         final ErrorListener errorListener = new ErrorListener()
@@ -2392,7 +2396,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     this.log( Level.FINER, Messages.getMessage( "loadingTransformer", url.toExternalForm() ), null );
                 }
 
-                final URLConnection con = url.openConnection();
+                con = url.openConnection();
                 con.setConnectTimeout( resource.getConnectTimeout() );
                 con.setReadTimeout( resource.getReadTimeout() );
                 con.connect();
@@ -2563,6 +2567,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 this.getLog().error( e );
             }
+            finally
+            {
+                if ( con instanceof HttpURLConnection )
+                {
+                    ( (HttpURLConnection) con ).disconnect();
+                }
+            }
         }
 
         return null;
@@ -2593,8 +2604,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             throw new NullPointerException( "propertiesResourceType" );
         }
 
+        URLConnection con = null;
         InputStream in = null;
-        boolean suppressExceptionOnClose = true;
         final URL url = this.getResource( propertiesResourceType.getLocation() );
         final Properties properties = new Properties();
 
@@ -2607,152 +2618,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     this.log( Level.FINER, Messages.getMessage( "loadingProperties", url.toExternalForm() ), null );
                 }
 
-                final URLConnection con = url.openConnection();
+                con = url.openConnection();
                 con.setConnectTimeout( propertiesResourceType.getConnectTimeout() );
                 con.setReadTimeout( propertiesResourceType.getReadTimeout() );
                 con.connect();
-
-                in = con.getInputStream();
-
-                if ( PropertiesResourceType.PLAIN_FORMAT.equalsIgnoreCase( propertiesResourceType.getFormat() ) )
-                {
-                    properties.load( in );
-                }
-                else if ( PropertiesResourceType.XML_FORMAT.equalsIgnoreCase( propertiesResourceType.getFormat() ) )
-                {
-                    properties.loadFromXML( in );
-                }
-            }
-            else if ( propertiesResourceType.isOptional() )
-            {
-                if ( this.isLoggable( Level.WARNING ) )
-                {
-                    this.log( Level.WARNING, Messages.getMessage(
-                              "propertiesNotFound", propertiesResourceType.getLocation() ), null );
-
-                }
-            }
-            else
-            {
-                throw new MojoExecutionException( Messages.getMessage(
-                    "propertiesNotFound", propertiesResourceType.getLocation() ) );
-
-            }
-
-            suppressExceptionOnClose = false;
-        }
-        catch ( final SocketTimeoutException e )
-        {
-            String m = Messages.getMessage( e );
-            m = m == null ? "" : " " + m;
-
-            if ( propertiesResourceType.isOptional() )
-            {
-                if ( this.isLoggable( Level.WARNING ) )
-                {
-                    this.log( Level.WARNING, Messages.getMessage(
-                              "failedLoadingProperties", url.toExternalForm(), m ), e );
-
-                }
-            }
-            else
-            {
-                throw new MojoExecutionException( Messages.getMessage(
-                    "failedLoadingProperties", url.toExternalForm(), m ), e );
-
-            }
-        }
-        catch ( final IOException e )
-        {
-            String m = Messages.getMessage( e );
-            m = m == null ? "" : " " + m;
-
-            if ( propertiesResourceType.isOptional() )
-            {
-                if ( this.isLoggable( Level.WARNING ) )
-                {
-                    this.log( Level.WARNING, Messages.getMessage(
-                              "failedLoadingProperties", url.toExternalForm(), m ), e );
-
-                }
-            }
-            else
-            {
-                throw new MojoExecutionException( Messages.getMessage(
-                    "failedLoadingProperties", url.toExternalForm(), m ), e );
-
-            }
-        }
-        finally
-        {
-            try
-            {
-                if ( in != null )
-                {
-                    in.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                if ( suppressExceptionOnClose )
-                {
-                    this.getLog().error( e );
-                }
-                else
-                {
-                    throw new MojoExecutionException( Messages.getMessage( e ), e );
-                }
-            }
-        }
-
-        return properties;
-    }
-
-    /**
-     * Creates a new {@code Properties} instance from a {@code PropertiesResourceType}.
-     *
-     * @param modelContext The model context to search.
-     * @param propertiesResourceType The {@code PropertiesResourceType} specifying the properties to create.
-     *
-     * @return The properties for {@code propertiesResourceType}.
-     *
-     * @throws NullPointerException if {@code modelContext} or {@code propertiesResourceType} is {@code null}.
-     * @throws MojoExecutionException if loading properties fails.
-     *
-     * @see #getResource(org.jomc.modlet.ModelContext, java.lang.String)
-     * @since 1.8
-     */
-    protected Properties getProperties( final ModelContext modelContext,
-                                        final PropertiesResourceType propertiesResourceType )
-        throws MojoExecutionException
-    {
-        if ( modelContext == null )
-        {
-            throw new NullPointerException( "modelContext" );
-        }
-        if ( propertiesResourceType == null )
-        {
-            throw new NullPointerException( "propertiesResourceType" );
-        }
-
-        InputStream in = null;
-        final URL url = this.getResource( modelContext, propertiesResourceType.getLocation() );
-        final Properties properties = new Properties();
-
-        try
-        {
-            if ( url != null )
-            {
-                if ( this.isLoggable( Level.FINER ) )
-                {
-                    this.log( Level.FINER, Messages.getMessage( "loadingProperties", url.toExternalForm() ), null );
-                }
-
-                final URLConnection con = url.openConnection();
-                con.setConnectTimeout( propertiesResourceType.getConnectTimeout() );
-                con.setReadTimeout( propertiesResourceType.getReadTimeout() );
-                con.connect();
-
                 in = con.getInputStream();
 
                 if ( PropertiesResourceType.PLAIN_FORMAT.equalsIgnoreCase( propertiesResourceType.getFormat() ) )
@@ -2837,6 +2706,155 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             catch ( final IOException e )
             {
                 this.getLog().error( e );
+            }
+            finally
+            {
+                if ( con instanceof HttpURLConnection )
+                {
+                    ( (HttpURLConnection) con ).disconnect();
+                }
+            }
+        }
+
+        return properties;
+    }
+
+    /**
+     * Creates a new {@code Properties} instance from a {@code PropertiesResourceType}.
+     *
+     * @param modelContext The model context to search.
+     * @param propertiesResourceType The {@code PropertiesResourceType} specifying the properties to create.
+     *
+     * @return The properties for {@code propertiesResourceType}.
+     *
+     * @throws NullPointerException if {@code modelContext} or {@code propertiesResourceType} is {@code null}.
+     * @throws MojoExecutionException if loading properties fails.
+     *
+     * @see #getResource(org.jomc.modlet.ModelContext, java.lang.String)
+     * @since 1.8
+     */
+    protected Properties getProperties( final ModelContext modelContext,
+                                        final PropertiesResourceType propertiesResourceType )
+        throws MojoExecutionException
+    {
+        if ( modelContext == null )
+        {
+            throw new NullPointerException( "modelContext" );
+        }
+        if ( propertiesResourceType == null )
+        {
+            throw new NullPointerException( "propertiesResourceType" );
+        }
+
+        URLConnection con = null;
+        InputStream in = null;
+        final URL url = this.getResource( modelContext, propertiesResourceType.getLocation() );
+        final Properties properties = new Properties();
+
+        try
+        {
+            if ( url != null )
+            {
+                if ( this.isLoggable( Level.FINER ) )
+                {
+                    this.log( Level.FINER, Messages.getMessage( "loadingProperties", url.toExternalForm() ), null );
+                }
+
+                con = url.openConnection();
+                con.setConnectTimeout( propertiesResourceType.getConnectTimeout() );
+                con.setReadTimeout( propertiesResourceType.getReadTimeout() );
+                con.connect();
+                in = con.getInputStream();
+
+                if ( PropertiesResourceType.PLAIN_FORMAT.equalsIgnoreCase( propertiesResourceType.getFormat() ) )
+                {
+                    properties.load( in );
+                }
+                else if ( PropertiesResourceType.XML_FORMAT.equalsIgnoreCase( propertiesResourceType.getFormat() ) )
+                {
+                    properties.loadFromXML( in );
+                }
+
+                in.close();
+                in = null;
+            }
+            else if ( propertiesResourceType.isOptional() )
+            {
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, Messages.getMessage(
+                              "propertiesNotFound", propertiesResourceType.getLocation() ), null );
+
+                }
+            }
+            else
+            {
+                throw new MojoExecutionException( Messages.getMessage(
+                    "propertiesNotFound", propertiesResourceType.getLocation() ) );
+
+            }
+        }
+        catch ( final SocketTimeoutException e )
+        {
+            String m = Messages.getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            if ( propertiesResourceType.isOptional() )
+            {
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, Messages.getMessage(
+                              "failedLoadingProperties", url.toExternalForm(), m ), e );
+
+                }
+            }
+            else
+            {
+                throw new MojoExecutionException( Messages.getMessage(
+                    "failedLoadingProperties", url.toExternalForm(), m ), e );
+
+            }
+        }
+        catch ( final IOException e )
+        {
+            String m = Messages.getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            if ( propertiesResourceType.isOptional() )
+            {
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, Messages.getMessage(
+                              "failedLoadingProperties", url.toExternalForm(), m ), e );
+
+                }
+            }
+            else
+            {
+                throw new MojoExecutionException( Messages.getMessage(
+                    "failedLoadingProperties", url.toExternalForm(), m ), e );
+
+            }
+        }
+        finally
+        {
+            try
+            {
+                if ( in != null )
+                {
+                    in.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                this.getLog().error( e );
+            }
+            finally
+            {
+                if ( con instanceof HttpURLConnection )
+                {
+                    ( (HttpURLConnection) con ).disconnect();
+                }
             }
         }
 

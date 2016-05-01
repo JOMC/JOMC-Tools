@@ -33,10 +33,10 @@ package org.jomc.ant.test;
 import org.apache.tools.ant.Project;
 import org.jomc.ant.WriteModelTask;
 import org.jomc.ant.test.support.AntExecutionResult;
+import org.junit.Test;
 import static org.jomc.ant.test.support.Assert.assertMessageLogged;
 import static org.jomc.ant.test.support.Assert.assertMessageLoggedContaining;
 import static org.jomc.ant.test.support.Assert.assertNoException;
-import org.junit.Test;
 
 /**
  * Test cases for class {@code org.jomc.ant.WriteModelTask}.

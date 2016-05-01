@@ -34,13 +34,13 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.jomc.ant.MergeModletsTask;
 import org.jomc.ant.test.support.AntExecutionResult;
+import org.junit.Test;
 import static org.jomc.ant.test.support.Assert.assertException;
 import static org.jomc.ant.test.support.Assert.assertExceptionMessage;
 import static org.jomc.ant.test.support.Assert.assertExceptionMessageContaining;
 import static org.jomc.ant.test.support.Assert.assertMessageLogged;
 import static org.jomc.ant.test.support.Assert.assertMessageLoggedContaining;
 import static org.jomc.ant.test.support.Assert.assertNoException;
-import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
