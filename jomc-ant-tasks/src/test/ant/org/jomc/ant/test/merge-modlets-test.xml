@@ -30,13 +30,13 @@
    $JOMC$
 
 -->
-<project name="commit-classes-test" xmlns:jomc="antlib:org.jomc.tools.ant">
+<project name="commit-classes-test" xmlns:jomc="antlib:org.jomc.ant">
 
   <!-- ************************************************************************************************************* -->
   <property name="jomc.enabled" value="on"/>
-  <property name="no.op.stylesheet" value="org/jomc/tools/ant/test/no-op.xsl"/>
-  <property name="modlets.stylesheet" value="org/jomc/tools/ant/test/modlets.xsl"/>
-  <property name="unsupported.modlet" value="org/jomc/tools/ant/test/unsupported-modlet.xml"/>
+  <property name="no.op.stylesheet" value="org/jomc/ant/test/no-op.xsl"/>
+  <property name="modlets.stylesheet" value="org/jomc/ant/test/modlets.xsl"/>
+  <property name="unsupported.modlet" value="org/jomc/ant/test/unsupported-modlet.xml"/>
 
   <!-- ************************************************************************************************************* -->
   <target name="before-test">
