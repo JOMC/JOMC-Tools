@@ -39,7 +39,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
 import java.io.StringReader;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
@@ -55,6 +54,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -62,10 +62,8 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.logging.Level;
 import javax.activation.MimeTypeParseException;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.Template;
@@ -3568,18 +3566,28 @@ public class JomcTool
 
     private Set<String> getJavaKeywords()
     {
-        Reader in = null;
+        BufferedReader in = null;
         Set<String> set = this.javaKeywordsCache == null ? null : this.javaKeywordsCache.get();
 
         try
         {
             if ( set == null )
             {
-                in = new InputStreamReader( this.getClass().getResourceAsStream(
-                    "/" + this.getClass().getPackage().getName().replace( ".", "/" ) + "/JavaKeywords.txt" ), "UTF-8" );
+                in = new BufferedReader( new InputStreamReader( this.getClass().getResourceAsStream(
+                    "/" + this.getClass().getPackage().getName().replace( ".", "/" ) + "/JavaKeywords.txt" ),
+                                                                "UTF-8" ) );
 
-                set = new CopyOnWriteArraySet<String>( IOUtils.readLines( in ) );
+                final Set<String> keywords = new HashSet<String>();
 
+                for ( String line = in.readLine(); line != null; line = in.readLine() )
+                {
+                    keywords.add( line );
+                }
+
+                in.close();
+                in = null;
+
+                set = Collections.unmodifiableSet( keywords );
                 this.javaKeywordsCache = new SoftReference<Set<String>>( set );
             }
         }
