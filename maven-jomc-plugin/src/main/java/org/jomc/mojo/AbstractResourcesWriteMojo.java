@@ -36,7 +36,6 @@ import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Source;
-import org.apache.commons.io.FileUtils;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -118,7 +117,7 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
 
                     if ( !this.getResourcesDirectory().equals( this.getResourcesOutputDirectory() ) )
                     {
-                        FileUtils.copyDirectory( this.getResourcesDirectory(), this.getResourcesOutputDirectory() );
+                        this.copyDirectory( this.getResourcesDirectory(), this.getResourcesOutputDirectory() );
                     }
 
                     final Resource resource = new Resource();

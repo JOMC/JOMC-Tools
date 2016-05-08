@@ -32,8 +32,11 @@ package org.jomc.mojo;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
@@ -3459,6 +3462,108 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         catch ( final IOException e )
         {
             throw new MojoExecutionException( Messages.getMessage( e ), e );
+        }
+    }
+
+    /**
+     * Copies a file.
+     *
+     * @param source The file to copy.
+     * @param target The file to copy the source file to.
+     *
+     * @throws IOException if copying fails.
+     *
+     * @since 1.10
+     */
+    protected final void copyFile( final File source, final File target ) throws IOException
+    {
+        InputStream in = null;
+        OutputStream out = null;
+        try
+        {
+            if ( !source.equals( target ) )
+            {
+                in = new FileInputStream( source );
+                out = new FileOutputStream( target );
+
+                final byte[] buffer = new byte[ 65536 ];
+
+                for ( int read = in.read();
+                      read >= 0;
+                      out.write( buffer, 0, read ), read = in.read( buffer ) );
+
+                out.close();
+                out = null;
+
+                in.close();
+                in = null;
+            }
+        }
+        finally
+        {
+            try
+            {
+                if ( out != null )
+                {
+                    out.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                this.getLog().warn( e );
+            }
+            finally
+            {
+                try
+                {
+                    if ( in != null )
+                    {
+                        in.close();
+                    }
+                }
+                catch ( final IOException e )
+                {
+                    this.getLog().warn( e );
+                }
+            }
+        }
+    }
+
+    /**
+     * Copies a directory recursively.
+     *
+     * @param source The directory to copy.
+     * @param target The directory to copy to.
+     *
+     * @throws IOException if copying fails.
+     *
+     * @since 1.10
+     */
+    protected final void copyDirectory( final File source, final File target ) throws IOException
+    {
+        if ( !target.isDirectory() && !target.mkdirs() )
+        {
+            throw new IOException( Messages.getMessage( "failedCreatingDirectory", target.getAbsolutePath() ) );
+        }
+
+        for ( final File file : source.listFiles() )
+        {
+            final File targetFile = new File( target, file.getName() );
+
+            if ( file.isFile() )
+            {
+                this.copyFile( file, targetFile );
+            }
+            else if ( file.isDirectory() )
+            {
+                this.copyDirectory( file, targetFile );
+            }
+            else
+            {
+                throw new IOException( Messages.getMessage( "failedCopying", file.getAbsolutePath(),
+                                                            targetFile.getAbsolutePath() ) );
+
+            }
         }
     }
 
