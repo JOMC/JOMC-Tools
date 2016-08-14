@@ -40,6 +40,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import org.apache.commons.io.FileUtils;
 import org.jomc.jls.JavaIdentifier;
@@ -113,7 +114,7 @@ public class JomcToolTest
     /**
      * Serial number of next output directories.
      */
-    private volatile int outputDirectoryId;
+    private final AtomicInteger outputDirectoryId = new AtomicInteger( 0 );
 
     /**
      * Creates a new {@code JomcToolTest} instance.
@@ -208,7 +209,7 @@ public class JomcToolTest
         try
         {
             final File nextOutputDirectory =
-                new File( this.getOutputDirectory(), Integer.toString( this.outputDirectoryId++ ) );
+                new File( this.getOutputDirectory(), Integer.toString( this.outputDirectoryId.incrementAndGet() ) );
 
             assertTrue( nextOutputDirectory.isAbsolute() );
             if ( nextOutputDirectory.exists() )

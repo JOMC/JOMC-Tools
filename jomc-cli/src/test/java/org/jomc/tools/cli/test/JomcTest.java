@@ -615,7 +615,7 @@ public class JomcTest
             try ( final InputStream in = rsrc.openStream() )
             {
                 Files.copy( in, new File( resourcesDirectory, testResourceName ).toPath(),
-                            StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES );
+                            StandardCopyOption.REPLACE_EXISTING );
 
             }
         }
@@ -644,10 +644,11 @@ public class JomcTest
                 }
 
                 final File dest = new File( targetDirectory, e.getName() );
-                assertTrue( dest.isAbsolute() );
 
-                Files.copy( in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING,
-                            StandardCopyOption.COPY_ATTRIBUTES );
+                assertTrue( dest.isAbsolute() );
+                assertTrue( dest.getParentFile().exists() || dest.getParentFile().mkdirs() );
+
+                Files.copy( in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING );
 
                 in.closeEntry();
             }

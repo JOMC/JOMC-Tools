@@ -636,7 +636,7 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         try ( final InputStream in = this.getClass().getResourceAsStream( resourceName ) )
         {
-            Files.copy( in, file.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES );
+            Files.copy( in, file.toPath(), StandardCopyOption.REPLACE_EXISTING );
         }
     }
 

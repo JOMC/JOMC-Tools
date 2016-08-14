@@ -1833,10 +1833,11 @@ public class ClassFileProcessorTest extends JomcToolTest
                 }
 
                 final File dest = new File( targetDirectory, e.getName() );
-                assertTrue( dest.isAbsolute() );
 
-                Files.copy( in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING,
-                            StandardCopyOption.COPY_ATTRIBUTES );
+                assertTrue( dest.isAbsolute() );
+                assertTrue( dest.getParentFile().exists() || dest.getParentFile().mkdirs() );
+
+                Files.copy( in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING );
 
                 in.closeEntry();
             }
