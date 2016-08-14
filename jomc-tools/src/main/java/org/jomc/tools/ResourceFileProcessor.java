@@ -30,13 +30,10 @@
  */
 package org.jomc.tools;
 
-import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -539,42 +536,30 @@ public class ResourceFileProcessor extends JomcTool
     private void writePropertiesFile( final Properties properties, final String comments, final File propertiesFile )
         throws IOException
     {
-        RandomAccessFile randomAccessFile = null;
-        FileChannel fileChannel = null;
+        FileOutputStream out = null;
         FileLock fileLock = null;
-
-        final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        properties.store( byteStream, comments );
-        byteStream.close();
-
-        final byte[] bytes = byteStream.toByteArray();
 
         try
         {
-            randomAccessFile = new RandomAccessFile( propertiesFile, "rw" );
-            fileChannel = randomAccessFile.getChannel();
-            fileLock = fileChannel.lock();
-            fileChannel.truncate( bytes.length );
-            fileChannel.position( 0L );
-            fileChannel.write( ByteBuffer.wrap( bytes ) );
-            fileChannel.force( true );
+            out = new FileOutputStream( propertiesFile );
+            fileLock = out.getChannel().lock();
+
+            properties.store( out, comments );
+            out.getChannel().force( true );
 
             fileLock.release();
             fileLock = null;
 
-            fileChannel.close();
-            fileChannel = null;
-
-            randomAccessFile.close();
-            randomAccessFile = null;
+            out.close();
+            out = null;
         }
         finally
         {
-            this.releaseAndClose( fileLock, fileChannel, randomAccessFile );
+            this.releaseAndClose( fileLock, out );
         }
     }
 
-    private void releaseAndClose( final FileLock fileLock, final FileChannel fileChannel, final Closeable closeable )
+    private void releaseAndClose( final FileLock fileLock, final Closeable closeable )
         throws IOException
     {
         try
@@ -592,28 +577,14 @@ public class ResourceFileProcessor extends JomcTool
         {
             try
             {
-                if ( fileChannel != null )
+                if ( closeable != null )
                 {
-                    fileChannel.close();
+                    closeable.close();
                 }
             }
             catch ( final IOException e )
             {
                 this.log( Level.SEVERE, getMessage( e ), e );
-            }
-            finally
-            {
-                try
-                {
-                    if ( closeable != null )
-                    {
-                        closeable.close();
-                    }
-                }
-                catch ( final IOException e )
-                {
-                    this.log( Level.SEVERE, getMessage( e ), e );
-                }
             }
         }
     }
