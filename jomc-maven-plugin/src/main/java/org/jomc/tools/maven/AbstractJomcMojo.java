@@ -2014,7 +2014,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             }
         }
-        catch ( final InstantiationException | URISyntaxException e )
+        catch ( final ReflectiveOperationException | URISyntaxException e )
         {
             throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
@@ -2575,7 +2575,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 context.setModlets( modlets );
             }
         }
-        catch ( final InstantiationException | ModelException e )
+        catch ( final ReflectiveOperationException | ModelException e )
         {
             throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
@@ -2749,7 +2749,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 }
             }
         }
-        catch ( final InstantiationException | IOException e )
+        catch ( final ReflectiveOperationException | IOException e )
         {
             throw new MojoExecutionException( Messages.getMessage( e ), e );
         }

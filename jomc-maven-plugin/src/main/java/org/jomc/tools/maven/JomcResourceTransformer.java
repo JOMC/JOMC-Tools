@@ -446,7 +446,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
                 }
             }
         }
-        catch ( final InstantiationException | ModelException e )
+        catch ( final ReflectiveOperationException | ModelException e )
         {
             throw new IOException( Messages.getMessage( e ), e );
         }
@@ -622,7 +622,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
                 this.marshalModletObject( transformedModlet, out );
             }
         }
-        catch ( final InstantiationException | ModelException | URISyntaxException e )
+        catch ( final ReflectiveOperationException | ModelException | URISyntaxException e )
         {
             throw new IOException( Messages.getMessage( e ), e );
         }
@@ -746,7 +746,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
     }
 
     private Object unmarshalModelObject( final InputStream in )
-        throws ModelException, JAXBException, InstantiationException
+        throws ModelException, JAXBException, ReflectiveOperationException
     {
         if ( in == null )
         {
@@ -762,7 +762,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
     }
 
     private void marshalModelObject( final JAXBElement<? extends ModelObject> element, final OutputStream out )
-        throws ModelException, JAXBException, InstantiationException
+        throws ModelException, JAXBException, ReflectiveOperationException
     {
         if ( element == null )
         {
@@ -792,7 +792,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
     private <T> JAXBElement<T> transformModelObject( final JAXBElement<? extends ModelObject> element,
                                                      final Class<T> boundType )
         throws ModelException, TransformerException, JAXBException, IOException, URISyntaxException,
-               InstantiationException
+               ReflectiveOperationException
     {
         if ( element == null )
         {
@@ -842,7 +842,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
     }
 
     private Object unmarshalModletObject( final InputStream in )
-        throws ModelException, JAXBException, InstantiationException
+        throws ModelException, JAXBException, ReflectiveOperationException
     {
         if ( in == null )
         {
@@ -858,7 +858,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
     }
 
     private void marshalModletObject( final JAXBElement<? extends ModletObject> element, final OutputStream out )
-        throws ModelException, JAXBException, InstantiationException
+        throws ModelException, JAXBException, ReflectiveOperationException
     {
         if ( element == null )
         {
@@ -888,7 +888,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
     private <T> JAXBElement<T> transformModletObject( final JAXBElement<? extends ModletObject> element,
                                                       final Class<T> boundType )
         throws ModelException, TransformerException, JAXBException, IOException, URISyntaxException,
-               InstantiationException
+               ReflectiveOperationException
     {
         if ( element == null )
         {
@@ -959,7 +959,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
         return normalized;
     }
 
-    private ModelContext createModelContext() throws ModelException, InstantiationException
+    private ModelContext createModelContext() throws ModelException, ReflectiveOperationException
     {
         final ModelContextFactory modelContextFactory;
         if ( this.modelContextFactoryClassName != null )
