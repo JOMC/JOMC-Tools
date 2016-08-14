@@ -30,12 +30,9 @@
  */
 package org.jomc.tools;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -538,20 +535,11 @@ public class ResourceFileProcessor extends JomcTool
     private void writePropertiesFile( final Properties properties, final String comments, final File propertiesFile )
         throws IOException
     {
-        final ByteArrayOutputStream byteStream = new ByteArrayOutputStream( 524288 );
-        properties.store( byteStream, comments );
-        byteStream.close();
-
-        final byte[] bytes = byteStream.toByteArray();
-
-        try ( final RandomAccessFile randomAccessFile = new RandomAccessFile( propertiesFile, "rw" );
-              final FileChannel fileChannel = randomAccessFile.getChannel();
-              final FileLock fileLock = fileChannel.lock() )
+        try ( final FileOutputStream out = new FileOutputStream( propertiesFile );
+              final FileLock fileLock = out.getChannel().lock() )
         {
-            fileChannel.truncate( bytes.length );
-            fileChannel.position( 0L );
-            fileChannel.write( ByteBuffer.wrap( bytes ) );
-            fileChannel.force( true );
+            properties.store( out, comments );
+            out.getChannel().force( true );
         }
     }
 

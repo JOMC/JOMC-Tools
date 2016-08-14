@@ -34,12 +34,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.RandomAccessFile;
 import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.text.MessageFormat;
 import java.util.List;
@@ -2508,8 +2506,7 @@ public class ClassFileProcessor extends JomcTool
     private JavaClass readJavaClass( final File classFile ) throws IOException
     {
         try ( final FileInputStream in = new FileInputStream( classFile );
-              final FileChannel fileChannel = in.getChannel();
-              final FileLock fileLock = fileChannel.lock( 0, classFile.length(), true ) )
+              final FileLock fileLock = in.getChannel().lock( 0, classFile.length(), true ) )
         {
             return new ClassParser( in, classFile.getAbsolutePath() ).parse();
         }
@@ -2517,20 +2514,10 @@ public class ClassFileProcessor extends JomcTool
 
     private void writeJavaClass( final JavaClass javaClass, final File classFile ) throws IOException
     {
-        final ByteArrayOutputStream byteStream = new ByteArrayOutputStream( 524288 );
-        javaClass.dump( byteStream );
-        byteStream.close();
-
-        final byte[] bytes = byteStream.toByteArray();
-
-        try ( final RandomAccessFile randomAccessFile = new RandomAccessFile( classFile, "rw" );
-              final FileChannel fileChannel = randomAccessFile.getChannel();
-              final FileLock fileLock = fileChannel.lock() )
+        try ( final FileOutputStream out = new FileOutputStream( classFile );
+              final FileLock fileLock = out.getChannel().lock() )
         {
-            fileChannel.truncate( bytes.length );
-            fileChannel.position( 0L );
-            fileChannel.write( ByteBuffer.wrap( bytes ) );
-            fileChannel.force( true );
+            javaClass.dump( out );
         }
     }
 

@@ -31,13 +31,13 @@
 package org.jomc.tools;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringWriter;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
-import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -933,24 +933,18 @@ public class SourceFileProcessor extends JomcTool
                 throw new NullPointerException( "file" );
             }
 
-            final Charset charset = Charset.forName( getInputEncoding() );
             final StringBuilder appendable =
                 new StringBuilder( file.length() > 0L ? Long.valueOf( file.length() ).intValue() : 1 );
 
-            final ByteBuffer buf = ByteBuffer.allocateDirect( 524288 );
+            final char[] chars = new char[ 524288 ];
 
-            try ( final RandomAccessFile randomAccessFile = new RandomAccessFile( file, "r" );
-                  final FileChannel fileChannel = randomAccessFile.getChannel();
-                  final FileLock fileLock = fileChannel.lock( 0L, file.length(), true ) )
+            try ( final FileInputStream in = new FileInputStream( file );
+                  final Reader reader = new InputStreamReader( in, getInputEncoding() );
+                  final FileLock fileLock = in.getChannel().lock( 0L, file.length(), true ) )
             {
-                fileChannel.position( 0L );
-
-                for ( int read = fileChannel.read( buf ); read >= 0; buf.position( 0 ), read = fileChannel.read( buf ) )
+                for ( int read = reader.read( chars ); read >= 0; read = reader.read( chars ) )
                 {
-                    final byte[] chunk = new byte[ read ];
-                    buf.position( 0 );
-                    buf.get( chunk );
-                    appendable.append( new String( chunk, charset ) );
+                    appendable.append( chars, 0, read );
                 }
 
                 return appendable.toString();
@@ -968,16 +962,11 @@ public class SourceFileProcessor extends JomcTool
                 throw new NullPointerException( "content" );
             }
 
-            final byte[] bytes = content.getBytes( getOutputEncoding() );
-
-            try ( final RandomAccessFile randomAccessFile = new RandomAccessFile( file, "rw" );
-                  final FileChannel fileChannel = randomAccessFile.getChannel();
-                  final FileLock fileLock = fileChannel.lock() )
+            try ( final FileOutputStream out = new FileOutputStream( file );
+                  final FileLock fileLock = out.getChannel().lock() )
             {
-                fileChannel.truncate( bytes.length );
-                fileChannel.position( 0L );
-                fileChannel.write( ByteBuffer.wrap( bytes ) );
-                fileChannel.force( true );
+                out.write( content.getBytes( getOutputEncoding() ) );
+                out.getChannel().force( true );
             }
         }
 
