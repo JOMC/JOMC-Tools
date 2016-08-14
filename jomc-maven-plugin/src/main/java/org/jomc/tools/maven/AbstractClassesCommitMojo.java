@@ -151,8 +151,10 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
             throw new NullPointerException( "modelContext" );
         }
 
-        final List<Transformer> transformers = new ArrayList<Transformer>(
-            this.modelObjectStylesheetResources != null ? this.modelObjectStylesheetResources.size() : 0 );
+        final List<Transformer> transformers =
+            new ArrayList<>( this.modelObjectStylesheetResources != null
+                                 ? this.modelObjectStylesheetResources.size()
+                                 : 0 );
 
         if ( this.modelObjectStylesheetResources != null )
         {

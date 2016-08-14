@@ -30,6 +30,7 @@
  */
 package org.jomc.tools.ant;
 
+import java.io.IOException;
 import org.apache.tools.ant.BuildException;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
@@ -61,11 +62,10 @@ public final class ValidateModelTask extends JomcModelTask
     @Override
     public void executeTask() throws BuildException
     {
-        try
-        {
-            this.log( Messages.getMessage( "validatingModel", this.getModel() ) );
+        this.log( Messages.getMessage( "validatingModel", this.getModel() ) );
 
-            final ClassLoader classLoader = this.newProjectClassLoader();
+        try ( final ProjectClassLoader classLoader = this.newProjectClassLoader() )
+        {
             final ModelContext context = this.newModelContext( classLoader );
             final Model model = context.findModel( this.getModel() );
             final ModelValidationReport report = context.validateModel( model );
@@ -78,7 +78,7 @@ public final class ValidateModelTask extends JomcModelTask
 
             this.log( Messages.getMessage( "modelValidationSuccess" ) );
         }
-        catch ( final ModelException e )
+        catch ( final IOException | ModelException e )
         {
             throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }

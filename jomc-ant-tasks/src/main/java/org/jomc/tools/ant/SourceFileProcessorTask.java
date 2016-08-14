@@ -134,14 +134,7 @@ public class SourceFileProcessorTask extends JomcToolTask
             this.configureSourceFileProcessor( sourceFileProcessor );
             return sourceFileProcessor;
         }
-        catch ( final InstantiationException e )
-        {
-            throw new BuildException( Messages.getMessage( "failedCreatingObject",
-                                                           this.getSourceFileProcessorClass().getName() ),
-                                      e, this.getLocation() );
-
-        }
-        catch ( final IllegalAccessException e )
+        catch ( final ReflectiveOperationException e )
         {
             throw new BuildException( Messages.getMessage( "failedCreatingObject",
                                                            this.getSourceFileProcessorClass().getName() ),

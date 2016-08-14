@@ -89,7 +89,7 @@ public final class MainSourcesManageMojo extends AbstractSourcesManageMojo
 
         for ( int i = 0, l0 = this.getMavenProject().getCompileSourceRoots().size(); i < l0; i++ )
         {
-            final String element = (String) this.getMavenProject().getCompileSourceRoots().get( i );
+            final String element = this.getMavenProject().getCompileSourceRoots().get( i );
 
             if ( sourcesDirectory.equals( this.getAbsoluteFile( element ) ) )
             {

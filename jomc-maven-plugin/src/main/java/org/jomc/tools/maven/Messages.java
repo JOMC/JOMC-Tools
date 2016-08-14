@@ -75,15 +75,7 @@ abstract class Messages
                                          arguments );
 
         }
-        catch ( final MissingResourceException e )
-        {
-            throw new AssertionError( e );
-        }
-        catch ( final ClassCastException e )
-        {
-            throw new AssertionError( e );
-        }
-        catch ( final IllegalArgumentException e )
+        catch ( final MissingResourceException | ClassCastException | IllegalArgumentException e )
         {
             throw new AssertionError( e );
         }

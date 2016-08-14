@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -79,26 +78,31 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         return options;
     }
 
+    @Override
     public String getName()
     {
         return "commit-classes";
     }
 
+    @Override
     public String getAbbreviatedName()
     {
         return "cc";
     }
 
+    @Override
     public String getShortDescription( final Locale locale )
     {
         return Messages.getMessage( "commitClassesShortDescription" );
     }
 
+    @Override
     public String getLongDescription( final Locale locale )
     {
         return null;
     }
 
+    @Override
     protected void processClassFiles( final CommandLine commandLine ) throws CommandExecutionException
     {
         if ( commandLine == null )
@@ -106,11 +110,8 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
             throw new NullPointerException( "commandLine" );
         }
 
-        CommandLineClassLoader classLoader = null;
-
-        try
+        try ( final CommandLineClassLoader classLoader = new CommandLineClassLoader( commandLine ) )
         {
-            classLoader = new CommandLineClassLoader( commandLine );
             final ModelContext context = this.createModelContext( commandLine, classLoader );
             final Model model = this.getModel( context, commandLine );
             final JAXBContext jaxbContext = context.createContext( model.getIdentifier() );
@@ -132,7 +133,7 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
             final File classesDirectory =
                 new File( commandLine.getOptionValue( Options.CLASSES_DIRECTORY_OPTION.getOpt() ) );
 
-            final List<Transformer> transformers = new ArrayList<Transformer>( 1 );
+            final List<Transformer> transformers = new ArrayList<>( 1 );
 
             if ( commandLine.hasOption( Options.STYLESHEET_OPTION.getOpt() ) )
             {
@@ -185,9 +186,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
                     tool.transformModelObjects( context, classesDirectory, transformers );
                 }
             }
-
-            classLoader.close();
-            classLoader = null;
         }
         catch ( final JAXBException e )
         {
@@ -199,27 +197,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
 
             throw new CommandExecutionException( message, e );
         }
-        catch ( final ModelException e )
+        catch ( final ModelException | IOException e )
         {
             throw new CommandExecutionException( Messages.getMessage( e ), e );
-        }
-        catch ( final IOException e )
-        {
-            throw new CommandExecutionException( Messages.getMessage( e ), e );
-        }
-        finally
-        {
-            try
-            {
-                if ( classLoader != null )
-                {
-                    classLoader.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                this.log( Level.SEVERE, Messages.getMessage( e ), e );
-            }
         }
     }
 

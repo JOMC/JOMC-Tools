@@ -33,7 +33,6 @@ package org.jomc.tools.cli.commands;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
-import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -68,26 +67,31 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
         super();
     }
 
+    @Override
     public String getName()
     {
         return "generate-resources";
     }
 
+    @Override
     public String getAbbreviatedName()
     {
         return "gr";
     }
 
+    @Override
     public String getShortDescription( final Locale locale )
     {
         return Messages.getMessage( "generateResourcesShortDescription" );
     }
 
+    @Override
     public String getLongDescription( final Locale locale )
     {
         return null;
     }
 
+    @Override
     protected void processResourceFiles( final CommandLine commandLine ) throws CommandExecutionException
     {
         if ( commandLine == null )
@@ -95,11 +99,8 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
             throw new NullPointerException( "commandLine" );
         }
 
-        CommandLineClassLoader classLoader = null;
-
-        try
+        try ( final CommandLineClassLoader classLoader = new CommandLineClassLoader( commandLine ) )
         {
-            classLoader = new CommandLineClassLoader( commandLine );
             final ModelContext context = this.createModelContext( commandLine, classLoader );
             final Model model = this.getModel( context, commandLine );
             final JAXBContext jaxbContext = context.createContext( model.getIdentifier() );
@@ -144,9 +145,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
             {
                 tool.writeResourceBundleResourceFiles( resourcesDirectory );
             }
-
-            classLoader.close();
-            classLoader = null;
         }
         catch ( final JAXBException e )
         {
@@ -158,27 +156,9 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
 
             throw new CommandExecutionException( message, e );
         }
-        catch ( final ModelException e )
+        catch ( final ModelException | IOException e )
         {
             throw new CommandExecutionException( Messages.getMessage( e ), e );
-        }
-        catch ( final IOException e )
-        {
-            throw new CommandExecutionException( Messages.getMessage( e ), e );
-        }
-        finally
-        {
-            try
-            {
-                if ( classLoader != null )
-                {
-                    classLoader.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                this.log( Level.SEVERE, Messages.getMessage( e ), e );
-            }
         }
     }
 

@@ -81,26 +81,31 @@ public final class ShowModelCommand extends AbstractModelCommand
         return options;
     }
 
+    @Override
     public String getName()
     {
         return "show-model";
     }
 
+    @Override
     public String getAbbreviatedName()
     {
         return "sm";
     }
 
+    @Override
     public String getShortDescription( final Locale locale )
     {
         return Messages.getMessage( "showModelShortDescription" );
     }
 
+    @Override
     public String getLongDescription( final Locale locale )
     {
         return null;
     }
 
+    @Override
     protected void executeCommand( final CommandLine commandLine ) throws CommandExecutionException
     {
         if ( commandLine == null )
@@ -108,11 +113,8 @@ public final class ShowModelCommand extends AbstractModelCommand
             throw new NullPointerException( "commandLine" );
         }
 
-        CommandLineClassLoader classLoader = null;
-
-        try
+        try ( final CommandLineClassLoader classLoader = new CommandLineClassLoader( commandLine ) )
         {
-            classLoader = new CommandLineClassLoader( commandLine );
             final ModelContext context = this.createModelContext( commandLine, classLoader );
             final Model model = this.getModel( context, commandLine );
             final JAXBContext jaxbContext = context.createContext( model.getIdentifier() );
@@ -227,11 +229,8 @@ public final class ShowModelCommand extends AbstractModelCommand
                 marshaller.marshal( new ObjectFactory().createModel( displayModel ), stringWriter );
                 this.log( Level.INFO, stringWriter.toString(), null );
             }
-
-            classLoader.close();
-            classLoader = null;
         }
-        catch ( final IOException e )
+        catch ( final IOException | ModelException e )
         {
             throw new CommandExecutionException( Messages.getMessage( e ), e );
         }
@@ -244,24 +243,6 @@ public final class ShowModelCommand extends AbstractModelCommand
             }
 
             throw new CommandExecutionException( message, e );
-        }
-        catch ( final ModelException e )
-        {
-            throw new CommandExecutionException( Messages.getMessage( e ), e );
-        }
-        finally
-        {
-            try
-            {
-                if ( classLoader != null )
-                {
-                    classLoader.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                this.log( Level.SEVERE, Messages.getMessage( e ), e );
-            }
         }
     }
 

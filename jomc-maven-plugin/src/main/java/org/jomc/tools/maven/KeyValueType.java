@@ -30,7 +30,6 @@
  */
 package org.jomc.tools.maven;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -150,21 +149,21 @@ public class KeyValueType implements Cloneable
      * @return The object of the instance or {@code null}.
      *
      * @throws NullPointerException if {@code modelContext} is {@code null}.
-     * @throws InstantiationException if getting the object of the instance fails.
+     * @throws ReflectiveOperationException if getting the object of the instance fails.
      *
      * @see #getType()
      * @see #getValue()
      *
      * @since 1.8
      */
-    public Object getObject( final ModelContext modelContext ) throws InstantiationException // JDK: As of JDK 7, "throws ReflectiveOperationException".
+    public Object getObject( final ModelContext modelContext ) throws ReflectiveOperationException
     {
         if ( modelContext == null )
         {
             throw new NullPointerException( "modelContext" );
         }
 
-        Class<?> javaClass = null;
+        Class<?> javaClass;
         Object o = this.getValue();
 
         try
@@ -177,7 +176,9 @@ public class KeyValueType implements Cloneable
 
                     if ( javaClass == null )
                     {
-                        throw new InstantiationException( Messages.getMessage( "classNotFound", this.getType() ) );
+                        throw new ReflectiveOperationException( Messages.getMessage( "classNotFound",
+                                                                                     this.getType() ) );
+
                     }
 
                     try
@@ -195,9 +196,9 @@ public class KeyValueType implements Cloneable
                         }
                         else
                         {
-                            throw (InstantiationException) new InstantiationException(
-                                Messages.getMessage( "noSuchMethodCreatingObject", this.getType(), this.getValue(),
-                                                     javaClass.getSimpleName() ) ).initCause( e );
+                            throw new ReflectiveOperationException(
+                                Messages.getMessage( "noSuchMethodCreatingObject", this.getType(),
+                                                     this.getValue(), javaClass.getSimpleName() ), e );
 
                         }
                     }
@@ -209,7 +210,7 @@ public class KeyValueType implements Cloneable
 
                 if ( javaClass == null )
                 {
-                    throw new InstantiationException( Messages.getMessage( "classNotFound", this.getType() ) );
+                    throw new ReflectiveOperationException( Messages.getMessage( "classNotFound", this.getType() ) );
                 }
 
                 o = javaClass.newInstance();
@@ -219,28 +220,7 @@ public class KeyValueType implements Cloneable
         }
         catch ( final ModelException e )
         {
-            throw (InstantiationException) new InstantiationException(
-                Messages.getMessage( "failedSearchingClass", this.getType() ) ).initCause( e );
-
-        }
-        catch ( final NoSuchMethodException e )
-        {
-            throw (InstantiationException) new InstantiationException(
-                Messages.getMessage( "noSuchMethodCreatingObject", this.getType(), this.getValue(),
-                                     javaClass.getSimpleName() ) ).initCause( e );
-
-        }
-        catch ( final IllegalAccessException e )
-        {
-            throw (InstantiationException) new InstantiationException(
-                Messages.getMessage( "failedCreatingObject", this.getType() ) ).initCause( e );
-
-        }
-        catch ( final InvocationTargetException e )
-        {
-            throw (InstantiationException) new InstantiationException(
-                Messages.getMessage( "failedCreatingObject", this.getType() ) ).initCause( e );
-
+            throw new ReflectiveOperationException( Messages.getMessage( "failedSearchingClass", this.getType() ), e );
         }
     }
 

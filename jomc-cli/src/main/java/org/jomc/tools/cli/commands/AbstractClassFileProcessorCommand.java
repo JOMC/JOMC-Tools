@@ -89,6 +89,7 @@ public abstract class AbstractClassFileProcessorCommand extends AbstractJomcTool
     /**
      * {@inheritDoc}
      */
+    @Override
     protected final void executeCommand( final CommandLine commandLine ) throws CommandExecutionException
     {
         if ( commandLine == null )

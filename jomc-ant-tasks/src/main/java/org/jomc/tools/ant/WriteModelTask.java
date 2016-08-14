@@ -37,7 +37,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.logging.Level;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.util.JAXBSource;
@@ -446,12 +445,8 @@ public final class WriteModelTask extends JomcModelTask
     @Override
     public void executeTask() throws BuildException
     {
-        BufferedReader reader = null;
-        ProjectClassLoader classLoader = null;
-
-        try
+        try ( final ProjectClassLoader classLoader = this.newProjectClassLoader() )
         {
-            classLoader = this.newProjectClassLoader();
             final ModelContext modelContext = this.newModelContext( classLoader );
             final Model model = this.getModel( modelContext );
             final Marshaller marshaller = modelContext.createMarshaller( this.getModel() );
@@ -532,24 +527,21 @@ public final class WriteModelTask extends JomcModelTask
             {
                 this.log( Messages.getMessage( "showingModelObjects", this.getModel() ), Project.MSG_INFO );
 
-                final StringWriter writer = new StringWriter();
-                marshaller.marshal( new ObjectFactory().createModel( displayModel ), writer );
-
-                reader = new BufferedReader( new StringReader( writer.toString() ) );
-
-                for ( String line = reader.readLine(); line != null; line = reader.readLine() )
+                try ( final StringWriter writer = new StringWriter() )
                 {
-                    this.log( line, Project.MSG_INFO );
+                    marshaller.marshal( new ObjectFactory().createModel( displayModel ), writer );
+
+                    try ( final BufferedReader reader = new BufferedReader( new StringReader( writer.toString() ) ) )
+                    {
+                        for ( String line = reader.readLine(); line != null; line = reader.readLine() )
+                        {
+                            this.log( line, Project.MSG_INFO );
+                        }
+                    }
                 }
-
-                reader.close();
-                reader = null;
             }
-
-            classLoader.close();
-            classLoader = null;
         }
-        catch ( final IOException e )
+        catch ( final IOException | ModelException e )
         {
             throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
@@ -562,38 +554,6 @@ public final class WriteModelTask extends JomcModelTask
             }
 
             throw new BuildException( message, e, this.getLocation() );
-        }
-        catch ( final ModelException e )
-        {
-            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
-        }
-        finally
-        {
-            try
-            {
-                if ( reader != null )
-                {
-                    reader.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
-            }
-            finally
-            {
-                try
-                {
-                    if ( classLoader != null )
-                    {
-                        classLoader.close();
-                    }
-                }
-                catch ( final IOException e )
-                {
-                    this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
-                }
-            }
         }
     }
 

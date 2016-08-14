@@ -81,9 +81,9 @@ public class ToolsTypeTest
     public final void testGetAnyElement() throws Exception
     {
         final TestToolsType toolsObject = new TestToolsType();
-        final List<Object> any = new ArrayList<Object>( 10 );
+        final List<Object> any = new ArrayList<>( 10 );
         final QName name = new QName( "http://jomc.org/tools/model", "test" );
-        final JAXBElement<Object> element = new JAXBElement<Object>( name, Object.class, null, null );
+        final JAXBElement<Object> element = new JAXBElement<>( name, Object.class, null, null );
         any.add( element );
         any.add( element );
 
@@ -103,7 +103,7 @@ public class ToolsTypeTest
     public final void testGetAnyObject() throws Exception
     {
         final TestToolsType toolsObject = new TestToolsType();
-        final List<Object> any = new ArrayList<Object>( 10 );
+        final List<Object> any = new ArrayList<>( 10 );
         any.add( "TEST" );
         any.add( "TEST" );
 

@@ -37,10 +37,10 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -51,7 +51,6 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 /**
  * JOMC command line interface.
@@ -133,29 +132,11 @@ public final class Jomc
      *
      * @see #setPrintWriter(java.io.PrintWriter)
      */
-    @IgnoreJRERequirement
     public PrintWriter getPrintWriter()
     {
-        if ( this.printWriter == null )
+        if ( this.printWriter == null && System.console() != null )
         {
-            try
-            {
-                // As of Java 6, "System.console()", if any.
-                Class.forName( "java.io.Console" );
-                this.printWriter = System.console() != null
-                                       ? System.console().writer()
-                                       : new PrintWriter( System.out, true );
-
-            }
-            catch ( final ClassNotFoundException e )
-            {
-                if ( this.isLoggable( Level.FINEST ) )
-                {
-                    this.log( Level.FINEST, Messages.getMessage( e ), e );
-                }
-
-                this.printWriter = new PrintWriter( System.out, true );
-            }
+            this.printWriter = System.console().writer();
         }
 
         return this.printWriter;
@@ -288,7 +269,7 @@ public final class Jomc
 
         try
         {
-            final StringBuilder commandInfo = new StringBuilder();
+            final StringBuilder commandInfo = new StringBuilder( 1024 );
 
             for ( final Command c : this.getCommands() )
             {
@@ -310,9 +291,13 @@ public final class Jomc
 
             if ( cmd == null )
             {
-                this.getPrintWriter().println( Messages.getMessage( "usage", "help" ) );
-                this.getPrintWriter().println();
-                this.getPrintWriter().println( commandInfo.toString() );
+                if ( this.getPrintWriter() != null )
+                {
+                    this.getPrintWriter().println( Messages.getMessage( "usage", "help" ) );
+                    this.getPrintWriter().println();
+                    this.getPrintWriter().println( commandInfo.toString() );
+                }
+
                 return Command.STATUS_FAILURE;
             }
 
@@ -340,16 +325,22 @@ public final class Jomc
                 pw.close();
                 assert !pw.checkError() : "Unexpected error printing options.";
 
-                this.getPrintWriter().println( cmd.getShortDescription( Locale.getDefault() ) );
-                this.getPrintWriter().println();
-                this.getPrintWriter().println( usage.toString() );
-                this.getPrintWriter().println( opts.toString() );
-                this.getPrintWriter().println();
+                if ( this.getPrintWriter() != null )
+                {
+                    this.getPrintWriter().println( cmd.getShortDescription( Locale.getDefault() ) );
+                    this.getPrintWriter().println();
+                    this.getPrintWriter().println( usage.toString() );
+                    this.getPrintWriter().println( opts.toString() );
+                    this.getPrintWriter().println();
+                }
 
                 if ( cmd.getLongDescription( Locale.getDefault() ) != null )
                 {
-                    this.getPrintWriter().println( cmd.getLongDescription( Locale.getDefault() ) );
-                    this.getPrintWriter().println();
+                    if ( this.getPrintWriter() != null )
+                    {
+                        this.getPrintWriter().println( cmd.getLongDescription( Locale.getDefault() ) );
+                        this.getPrintWriter().println();
+                    }
                 }
 
                 return Command.STATUS_SUCCESS;
@@ -358,6 +349,7 @@ public final class Jomc
             cmd.getListeners().add( new Command.Listener()
             {
 
+                @Override
                 public void onLog( final Level level, final String message, final Throwable t )
                 {
                     log( level, message, t );
@@ -392,7 +384,7 @@ public final class Jomc
             {
                 for ( int i = 0; i < args.length; i++ )
                 {
-                    this.log( Level.FINER, new StringBuilder().append( "[" ).append( i ).append( "] -> '" ).
+                    this.log( Level.FINER, new StringBuilder( 128 ).append( "[" ).append( i ).append( "] -> '" ).
                               append( args[i] ).append( "'" ).append( System.getProperty( "line.separator", "\n" ) ).
                               toString(), null );
 
@@ -423,7 +415,11 @@ public final class Jomc
         }
         finally
         {
-            this.getPrintWriter().flush();
+            if ( this.getPrintWriter() != null )
+            {
+                this.getPrintWriter().flush();
+            }
+
             this.severity = Level.ALL;
         }
     }
@@ -474,7 +470,7 @@ public final class Jomc
             this.severity = level;
         }
 
-        if ( this.isLoggable( level ) )
+        if ( this.isLoggable( level ) && this.getPrintWriter() != null )
         {
             if ( message != null )
             {
@@ -507,19 +503,16 @@ public final class Jomc
                     this.getPrintWriter().print( this.formatLogLines( level, stackTrace.toString() ) );
                 }
             }
-        }
 
-        this.getPrintWriter().flush();
+            this.getPrintWriter().flush();
+        }
     }
 
     private String formatLogLines( final Level level, final String text )
     {
-        BufferedReader reader = null;
-
-        try
+        try ( final BufferedReader reader = new BufferedReader( new StringReader( text ) ) )
         {
             final StringBuilder lines = new StringBuilder( text.length() );
-            reader = new BufferedReader( new StringReader( text ) );
 
             for ( String line = reader.readLine(); line != null; line = reader.readLine() )
             {
@@ -536,28 +529,11 @@ public final class Jomc
                 lines.append( "] " ).append( line ).append( System.getProperty( "line.separator", "\n" ) );
             }
 
-            reader.close();
-            reader = null;
-
             return lines.toString();
         }
         catch ( final IOException e )
         {
             throw new AssertionError( e );
-        }
-        finally
-        {
-            try
-            {
-                if ( reader != null )
-                {
-                    reader.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                this.log( Level.SEVERE, Messages.getMessage( e ), e );
-            }
         }
     }
 
@@ -570,7 +546,7 @@ public final class Jomc
      */
     private List<Command> getCommands() throws IOException
     {
-        final List<Command> commands = new ArrayList<Command>();
+        final List<Command> commands = new LinkedList<>();
 
         final Enumeration<URL> serviceResources =
             this.getClass().getClassLoader().getResources( "META-INF/services/org.jomc.tools.cli.Command" );
@@ -579,11 +555,9 @@ public final class Jomc
         {
             for ( final URL serviceResource : Collections.list( serviceResources ) )
             {
-                BufferedReader reader = null;
-                try
+                try ( final BufferedReader reader = new BufferedReader( new InputStreamReader(
+                    serviceResource.openStream(), "UTF-8" ) ) )
                 {
-                    reader = new BufferedReader( new InputStreamReader( serviceResource.openStream(), "UTF-8" ) );
-
                     for ( String line = reader.readLine(); line != null; line = reader.readLine() )
                     {
                         if ( !line.contains( "#" ) )
@@ -592,31 +566,9 @@ public final class Jomc
                         }
                     }
                 }
-                catch ( final ClassNotFoundException e )
+                catch ( final ReflectiveOperationException e )
                 {
                     throw new AssertionError( e );
-                }
-                catch ( final InstantiationException e )
-                {
-                    throw new AssertionError( e );
-                }
-                catch ( final IllegalAccessException e )
-                {
-                    throw new AssertionError( e );
-                }
-                finally
-                {
-                    try
-                    {
-                        if ( reader != null )
-                        {
-                            reader.close();
-                        }
-                    }
-                    catch ( final IOException e )
-                    {
-                        this.log( Level.WARNING, Messages.getMessage( e ), e );
-                    }
                 }
             }
         }

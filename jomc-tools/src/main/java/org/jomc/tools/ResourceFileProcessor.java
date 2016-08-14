@@ -31,7 +31,6 @@
 package org.jomc.tools;
 
 import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -353,7 +352,7 @@ public class ResourceFileProcessor extends JomcTool
         if ( this.getModules() != null
                  && this.getModules().getSpecification( specification.getIdentifier() ) != null )
         {
-            properties = new HashMap<Locale, Properties>();
+            properties = new HashMap<>( 32 );
         }
         else if ( this.isLoggable( Level.WARNING ) )
         {
@@ -387,7 +386,7 @@ public class ResourceFileProcessor extends JomcTool
         if ( this.getModules() != null
                  && this.getModules().getImplementation( implementation.getIdentifier() ) != null )
         {
-            properties = new HashMap<Locale, java.util.Properties>( 10 );
+            properties = new HashMap<>( 10 );
             final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
 
             if ( messages != null )
@@ -539,93 +538,21 @@ public class ResourceFileProcessor extends JomcTool
     private void writePropertiesFile( final Properties properties, final String comments, final File propertiesFile )
         throws IOException
     {
-        RandomAccessFile randomAccessFile = null;
-        FileChannel fileChannel = null;
-        FileLock fileLock = null;
-
-        final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        final ByteArrayOutputStream byteStream = new ByteArrayOutputStream( 524288 );
         properties.store( byteStream, comments );
         byteStream.close();
 
         final byte[] bytes = byteStream.toByteArray();
 
-        try
+        try ( final RandomAccessFile randomAccessFile = new RandomAccessFile( propertiesFile, "rw" );
+              final FileChannel fileChannel = randomAccessFile.getChannel();
+              final FileLock fileLock = fileChannel.lock() )
         {
-            randomAccessFile = new RandomAccessFile( propertiesFile, "rw" );
-            fileChannel = randomAccessFile.getChannel();
-            fileLock = fileChannel.lock();
             fileChannel.truncate( bytes.length );
             fileChannel.position( 0L );
             fileChannel.write( ByteBuffer.wrap( bytes ) );
             fileChannel.force( true );
-
-            fileLock.release();
-            fileLock = null;
-
-            fileChannel.close();
-            fileChannel = null;
-
-            randomAccessFile.close();
-            randomAccessFile = null;
         }
-        finally
-        {
-            this.releaseAndClose( fileLock, fileChannel, randomAccessFile );
-        }
-    }
-
-    private void releaseAndClose( final FileLock fileLock, final FileChannel fileChannel, final Closeable closeable )
-        throws IOException
-    {
-        try
-        {
-            if ( fileLock != null )
-            {
-                fileLock.release();
-            }
-        }
-        catch ( final IOException e )
-        {
-            this.log( Level.SEVERE, getMessage( e ), e );
-        }
-        finally
-        {
-            try
-            {
-                if ( fileChannel != null )
-                {
-                    fileChannel.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                this.log( Level.SEVERE, getMessage( e ), e );
-            }
-            finally
-            {
-                try
-                {
-                    if ( closeable != null )
-                    {
-                        closeable.close();
-                    }
-                }
-                catch ( final IOException e )
-                {
-                    this.log( Level.SEVERE, getMessage( e ), e );
-                }
-            }
-        }
-    }
-
-    private static String getMessage( final Throwable t )
-    {
-        return t != null
-                   ? t.getMessage() != null && t.getMessage().trim().length() > 0
-                         ? t.getMessage()
-                         : getMessage( t.getCause() )
-                   : null;
-
     }
 
     private static String getMessage( final String key, final Object... arguments )

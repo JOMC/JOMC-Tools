@@ -30,13 +30,15 @@
  */
 package org.jomc.tools.test;
 
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import org.apache.commons.io.IOUtils;
+import java.io.StringWriter;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.List;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
@@ -632,77 +634,27 @@ public class SourceFileProcessorTest extends JomcToolTest
     {
         assertTrue( resourceName.startsWith( "/" ) );
 
-        InputStream in = null;
-        OutputStream out = null;
-
-        try
+        try ( final InputStream in = this.getClass().getResourceAsStream( resourceName ) )
         {
-            in = this.getClass().getResourceAsStream( resourceName );
-            assertNotNull( "Resource '" + resourceName + "' not found.", in );
-            out = new FileOutputStream( file );
-            IOUtils.copy( in, out );
-
-            out.close();
-            out = null;
-
-            in.close();
-            in = null;
-        }
-        finally
-        {
-            try
-            {
-                if ( out != null )
-                {
-                    out.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                // Suppressed.
-            }
-            finally
-            {
-                try
-                {
-                    if ( in != null )
-                    {
-                        in.close();
-                    }
-                }
-                catch ( final IOException e )
-                {
-                    // Suppressed.
-                }
-            }
+            Files.copy( in, file.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES );
         }
     }
 
     private String toString( final File f ) throws IOException
     {
-        InputStream in = null;
+        final List<String> lines = Files.readAllLines( f.toPath(), Charset.forName( this.getResourceEncoding() ) );
 
-        try
+        try ( final StringWriter stringWriter = new StringWriter();
+              final BufferedWriter bufferedWriter = new BufferedWriter( stringWriter ) )
         {
-            in = new FileInputStream( f );
-            final String str = IOUtils.toString( in, this.getResourceEncoding() );
-            in.close();
-            in = null;
-            return str;
-        }
-        finally
-        {
-            try
+            for ( final String line : lines )
             {
-                if ( in != null )
-                {
-                    in.close();
-                }
+                bufferedWriter.append( line );
+                bufferedWriter.newLine();
             }
-            catch ( final IOException e )
-            {
-                // Suppressed.
-            }
+
+            bufferedWriter.flush();
+            return stringWriter.toString();
         }
     }
 

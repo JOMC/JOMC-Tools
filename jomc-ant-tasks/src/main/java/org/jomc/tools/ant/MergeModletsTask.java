@@ -276,7 +276,7 @@ public final class MergeModletsTask extends JomcTask
     {
         if ( this.modletResources == null )
         {
-            this.modletResources = new HashSet<ModletResourceType>();
+            this.modletResources = new HashSet<>( 128 );
         }
 
         return this.modletResources;
@@ -312,7 +312,7 @@ public final class MergeModletsTask extends JomcTask
     {
         if ( this.modletIncludes == null )
         {
-            this.modletIncludes = new HashSet<NameType>();
+            this.modletIncludes = new HashSet<>( 128 );
         }
 
         return this.modletIncludes;
@@ -348,7 +348,7 @@ public final class MergeModletsTask extends JomcTask
     {
         if ( this.modletExcludes == null )
         {
-            this.modletExcludes = new HashSet<NameType>();
+            this.modletExcludes = new HashSet<>( 128 );
         }
 
         return this.modletExcludes;
@@ -384,7 +384,7 @@ public final class MergeModletsTask extends JomcTask
     {
         if ( this.modletObjectStylesheetResources == null )
         {
-            this.modletObjectStylesheetResources = new LinkedList<TransformerResourceType>();
+            this.modletObjectStylesheetResources = new LinkedList<>();
         }
 
         return this.modletObjectStylesheetResources;
@@ -428,13 +428,10 @@ public final class MergeModletsTask extends JomcTask
     @Override
     public void executeTask() throws BuildException
     {
-        ProjectClassLoader classLoader = null;
+        this.log( Messages.getMessage( "mergingModlets", this.getModel() ) );
 
-        try
+        try ( final ProjectClassLoader classLoader = this.newProjectClassLoader() )
         {
-            this.log( Messages.getMessage( "mergingModlets", this.getModel() ) );
-
-            classLoader = this.newProjectClassLoader();
             final Modlets modlets = new Modlets();
             final Set<ResourceType> resources = new HashSet<ResourceType>( this.getModletResources() );
             final ModelContext context = this.newModelContext( classLoader );
@@ -476,7 +473,6 @@ public final class MergeModletsTask extends JomcTask
 
                 for ( int i = urls.length - 1; i >= 0; i-- )
                 {
-                    InputStream in = null;
                     URLConnection con = null;
 
                     try
@@ -487,32 +483,31 @@ public final class MergeModletsTask extends JomcTask
                         con.setConnectTimeout( resource.getConnectTimeout() );
                         con.setReadTimeout( resource.getReadTimeout() );
                         con.connect();
-                        in = con.getInputStream();
 
-                        final Source source = new StreamSource( in, urls[i].toURI().toASCIIString() );
-                        Object o = unmarshaller.unmarshal( source );
-                        if ( o instanceof JAXBElement<?> )
+                        try ( final InputStream in = con.getInputStream() )
                         {
-                            o = ( (JAXBElement<?>) o ).getValue();
-                        }
+                            final Source source = new StreamSource( in, urls[i].toURI().toASCIIString() );
+                            Object o = unmarshaller.unmarshal( source );
+                            if ( o instanceof JAXBElement<?> )
+                            {
+                                o = ( (JAXBElement<?>) o ).getValue();
+                            }
 
-                        if ( o instanceof Modlet )
-                        {
-                            modlets.getModlet().add( (Modlet) o );
-                        }
-                        else if ( o instanceof Modlets )
-                        {
-                            modlets.getModlet().addAll( ( (Modlets) o ).getModlet() );
-                        }
-                        else
-                        {
-                            this.logMessage( Level.WARNING, Messages.getMessage( "unsupportedModletResource",
-                                                                                 urls[i].toExternalForm() ) );
+                            if ( o instanceof Modlet )
+                            {
+                                modlets.getModlet().add( (Modlet) o );
+                            }
+                            else if ( o instanceof Modlets )
+                            {
+                                modlets.getModlet().addAll( ( (Modlets) o ).getModlet() );
+                            }
+                            else
+                            {
+                                this.logMessage( Level.WARNING, Messages.getMessage( "unsupportedModletResource",
+                                                                                     urls[i].toExternalForm() ) );
 
+                            }
                         }
-
-                        in.close();
-                        in = null;
                     }
                     catch ( final SocketTimeoutException e )
                     {
@@ -544,23 +539,9 @@ public final class MergeModletsTask extends JomcTask
                     }
                     finally
                     {
-                        try
+                        if ( con instanceof HttpURLConnection )
                         {
-                            if ( in != null )
-                            {
-                                in.close();
-                            }
-                        }
-                        catch ( final IOException e )
-                        {
-                            this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
-                        }
-                        finally
-                        {
-                            if ( con instanceof HttpURLConnection )
-                            {
-                                ( (HttpURLConnection) con ).disconnect();
-                            }
+                            ( (HttpURLConnection) con ).disconnect();
                         }
                     }
                 }
@@ -631,15 +612,8 @@ public final class MergeModletsTask extends JomcTask
             marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
             marshaller.setSchema( context.createSchema( ModletObject.MODEL_PUBLIC_ID ) );
             marshaller.marshal( new ObjectFactory().createModlet( mergedModlet ), this.getModletFile() );
-
-            classLoader.close();
-            classLoader = null;
         }
-        catch ( final IOException e )
-        {
-            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
-        }
-        catch ( final URISyntaxException e )
+        catch ( final IOException | URISyntaxException | ModelException e )
         {
             throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
@@ -660,24 +634,6 @@ public final class MergeModletsTask extends JomcTask
         catch ( final TransformerException e )
         {
             throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
-        }
-        catch ( final ModelException e )
-        {
-            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
-        }
-        finally
-        {
-            try
-            {
-                if ( classLoader != null )
-                {
-                    classLoader.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
-            }
         }
     }
 
@@ -707,7 +663,7 @@ public final class MergeModletsTask extends JomcTask
             }
         }
 
-        return this.getModletIncludes().isEmpty() ? true : false;
+        return this.getModletIncludes().isEmpty();
     }
 
     /**
@@ -750,7 +706,7 @@ public final class MergeModletsTask extends JomcTask
 
         if ( this.modletResources != null )
         {
-            clone.modletResources = new HashSet<ModletResourceType>( this.modletResources.size() );
+            clone.modletResources = new HashSet<>( this.modletResources.size() );
             for ( final ModletResourceType e : this.modletResources )
             {
                 clone.modletResources.add( e.clone() );
@@ -759,7 +715,7 @@ public final class MergeModletsTask extends JomcTask
 
         if ( this.modletExcludes != null )
         {
-            clone.modletExcludes = new HashSet<NameType>( this.modletExcludes.size() );
+            clone.modletExcludes = new HashSet<>( this.modletExcludes.size() );
             for ( final NameType e : this.modletExcludes )
             {
                 clone.modletExcludes.add( e.clone() );
@@ -768,7 +724,7 @@ public final class MergeModletsTask extends JomcTask
 
         if ( this.modletIncludes != null )
         {
-            clone.modletIncludes = new HashSet<NameType>( this.modletIncludes.size() );
+            clone.modletIncludes = new HashSet<>( this.modletIncludes.size() );
             for ( final NameType e : this.modletIncludes )
             {
                 clone.modletIncludes.add( e.clone() );
@@ -777,8 +733,7 @@ public final class MergeModletsTask extends JomcTask
 
         if ( this.modletObjectStylesheetResources != null )
         {
-            clone.modletObjectStylesheetResources =
-                new ArrayList<TransformerResourceType>( this.modletObjectStylesheetResources.size() );
+            clone.modletObjectStylesheetResources = new ArrayList<>( this.modletObjectStylesheetResources.size() );
 
             for ( final TransformerResourceType e : this.modletObjectStylesheetResources )
             {

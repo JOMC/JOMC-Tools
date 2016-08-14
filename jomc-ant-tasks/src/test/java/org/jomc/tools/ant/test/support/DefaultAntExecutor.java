@@ -32,6 +32,7 @@ package org.jomc.tools.ant.test.support;
 
 import java.io.PrintStream;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 import org.apache.commons.io.output.WriterOutputStream;
 import org.apache.tools.ant.BuildEvent;
 import org.apache.tools.ant.BuildListener;
@@ -53,6 +54,7 @@ public class DefaultAntExecutor implements AntExecutor
         super();
     }
 
+    @Override
     public AntExecutionResult executeAnt( final AntExecutionRequest request )
     {
         if ( request == null )
@@ -70,44 +72,51 @@ public class DefaultAntExecutor implements AntExecutor
 
         final StringWriter out = new StringWriter();
         final StringWriter err = new StringWriter();
-        final PrintStream writerOut = new PrintStream( new WriterOutputStream( out ) );
-        final PrintStream writerErr = new PrintStream( new WriterOutputStream( err ) );
+        final PrintStream writerOut = new PrintStream( new WriterOutputStream( out, Charset.forName( "UTF-8" ) ) );
+        final PrintStream writerErr = new PrintStream( new WriterOutputStream( err, Charset.forName( "UTF-8" ) ) );
         final PrintStream systemOut = System.out;
         final PrintStream systemErr = System.err;
         final AntExecutionResult result = new AntExecutionResult();
         final BuildListener buildListener = new BuildListener()
         {
 
+            @Override
             public void buildStarted( final BuildEvent event )
             {
                 result.getBuildStartedEvents().add( event );
             }
 
+            @Override
             public void buildFinished( final BuildEvent event )
             {
                 result.getBuildFinishedEvents().add( event );
             }
 
+            @Override
             public void targetStarted( final BuildEvent event )
             {
                 result.getTargetStartedEvents().add( event );
             }
 
+            @Override
             public void targetFinished( final BuildEvent event )
             {
                 result.getTaskFinishedEvents().add( event );
             }
 
+            @Override
             public void taskStarted( final BuildEvent event )
             {
                 result.getTaskStartedEvents().add( event );
             }
 
+            @Override
             public void taskFinished( final BuildEvent event )
             {
                 result.getTaskFinishedEvents().add( event );
             }
 
+            @Override
             public void messageLogged( final BuildEvent event )
             {
                 result.getMessageLoggedEvents().add( event );

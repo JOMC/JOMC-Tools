@@ -74,34 +74,24 @@
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
-        <version>2.2</version>
+        <version>2.5</version>
       </dependency>
 
       <!-- Maven -->
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-plugin-api</artifactId>
-        <version>2.0</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.maven</groupId>
-        <artifactId>maven-project</artifactId>
-        <version>2.0</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.maven</groupId>
-        <artifactId>maven-artifact</artifactId>
-        <version>2.0</version>
+        <version>3.0</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-core</artifactId>
-        <version>2.0</version>
+        <version>3.0</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-model</artifactId>
-        <version>2.0</version>
+        <version>3.0</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.plugins</groupId>
@@ -123,45 +113,12 @@
       <dependency>
         <groupId>org.apache.bcel</groupId>
         <artifactId>bcel</artifactId>
-        <version>5.2</version>
+        <version>6.0</version>
       </dependency>
       <dependency>
         <groupId>org.apache.ant</groupId>
         <artifactId>ant</artifactId>
-        <version>1.9.0</version>
-      </dependency>
-
-      <!-- JAXB -->
-      <dependency>
-        <groupId>javax.xml.bind</groupId>
-        <artifactId>jaxb-api</artifactId>
-        <version>2.2.3</version>
-      </dependency>
-      <dependency>
-        <groupId>javax.xml.stream</groupId>
-        <artifactId>stax-api</artifactId>
-        <version>1.0-2</version>
-      </dependency>
-      <dependency>
-        <groupId>javax.activation</groupId>
-        <artifactId>activation</artifactId>
-        <version>1.1.1</version>
-      </dependency>
-      <dependency>
-        <groupId>com.sun.xml.bind</groupId>
-        <artifactId>jaxb-impl</artifactId>
-        <version>2.2.4-1</version>
-      </dependency>
-
-      <!-- Misc -->
-      <dependency>
-        <groupId>javax.annotation</groupId>
-        <artifactId>jsr250-api</artifactId>
-        <version>1.0</version>
-        <!--
-        https://issues.apache.org/jira/browse/MNG-5227
-        -->
-        <optional>true</optional>
+        <version>1.9.7</version>
       </dependency>
 
       <!-- Test -->
@@ -241,6 +198,11 @@
     <jomc-maven-plugin.artifact.version>2.0-SNAPSHOT</jomc-maven-plugin.artifact.version>
     <jomc-ant-tasks.artifact.version>2.0-SNAPSHOT</jomc-ant-tasks.artifact.version>
     <!-- Parent. -->
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <jomc.animal-sniffer.signature.groupId>org.codehaus.mojo.signature</jomc.animal-sniffer.signature.groupId>
+    <jomc.animal-sniffer.signature.artifactId>java17</jomc.animal-sniffer.signature.artifactId>
+    <jomc.animal-sniffer.signature.version>1.0</jomc.animal-sniffer.signature.version>
     <jomc.scm.location>jomc-tools</jomc.scm.location>
     <jomc.site.location>jomc-tools/2.0-SNAPSHOT</jomc.site.location>
     <jomc.trac.query>order=id&amp;version=2.0-SNAPSHOT&amp;component=JOMC Tools|${project.name}</jomc.trac.query>

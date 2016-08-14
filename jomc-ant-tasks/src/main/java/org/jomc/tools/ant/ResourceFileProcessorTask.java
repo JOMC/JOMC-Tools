@@ -165,14 +165,7 @@ public class ResourceFileProcessorTask extends JomcToolTask
             this.configureResourceFileProcessor( resourceFileProcessor );
             return resourceFileProcessor;
         }
-        catch ( final InstantiationException e )
-        {
-            throw new BuildException( Messages.getMessage( "failedCreatingObject",
-                                                           this.getResourceFileProcessorClass().getName() ),
-                                      e, this.getLocation() );
-
-        }
-        catch ( final IllegalAccessException e )
+        catch ( final ReflectiveOperationException e )
         {
             throw new BuildException( Messages.getMessage( "failedCreatingObject",
                                                            this.getResourceFileProcessorClass().getName() ),

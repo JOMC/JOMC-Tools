@@ -330,6 +330,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
         super();
     }
 
+    @Override
     public boolean canTransformResource( final String arg )
     {
         boolean transformable = false;
@@ -396,6 +397,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
         return transformable;
     }
 
+    @Override
     public void processResource( final InputStream in ) throws IOException
     {
         try
@@ -444,10 +446,9 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
                 }
             }
         }
-        catch ( final InstantiationException e )
+        catch ( final InstantiationException | ModelException e )
         {
-            // JDK: As of JDK 6, "new IOException( message, cause )".
-            throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
+            throw new IOException( Messages.getMessage( e ), e );
         }
         catch ( final JAXBException e )
         {
@@ -457,13 +458,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
                 message = Messages.getMessage( e.getLinkedException() );
             }
 
-            // JDK: As of JDK 6, "new IOException( message, cause )".
-            throw (IOException) new IOException( message ).initCause( e );
-        }
-        catch ( final ModelException e )
-        {
-            // JDK: As of JDK 6, "new IOException( message, cause )".
-            throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
+            throw new IOException( message, e );
         }
     }
 
@@ -473,11 +468,13 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
         this.processResource( in );
     }
 
+    @Override
     public boolean hasTransformedResource()
     {
         return !( this.modules.getModule().isEmpty() && this.modlets.getModlet().isEmpty() );
     }
 
+    @Override
     public void modifyOutputStream( final JarOutputStream out ) throws IOException
     {
         if ( StringUtils.isEmpty( this.model ) )
@@ -625,10 +622,9 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
                 this.marshalModletObject( transformedModlet, out );
             }
         }
-        catch ( final InstantiationException e )
+        catch ( final InstantiationException | ModelException | URISyntaxException e )
         {
-            // JDK: As of JDK 6, "new IOException( message, cause )".
-            throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
+            throw new IOException( Messages.getMessage( e ), e );
         }
         catch ( final TransformerConfigurationException e )
         {
@@ -638,8 +634,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
                 message = Messages.getMessage( e.getException() );
             }
 
-            // JDK: As of JDK 6, "new IOException( message, cause )".
-            throw (IOException) new IOException( message ).initCause( e );
+            throw new IOException( message, e );
         }
         catch ( final TransformerException e )
         {
@@ -649,8 +644,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
                 message = Messages.getMessage( e.getException() );
             }
 
-            // JDK: As of JDK 6, "new IOException( message, cause )".
-            throw (IOException) new IOException( message ).initCause( e );
+            throw new IOException( message, e );
         }
         catch ( final JAXBException e )
         {
@@ -660,18 +654,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
                 message = Messages.getMessage( e.getLinkedException() );
             }
 
-            // JDK: As of JDK 6, "new IOException( message, cause )".
-            throw (IOException) new IOException( message ).initCause( e );
-        }
-        catch ( final ModelException e )
-        {
-            // JDK: As of JDK 6, "new IOException( message, cause )".
-            throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
-        }
-        catch ( final URISyntaxException e )
-        {
-            // JDK: As of JDK 6, "new IOException( message, cause )".
-            throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
+            throw new IOException( message, e );
         }
         finally
         {
@@ -758,10 +741,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
             String m = Messages.getMessage( e );
             m = m == null ? "" : " " + m;
 
-            // JDK: As of JDK 6, "new IOException( message, cause )".
-            throw (IOException) new IOException( Messages.getMessage(
-                "malformedLocation", location, m ) ).initCause( e );
-
+            throw new IOException( Messages.getMessage( "malformedLocation", location, m ), e );
         }
     }
 

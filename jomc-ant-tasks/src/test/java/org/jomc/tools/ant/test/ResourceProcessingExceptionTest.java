@@ -30,7 +30,6 @@
  */
 package org.jomc.tools.ant.test;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import org.jomc.tools.ant.ResourceProcessingException;
 import org.junit.Test;
@@ -61,34 +60,14 @@ public class ResourceProcessingExceptionTest
     @Test
     public final void testResourceProcessingException() throws Exception
     {
-        ObjectInputStream in = null;
-
-        try
+        final ResourceProcessingException e;
+        try ( final ObjectInputStream in = new ObjectInputStream( this.getClass().getResourceAsStream(
+            ABSOLUTE_RESOURCE_NAME_PREFIX + "ResourceProcessingException.ser" ) ) )
         {
-            in = new ObjectInputStream( this.getClass().getResourceAsStream(
-                ABSOLUTE_RESOURCE_NAME_PREFIX + "ResourceProcessingException.ser" ) );
-
-            final ResourceProcessingException e = (ResourceProcessingException) in.readObject();
-
-            in.close();
-            in = null;
-
-            System.out.println( e );
+            e = (ResourceProcessingException) in.readObject();
         }
-        finally
-        {
-            try
-            {
-                if ( in != null )
-                {
-                    in.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                // Suppressed.
-            }
-        }
+
+        System.out.println( e );
     }
 
 }

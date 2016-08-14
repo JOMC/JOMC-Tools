@@ -31,11 +31,9 @@
 package org.jomc.tools.maven;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
@@ -241,6 +239,7 @@ public abstract class AbstractAttachMojo extends AbstractMojo
      */
     protected abstract String getExecutionStrategy();
 
+    @Override
     public final void execute() throws MojoExecutionException, MojoFailureException
     {
         final File attachment =
@@ -343,56 +342,9 @@ public abstract class AbstractAttachMojo extends AbstractMojo
      */
     protected final void copyFile( final File source, final File target ) throws IOException
     {
-        InputStream in = null;
-        OutputStream out = null;
-        try
-        {
-            if ( !source.equals( target ) )
-            {
-                in = new FileInputStream( source );
-                out = new FileOutputStream( target );
+        Files.copy( source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING,
+                    StandardCopyOption.COPY_ATTRIBUTES );
 
-                final byte[] buffer = new byte[ 65536 ];
-
-                for ( int read = in.read();
-                      read >= 0;
-                      out.write( buffer, 0, read ), read = in.read( buffer ) );
-
-                out.close();
-                out = null;
-
-                in.close();
-                in = null;
-            }
-        }
-        finally
-        {
-            try
-            {
-                if ( out != null )
-                {
-                    out.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                this.getLog().warn( e );
-            }
-            finally
-            {
-                try
-                {
-                    if ( in != null )
-                    {
-                        in.close();
-                    }
-                }
-                catch ( final IOException e )
-                {
-                    this.getLog().warn( e );
-                }
-            }
-        }
     }
 
 }

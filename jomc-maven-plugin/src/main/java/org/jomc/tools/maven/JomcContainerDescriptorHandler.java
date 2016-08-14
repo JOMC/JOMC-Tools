@@ -311,6 +311,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
         super();
     }
 
+    @Override
     public void finalizeArchiveCreation( final Archiver archiver ) throws ArchiverException
     {
         if ( StringUtils.isEmpty( this.model ) )
@@ -472,7 +473,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
                 archiver.addFile( modletFile, normalizeResourceName( this.modletResource ) );
             }
         }
-        catch ( final InstantiationException e )
+        catch ( final InstantiationException | ModelException | IOException | URISyntaxException e )
         {
             throw new ArchiverException( Messages.getMessage( e ), e );
         }
@@ -506,18 +507,6 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
 
             throw new ArchiverException( message, e );
         }
-        catch ( final ModelException e )
-        {
-            throw new ArchiverException( Messages.getMessage( e ), e );
-        }
-        catch ( final IOException e )
-        {
-            throw new ArchiverException( Messages.getMessage( e ), e );
-        }
-        catch ( final URISyntaxException e )
-        {
-            throw new ArchiverException( Messages.getMessage( e ), e );
-        }
         finally
         {
             this.modlets = new Modlets();
@@ -529,13 +518,15 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
         }
     }
 
+    @Override
     public void finalizeArchiveExtraction( final UnArchiver unarchiver ) throws ArchiverException
     {
     }
 
+    @Override
     public List<String> getVirtualFiles()
     {
-        final List<String> virtualFiles = new LinkedList<String>();
+        final List<String> virtualFiles = new LinkedList<>();
 
         if ( !this.modlets.getModlet().isEmpty() )
         {
@@ -550,6 +541,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
         return virtualFiles.isEmpty() ? null : Collections.unmodifiableList( virtualFiles );
     }
 
+    @Override
     public boolean isSelected( final FileInfo fileInfo ) throws IOException
     {
         try
@@ -638,10 +630,9 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
 
             return selected;
         }
-        catch ( final InstantiationException e )
+        catch ( final InstantiationException | ModelException e )
         {
-            // JDK: As of JDK 6, "new IOException( message, cause )".
-            throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
+            throw new IOException( Messages.getMessage( e ), e );
         }
         catch ( final JAXBException e )
         {
@@ -651,13 +642,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
                 message = Messages.getMessage( e.getLinkedException() );
             }
 
-            // JDK: As of JDK 6, "new IOException( message, cause )".
-            throw (IOException) new IOException( message ).initCause( e );
-        }
-        catch ( final ModelException e )
-        {
-            // JDK: As of JDK 6, "new IOException( message, cause )".
-            throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
+            throw new IOException( message, e );
         }
     }
 
@@ -733,10 +718,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
             String m = Messages.getMessage( e );
             m = m == null ? "" : " " + m;
 
-            // JDK: As of JDK 6, "new IOException( message, cause )".
-            throw (IOException) new IOException( Messages.getMessage(
-                "malformedLocation", location, m ) ).initCause( e );
-
+            throw new IOException( Messages.getMessage( "malformedLocation", location, m ), e );
         }
     }
 

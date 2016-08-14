@@ -177,7 +177,7 @@ public class AntExecutionResult
     {
         if ( this.buildStartedEvents == null )
         {
-            this.buildStartedEvents = new LinkedList<BuildEvent>();
+            this.buildStartedEvents = new LinkedList<>();
         }
 
         return this.buildStartedEvents;
@@ -197,7 +197,7 @@ public class AntExecutionResult
     {
         if ( this.buildFinishedEvents == null )
         {
-            this.buildFinishedEvents = new LinkedList<BuildEvent>();
+            this.buildFinishedEvents = new LinkedList<>();
         }
 
         return this.buildFinishedEvents;
@@ -217,7 +217,7 @@ public class AntExecutionResult
     {
         if ( this.targetStartedEvents == null )
         {
-            this.targetStartedEvents = new LinkedList<BuildEvent>();
+            this.targetStartedEvents = new LinkedList<>();
         }
 
         return this.targetStartedEvents;
@@ -237,7 +237,7 @@ public class AntExecutionResult
     {
         if ( this.targetFinishedEvents == null )
         {
-            this.targetFinishedEvents = new LinkedList<BuildEvent>();
+            this.targetFinishedEvents = new LinkedList<>();
         }
 
         return this.targetFinishedEvents;
@@ -257,7 +257,7 @@ public class AntExecutionResult
     {
         if ( this.taskStartedEvents == null )
         {
-            this.taskStartedEvents = new LinkedList<BuildEvent>();
+            this.taskStartedEvents = new LinkedList<>();
         }
 
         return this.taskStartedEvents;
@@ -277,7 +277,7 @@ public class AntExecutionResult
     {
         if ( this.taskFinishedEvents == null )
         {
-            this.taskFinishedEvents = new LinkedList<BuildEvent>();
+            this.taskFinishedEvents = new LinkedList<>();
         }
 
         return this.taskFinishedEvents;
@@ -297,7 +297,7 @@ public class AntExecutionResult
     {
         if ( this.messageLoggedEvents == null )
         {
-            this.messageLoggedEvents = new LinkedList<BuildEvent>();
+            this.messageLoggedEvents = new LinkedList<>();
         }
 
         return this.messageLoggedEvents;

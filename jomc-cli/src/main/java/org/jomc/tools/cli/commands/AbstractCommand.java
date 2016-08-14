@@ -113,6 +113,7 @@ public abstract class AbstractCommand implements Command
      * @see #setLogLevel(java.util.logging.Level)
      * @see #isLoggable(java.util.logging.Level)
      */
+    @Override
     public final Level getLogLevel()
     {
         if ( this.logLevel == null )
@@ -138,6 +139,7 @@ public abstract class AbstractCommand implements Command
      * @see #getLogLevel()
      * @see #isLoggable(java.util.logging.Level)
      */
+    @Override
     public final void setLogLevel( final Level value )
     {
         this.logLevel = value;
@@ -155,11 +157,12 @@ public abstract class AbstractCommand implements Command
      *
      * @see #log(java.util.logging.Level, java.lang.String, java.lang.Throwable)
      */
+    @Override
     public final List<Listener> getListeners()
     {
         if ( this.listeners == null )
         {
-            this.listeners = new LinkedList<Listener>();
+            this.listeners = new LinkedList<>();
         }
 
         return this.listeners;
@@ -216,6 +219,7 @@ public abstract class AbstractCommand implements Command
         }
     }
 
+    @Override
     public final int execute( final CommandLine commandLine )
     {
         if ( commandLine == null )

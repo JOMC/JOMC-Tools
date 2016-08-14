@@ -110,19 +110,7 @@ public abstract class AbstractJomcToolCommand extends AbstractModelCommand
         {
             return Class.forName( className ).asSubclass( type ).newInstance();
         }
-        catch ( final InstantiationException e )
-        {
-            throw new CommandExecutionException( Messages.getMessage( "objectCreationFailure", className ), e );
-        }
-        catch ( final IllegalAccessException e )
-        {
-            throw new CommandExecutionException( Messages.getMessage( "objectCreationFailure", className ), e );
-        }
-        catch ( final ClassNotFoundException e )
-        {
-            throw new CommandExecutionException( Messages.getMessage( "objectCreationFailure", className ), e );
-        }
-        catch ( final ClassCastException e )
+        catch ( final ReflectiveOperationException e )
         {
             throw new CommandExecutionException( Messages.getMessage( "objectCreationFailure", className ), e );
         }

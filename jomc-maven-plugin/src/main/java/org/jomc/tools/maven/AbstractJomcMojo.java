@@ -32,11 +32,8 @@ package org.jomc.tools.maven;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
@@ -47,6 +44,13 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLConnection;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -710,6 +714,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @see #isExecutionPermitted()
      * @see #executeTool()
      */
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         this.assertValidParameters();
@@ -1034,7 +1039,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         try
         {
             final Set<String> mainClasspathElements = this.getMainClasspathElements();
-            final Set<URI> uris = new HashSet<URI>( mainClasspathElements.size() );
+            final Set<URI> uris = new HashSet<>( mainClasspathElements.size() );
 
             for ( final String element : mainClasspathElements )
             {
@@ -1064,7 +1069,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             return new URLClassLoader( urls, Thread.currentThread().getContextClassLoader() );
         }
-        catch ( final IOException e )
+        catch ( final MalformedURLException e )
         {
             throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
@@ -1082,7 +1087,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         try
         {
             final Set<String> testClasspathElements = this.getTestClasspathElements();
-            final Set<URI> uris = new HashSet<URI>( testClasspathElements.size() );
+            final Set<URI> uris = new HashSet<>( testClasspathElements.size() );
 
             for ( final String element : testClasspathElements )
             {
@@ -1112,7 +1117,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             return new URLClassLoader( urls, Thread.currentThread().getContextClassLoader() );
         }
-        catch ( final IOException e )
+        catch ( final MalformedURLException e )
         {
             throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
@@ -1129,7 +1134,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         final List<?> runtimeArtifacts = this.getMavenProject().getRuntimeArtifacts();
         final List<?> compileArtifacts = this.getMavenProject().getCompileArtifacts();
-        final Set<String> elements = new HashSet<String>( runtimeArtifacts.size() + compileArtifacts.size() + 1 );
+        final Set<String> elements = new HashSet<>( runtimeArtifacts.size() + compileArtifacts.size() + 1 );
         elements.add( this.getOutputDirectory().getAbsolutePath() );
 
         for ( final Iterator<?> it = runtimeArtifacts.iterator(); it.hasNext(); )
@@ -1207,7 +1212,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     protected Set<String> getTestClasspathElements() throws MojoExecutionException
     {
         final List<?> testArtifacts = this.getMavenProject().getTestArtifacts();
-        final Set<String> elements = new HashSet<String>( testArtifacts.size() + 2 );
+        final Set<String> elements = new HashSet<>( testArtifacts.size() + 2 );
         elements.add( this.getOutputDirectory().getAbsolutePath() );
         elements.add( this.getTestOutputDirectory().getAbsolutePath() );
 
@@ -1670,15 +1675,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             throw new MojoExecutionException( Messages.getMessage( "failedSearchingClass", className, m ), e );
         }
-        catch ( final InstantiationException e )
-        {
-            throw new MojoExecutionException( Messages.getMessage( "failedCreatingObject", className ), e );
-        }
-        catch ( final IllegalAccessException e )
-        {
-            throw new MojoExecutionException( Messages.getMessage( "failedCreatingObject", className ), e );
-        }
-        catch ( final ClassCastException e )
+        catch ( final InstantiationException | IllegalAccessException | ClassCastException e )
         {
             throw new MojoExecutionException( Messages.getMessage( "failedCreatingObject", className ), e );
         }
@@ -1798,7 +1795,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
         try
         {
-            URL resource = null;
+            URL resource;
 
             try
             {
@@ -1863,11 +1860,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
 
         URLConnection con = null;
-        InputStream in = null;
         final URL url = this.getResource( modelContext, resource.getLocation() );
         final ErrorListener errorListener = new ErrorListener()
         {
 
+            @Override
             public void warning( final TransformerException exception ) throws TransformerException
             {
                 try
@@ -1881,6 +1878,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 }
             }
 
+            @Override
             public void error( final TransformerException exception ) throws TransformerException
             {
                 try
@@ -1896,6 +1894,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 throw exception;
             }
 
+            @Override
             public void fatalError( final TransformerException exception ) throws TransformerException
             {
                 try
@@ -1926,79 +1925,78 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 con.setConnectTimeout( resource.getConnectTimeout() );
                 con.setReadTimeout( resource.getReadTimeout() );
                 con.connect();
-                in = con.getInputStream();
 
-                final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                transformerFactory.setErrorListener( errorListener );
-                final Transformer transformer =
-                    transformerFactory.newTransformer( new StreamSource( in, url.toURI().toASCIIString() ) );
-
-                transformer.setErrorListener( errorListener );
-
-                for ( final Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+                try ( final InputStream in = con.getInputStream() )
                 {
-                    transformer.setParameter( e.getKey().toString(), e.getValue() );
-                }
+                    final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                    transformerFactory.setErrorListener( errorListener );
+                    final Transformer transformer =
+                        transformerFactory.newTransformer( new StreamSource( in, url.toURI().toASCIIString() ) );
 
-                if ( this.getMavenProject().getProperties() != null )
-                {
-                    for ( final Map.Entry<Object, Object> e : this.getMavenProject().getProperties().entrySet() )
+                    transformer.setErrorListener( errorListener );
+
+                    for ( final Map.Entry<Object, Object> e : System.getProperties().entrySet() )
                     {
                         transformer.setParameter( e.getKey().toString(), e.getValue() );
                     }
-                }
 
-                if ( this.transformationParameterResources != null )
-                {
-                    for ( int i = 0, s0 = this.transformationParameterResources.size(); i < s0; i++ )
+                    if ( this.getMavenProject().getProperties() != null )
                     {
-                        for ( final Map.Entry<Object, Object> e : this.getProperties(
-                            modelContext, this.transformationParameterResources.get( i ) ).entrySet() )
+                        for ( final Map.Entry<Object, Object> e : this.getMavenProject().getProperties().entrySet() )
                         {
                             transformer.setParameter( e.getKey().toString(), e.getValue() );
                         }
                     }
-                }
 
-                if ( this.transformationParameters != null )
-                {
-                    for ( final TransformationParameter e : this.transformationParameters )
+                    if ( this.transformationParameterResources != null )
+                    {
+                        for ( int i = 0, s0 = this.transformationParameterResources.size(); i < s0; i++ )
+                        {
+                            for ( final Map.Entry<Object, Object> e : this.getProperties(
+                                modelContext, this.transformationParameterResources.get( i ) ).entrySet() )
+                            {
+                                transformer.setParameter( e.getKey().toString(), e.getValue() );
+                            }
+                        }
+                    }
+
+                    if ( this.transformationParameters != null )
+                    {
+                        for ( final TransformationParameter e : this.transformationParameters )
+                        {
+                            transformer.setParameter( e.getKey(), e.getObject( modelContext ) );
+                        }
+                    }
+
+                    if ( this.transformationOutputProperties != null )
+                    {
+                        for ( final TransformationOutputProperty e : this.transformationOutputProperties )
+                        {
+                            transformer.setOutputProperty( e.getKey(), e.getValue() );
+                        }
+                    }
+
+                    for ( int i = 0, s0 = resource.getTransformationParameterResources().size(); i < s0; i++ )
+                    {
+                        for ( final Map.Entry<Object, Object> e : this.getProperties(
+                            modelContext, resource.getTransformationParameterResources().get( i ) ).entrySet() )
+                        {
+                            transformer.setParameter( e.getKey().toString(), e.getValue() );
+                        }
+                    }
+
+                    for ( final TransformationParameter e : resource.getTransformationParameters() )
                     {
                         transformer.setParameter( e.getKey(), e.getObject( modelContext ) );
                     }
-                }
 
-                if ( this.transformationOutputProperties != null )
-                {
-                    for ( final TransformationOutputProperty e : this.transformationOutputProperties )
+                    for ( final TransformationOutputProperty e : resource.getTransformationOutputProperties() )
                     {
                         transformer.setOutputProperty( e.getKey(), e.getValue() );
                     }
+
+                    return transformer;
                 }
-
-                for ( int i = 0, s0 = resource.getTransformationParameterResources().size(); i < s0; i++ )
-                {
-                    for ( final Map.Entry<Object, Object> e : this.getProperties(
-                        modelContext, resource.getTransformationParameterResources().get( i ) ).entrySet() )
-                    {
-                        transformer.setParameter( e.getKey().toString(), e.getValue() );
-                    }
-                }
-
-                for ( final TransformationParameter e : resource.getTransformationParameters() )
-                {
-                    transformer.setParameter( e.getKey(), e.getObject( modelContext ) );
-                }
-
-                for ( final TransformationOutputProperty e : resource.getTransformationOutputProperties() )
-                {
-                    transformer.setOutputProperty( e.getKey(), e.getValue() );
-                }
-
-                in.close();
-                in = null;
-
-                return transformer;
             }
             else if ( resource.isOptional() )
             {
@@ -2016,11 +2014,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             }
         }
-        catch ( final InstantiationException e )
-        {
-            throw new MojoExecutionException( Messages.getMessage( e ), e );
-        }
-        catch ( final URISyntaxException e )
+        catch ( final InstantiationException | URISyntaxException e )
         {
             throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
@@ -2082,23 +2076,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         finally
         {
-            try
+            if ( con instanceof HttpURLConnection )
             {
-                if ( in != null )
-                {
-                    in.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                this.getLog().error( e );
-            }
-            finally
-            {
-                if ( con instanceof HttpURLConnection )
-                {
-                    ( (HttpURLConnection) con ).disconnect();
-                }
+                ( (HttpURLConnection) con ).disconnect();
             }
         }
 
@@ -2133,7 +2113,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
 
         URLConnection con = null;
-        InputStream in = null;
         final URL url = this.getResource( modelContext, propertiesResourceType.getLocation() );
         final Properties properties = new Properties();
 
@@ -2151,19 +2130,17 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 con.setReadTimeout( propertiesResourceType.getReadTimeout() );
                 con.connect();
 
-                in = con.getInputStream();
-
-                if ( PropertiesResourceType.PLAIN_FORMAT.equalsIgnoreCase( propertiesResourceType.getFormat() ) )
+                try ( final InputStream in = con.getInputStream() )
                 {
-                    properties.load( in );
+                    if ( PropertiesResourceType.PLAIN_FORMAT.equalsIgnoreCase( propertiesResourceType.getFormat() ) )
+                    {
+                        properties.load( in );
+                    }
+                    else if ( PropertiesResourceType.XML_FORMAT.equalsIgnoreCase( propertiesResourceType.getFormat() ) )
+                    {
+                        properties.loadFromXML( in );
+                    }
                 }
-                else if ( PropertiesResourceType.XML_FORMAT.equalsIgnoreCase( propertiesResourceType.getFormat() ) )
-                {
-                    properties.loadFromXML( in );
-                }
-
-                in.close();
-                in = null;
             }
             else if ( propertiesResourceType.isOptional() )
             {
@@ -2225,23 +2202,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         finally
         {
-            try
+            if ( con instanceof HttpURLConnection )
             {
-                if ( in != null )
-                {
-                    in.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                this.getLog().error( e );
-            }
-            finally
-            {
-                if ( con instanceof HttpURLConnection )
-                {
-                    ( (HttpURLConnection) con ).disconnect();
-                }
+                ( (HttpURLConnection) con ).disconnect();
             }
         }
 
@@ -2436,20 +2399,20 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     protected void log( final Level level, final String message, final Throwable throwable )
         throws MojoExecutionException
     {
-        BufferedReader reader = null;
-
-        try
+        if ( this.isLoggable( level ) )
         {
-            if ( this.isLoggable( level ) )
+            try ( final BufferedReader reader = new BufferedReader( new StringReader( message == null
+                                                                                          ? ""
+                                                                                          : message ) ) )
             {
-                reader = new BufferedReader( new StringReader( message == null ? "" : message ) );
                 boolean throwableLogged = false;
 
                 for ( String line = reader.readLine(); line != null; line = reader.readLine() )
                 {
                     final String mojoMessage =
                         Messages.getMessage( this.getLog().isDebugEnabled() ? "debugMessage" : "logMessage", line,
-                                             Thread.currentThread().getName(), new Date( System.currentTimeMillis() ) );
+                                             Thread.currentThread().getName(),
+                                             new Date( System.currentTimeMillis() ) );
 
                     if ( level.intValue() <= Level.CONFIG.intValue() )
                     {
@@ -2470,28 +2433,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
                     throwableLogged = true;
                 }
-
-                reader.close();
-                reader = null;
-            }
-        }
-        catch ( final IOException e )
-        {
-            this.getLog().error( e );
-            throw new AssertionError( e );
-        }
-        finally
-        {
-            try
-            {
-                if ( reader != null )
-                {
-                    reader.close();
-                }
             }
             catch ( final IOException e )
             {
                 this.getLog().error( e );
+                throw new AssertionError( e );
             }
         }
     }
@@ -2629,11 +2575,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 context.setModlets( modlets );
             }
         }
-        catch ( final InstantiationException e )
-        {
-            throw new MojoExecutionException( Messages.getMessage( e ), e );
-        }
-        catch ( final ModelException e )
+        catch ( final InstantiationException | ModelException e )
         {
             throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
@@ -2807,11 +2749,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 }
             }
         }
-        catch ( final InstantiationException e )
-        {
-            throw new MojoExecutionException( Messages.getMessage( e ), e );
-        }
-        catch ( final IOException e )
+        catch ( final InstantiationException | IOException e )
         {
             throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
@@ -2829,56 +2767,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected final void copyFile( final File source, final File target ) throws IOException
     {
-        InputStream in = null;
-        OutputStream out = null;
-        try
-        {
-            if ( !source.equals( target ) )
-            {
-                in = new FileInputStream( source );
-                out = new FileOutputStream( target );
+        Files.copy( source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING,
+                    StandardCopyOption.COPY_ATTRIBUTES );
 
-                final byte[] buffer = new byte[ 65536 ];
-
-                for ( int read = in.read();
-                      read >= 0;
-                      out.write( buffer, 0, read ), read = in.read( buffer ) );
-
-                out.close();
-                out = null;
-
-                in.close();
-                in = null;
-            }
-        }
-        finally
-        {
-            try
-            {
-                if ( out != null )
-                {
-                    out.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                this.getLog().warn( e );
-            }
-            finally
-            {
-                try
-                {
-                    if ( in != null )
-                    {
-                        in.close();
-                    }
-                }
-                catch ( final IOException e )
-                {
-                    this.getLog().warn( e );
-                }
-            }
-        }
     }
 
     /**
@@ -2898,25 +2789,59 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             throw new IOException( Messages.getMessage( "failedCreatingDirectory", target.getAbsolutePath() ) );
         }
 
-        for ( final File file : source.listFiles() )
+        Files.walkFileTree( source.toPath(), new FileVisitor<Path>()
         {
-            final File targetFile = new File( target, file.getName() );
 
-            if ( file.isFile() )
+            @Override
+            public FileVisitResult preVisitDirectory( final Path sourceDir, final BasicFileAttributes attrs )
+                throws IOException
             {
-                this.copyFile( file, targetFile );
-            }
-            else if ( file.isDirectory() )
-            {
-                this.copyDirectory( file, targetFile );
-            }
-            else
-            {
-                throw new IOException( Messages.getMessage( "failedCopying", file.getAbsolutePath(),
-                                                            targetFile.getAbsolutePath() ) );
+                final Path targetDir = target.toPath().resolve( source.toPath().relativize( sourceDir ) );
+                Files.copy( sourceDir, targetDir, StandardCopyOption.REPLACE_EXISTING,
+                            StandardCopyOption.COPY_ATTRIBUTES );
 
+                return FileVisitResult.CONTINUE;
             }
-        }
+
+            @Override
+            public FileVisitResult visitFile( final Path sourceFile, final BasicFileAttributes attrs )
+                throws IOException
+            {
+                final Path targetFile = target.toPath().resolve( source.toPath().relativize( sourceFile ) );
+                Files.copy( sourceFile, targetFile, StandardCopyOption.REPLACE_EXISTING,
+                            StandardCopyOption.COPY_ATTRIBUTES );
+
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult visitFileFailed( final Path file, final IOException exc )
+                throws IOException
+            {
+                if ( exc != null )
+                {
+                    throw exc;
+                }
+
+                return FileVisitResult.TERMINATE;
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory( final Path sourceDir, final IOException exc )
+                throws IOException
+            {
+                if ( exc != null )
+                {
+                    throw exc;
+                }
+
+                final Path targetDir = target.toPath().resolve( source.toPath().relativize( sourceDir ) );
+                final FileTime time = Files.getLastModifiedTime( sourceDir );
+                Files.setLastModifiedTime( targetDir, time );
+                return FileVisitResult.CONTINUE;
+            }
+
+        } );
     }
 
     private Artifact getPluginArtifact( final Artifact a )

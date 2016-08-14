@@ -31,7 +31,6 @@
 package org.jomc.tools.ant;
 
 import java.io.IOException;
-import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.util.JAXBSource;
@@ -72,13 +71,10 @@ public final class ValidateClasspathTask extends ClassFileProcessorTask
     @Override
     public void processClassFiles() throws BuildException
     {
-        ProjectClassLoader classLoader = null;
+        this.log( Messages.getMessage( "validatingClasspath", this.getModel() ) );
 
-        try
+        try ( final ProjectClassLoader classLoader = this.newProjectClassLoader() )
         {
-            this.log( Messages.getMessage( "validatingClasspath", this.getModel() ) );
-
-            classLoader = this.newProjectClassLoader();
             final ModelContext context = this.newModelContext( classLoader );
             final ClassFileProcessor tool = this.newClassFileProcessor();
             final JAXBContext jaxbContext = context.createContext( this.getModel() );
@@ -154,40 +150,15 @@ public final class ValidateClasspathTask extends ClassFileProcessorTask
                         }
                     }
                 }
-
-                classLoader.close();
-                classLoader = null;
             }
             else
             {
                 throw new ModelException( Messages.getMessage( "invalidModel", this.getModel() ) );
             }
         }
-        catch ( final IOException e )
+        catch ( final IOException | JAXBException | ModelException e )
         {
             throw new ClassProcessingException( Messages.getMessage( e ), e, this.getLocation() );
-        }
-        catch ( final JAXBException e )
-        {
-            throw new ClassProcessingException( Messages.getMessage( e ), e, this.getLocation() );
-        }
-        catch ( final ModelException e )
-        {
-            throw new ClassProcessingException( Messages.getMessage( e ), e, this.getLocation() );
-        }
-        finally
-        {
-            try
-            {
-                if ( classLoader != null )
-                {
-                    classLoader.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
-            }
         }
     }
 

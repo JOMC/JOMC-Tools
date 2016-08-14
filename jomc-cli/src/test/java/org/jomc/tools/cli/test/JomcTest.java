@@ -32,8 +32,10 @@ package org.jomc.tools.cli.test;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import javax.xml.bind.JAXBElement;
@@ -41,7 +43,6 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.jomc.model.ModelObject;
 import org.jomc.model.Module;
 import org.jomc.modlet.ModelContext;
@@ -610,7 +611,13 @@ public class JomcTest
         {
             final URL rsrc = this.getClass().getResource( ABSOLUTE_RESOURCE_NAME_PREFIX + testResourceName );
             assertNotNull( rsrc );
-            FileUtils.copyURLToFile( rsrc, new File( resourcesDirectory, testResourceName ) );
+
+            try ( final InputStream in = rsrc.openStream() )
+            {
+                Files.copy( in, new File( resourcesDirectory, testResourceName ).toPath(),
+                            StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES );
+
+            }
         }
 
         final File classesDirectory = new File( this.getOutputDirectory(), "classes" );
@@ -627,13 +634,8 @@ public class JomcTest
         FileUtils.deleteDirectory( targetDirectory );
         assertTrue( targetDirectory.mkdirs() );
 
-        ZipInputStream in = null;
-        OutputStream out = null;
-
-        try
+        try ( final ZipInputStream in = new ZipInputStream( resource.openStream() ) )
         {
-            in = new ZipInputStream( resource.openStream() );
-
             for ( ZipEntry e = in.getNextEntry(); e != null; e = in.getNextEntry() )
             {
                 if ( e.isDirectory() )
@@ -644,40 +646,10 @@ public class JomcTest
                 final File dest = new File( targetDirectory, e.getName() );
                 assertTrue( dest.isAbsolute() );
 
-                out = FileUtils.openOutputStream( dest );
-                IOUtils.copy( in, out );
-                out.close();
-                out = null;
+                Files.copy( in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING,
+                            StandardCopyOption.COPY_ATTRIBUTES );
 
                 in.closeEntry();
-            }
-        }
-        finally
-        {
-            try
-            {
-                if ( out != null )
-                {
-                    out.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                // Suppressed
-            }
-            finally
-            {
-                try
-                {
-                    if ( in != null )
-                    {
-                        in.close();
-                    }
-                }
-                catch ( final IOException e )
-                {
-                    // Suppressed
-                }
             }
         }
     }

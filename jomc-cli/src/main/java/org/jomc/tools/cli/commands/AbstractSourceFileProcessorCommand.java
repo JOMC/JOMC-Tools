@@ -92,6 +92,7 @@ public abstract class AbstractSourceFileProcessorCommand extends AbstractJomcToo
     /**
      * {@inheritDoc}
      */
+    @Override
     protected final void executeCommand( final CommandLine commandLine ) throws CommandExecutionException
     {
         if ( commandLine == null )

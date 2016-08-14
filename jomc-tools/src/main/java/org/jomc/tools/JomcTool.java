@@ -30,18 +30,13 @@
  */
 package org.jomc.tools;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.MessageFormat;
@@ -119,13 +114,6 @@ public class JomcTool
         }
 
     }
-
-    /**
-     * Empty byte array.
-     */
-    private static final byte[] NO_BYTES =
-    {
-    };
 
     /**
      * The prefix of the template location.
@@ -298,7 +286,7 @@ public class JomcTool
         this.indentation = tool.indentation;
         this.inputEncoding = tool.inputEncoding;
         this.lineSeparator = tool.lineSeparator;
-        this.listeners = tool.listeners != null ? new CopyOnWriteArrayList<Listener>( tool.listeners ) : null;
+        this.listeners = tool.listeners != null ? new CopyOnWriteArrayList<>( tool.listeners ) : null;
         this.logLevel = tool.logLevel;
         this.model = tool.model != null ? tool.model.clone() : null;
         this.outputEncoding = tool.outputEncoding;
@@ -310,7 +298,7 @@ public class JomcTool
         this.locale = tool.locale;
         this.templateParameters =
             tool.templateParameters != null
-                ? Collections.synchronizedMap( new HashMap<String, Object>( tool.templateParameters ) )
+                ? Collections.synchronizedMap( new HashMap<>( tool.templateParameters ) )
                 : null;
 
         this.templateLocation =
@@ -334,7 +322,7 @@ public class JomcTool
     {
         if ( this.listeners == null )
         {
-            this.listeners = new CopyOnWriteArrayList<Listener>();
+            this.listeners = new CopyOnWriteArrayList<>();
         }
 
         return this.listeners;
@@ -919,10 +907,7 @@ public class JomcTool
             throw new NullPointerException( "calendar" );
         }
 
-        return Closeable.class.isAssignableFrom( ClassLoader.class )
-                   ? new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssXXX", this.getLocale() ).format( calendar.getTime() )
-                   : new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ", this.getLocale() ).format( calendar.getTime() );
-
+        return new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssXXX", this.getLocale() ).format( calendar.getTime() );
     }
 
     /**
@@ -949,7 +934,7 @@ public class JomcTool
         final Format yearFormat = new SimpleDateFormat( "yyyy", this.getLocale() );
         final int s = start.get( Calendar.YEAR );
         final int e = end.get( Calendar.YEAR );
-        final StringBuilder years = new StringBuilder();
+        final StringBuilder years = new StringBuilder( 12 );
 
         if ( s != e )
         {
@@ -1042,20 +1027,24 @@ public class JomcTool
                     super();
                 }
 
+                @Override
                 public void init( final RuntimeServices runtimeServices ) throws Exception
                 {
                 }
 
+                @Override
                 public void log( final int level, final String message )
                 {
                     this.log( level, message, null );
                 }
 
+                @Override
                 public void log( final int level, final String message, final Throwable throwable )
                 {
                     JomcTool.this.log( Level.FINEST, message, throwable );
                 }
 
+                @Override
                 public boolean isLevelEnabled( final int level )
                 {
                     return isLoggable( Level.FINEST );
@@ -1114,9 +1103,7 @@ public class JomcTool
     public VelocityContext getVelocityContext() throws IOException
     {
         final Calendar now = Calendar.getInstance();
-        final VelocityContext ctx =
-            new VelocityContext( new HashMap<String, Object>( this.getTemplateParameters() ) );
-
+        final VelocityContext ctx = new VelocityContext( new HashMap<>( this.getTemplateParameters() ) );
         this.mergeTemplateProfileContextProperties( this.getTemplateProfile(), this.getLocale().getLanguage(), ctx );
         this.mergeTemplateProfileContextProperties( this.getTemplateProfile(), null, ctx );
 
@@ -1133,9 +1120,7 @@ public class JomcTool
         ctx.put( "toolUrl", getMessage( "projectUrl" ) );
         ctx.put( "calendar", now.getTime() );
         ctx.put( "now",
-                 Closeable.class.isAssignableFrom( ClassLoader.class )
-                     ? new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", this.getLocale() ).format( now.getTime() )
-                     : new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ", this.getLocale() ).format( now.getTime() ) );
+                 new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", this.getLocale() ).format( now.getTime() ) );
 
         ctx.put( "year", new SimpleDateFormat( "yyyy", this.getLocale() ).format( now.getTime() ) );
         ctx.put( "month", new SimpleDateFormat( "MM", this.getLocale() ).format( now.getTime() ) );
@@ -1143,11 +1128,7 @@ public class JomcTool
         ctx.put( "hour", new SimpleDateFormat( "HH", this.getLocale() ).format( now.getTime() ) );
         ctx.put( "minute", new SimpleDateFormat( "mm", this.getLocale() ).format( now.getTime() ) );
         ctx.put( "second", new SimpleDateFormat( "ss", this.getLocale() ).format( now.getTime() ) );
-        ctx.put( "timezone",
-                 Closeable.class.isAssignableFrom( ClassLoader.class )
-                     ? new SimpleDateFormat( "XXX", this.getLocale() ).format( now.getTime() )
-                     : new SimpleDateFormat( "Z", this.getLocale() ).format( now.getTime() ) );
-
+        ctx.put( "timezone", new SimpleDateFormat( "XXX", this.getLocale() ).format( now.getTime() ) );
         ctx.put( "shortDate", this.getShortDate( now ) );
         ctx.put( "mediumDate", this.getMediumDate( now ) );
         ctx.put( "longDate", this.getLongDate( now ) );
@@ -1182,7 +1163,7 @@ public class JomcTool
     {
         if ( this.templateParameters == null )
         {
-            this.templateParameters = Collections.synchronizedMap( new HashMap<String, Object>() );
+            this.templateParameters = Collections.synchronizedMap( new HashMap<String, Object>( 32 ) );
         }
 
         return this.templateParameters;
@@ -1311,7 +1292,7 @@ public class JomcTool
     {
         if ( this.inputEncoding == null )
         {
-            this.inputEncoding = new InputStreamReader( new ByteArrayInputStream( NO_BYTES ) ).getEncoding();
+            this.inputEncoding = Charset.defaultCharset().name();
 
             if ( this.isLoggable( Level.CONFIG ) )
             {
@@ -1345,7 +1326,7 @@ public class JomcTool
     {
         if ( this.outputEncoding == null )
         {
-            this.outputEncoding = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
+            this.outputEncoding = Charset.defaultCharset().name();
 
             if ( this.isLoggable( Level.CONFIG ) )
             {
@@ -1475,7 +1456,8 @@ public class JomcTool
             }
         }
 
-        return parentTemplateProfile != null ? parentTemplateProfile
+        return parentTemplateProfile != null
+                   ? parentTemplateProfile
                    : tp.equals( this.getDefaultTemplateProfile() ) ? null : this.getDefaultTemplateProfile();
 
     }
@@ -1526,8 +1508,8 @@ public class JomcTool
 
         if ( map == null )
         {
-            map = new ConcurrentHashMap<String, String>( 8 );
-            this.indentationCache = new SoftReference<Map<String, String>>( map );
+            map = new ConcurrentHashMap<>( 8 );
+            this.indentationCache = new SoftReference<>( map );
         }
 
         final String key = this.getIndentation() + "|" + level;
@@ -1719,29 +1701,29 @@ public class JomcTool
             String m = getMessage( e );
             m = m == null ? "" : " " + m;
 
-            // JDK: As of JDK 6, "new IOException( message, cause )".
-            throw (IOException) new IOException( getMessage( "invalidTemplate", location, m ) ).initCause( e );
+            throw new IOException( getMessage( "velocityException", location, m ), e );
         }
         catch ( final VelocityException e )
         {
             String m = getMessage( e );
             m = m == null ? "" : " " + m;
 
-            // JDK: As of JDK 6, "new IOException( message, cause )".
-            throw (IOException) new IOException( getMessage( "velocityException", location, m ) ).initCause( e );
+            throw new IOException( getMessage( "velocityException", location, m ), e );
         }
     }
 
     private java.util.Properties getTemplateProfileContextProperties( final String profileName, final String language )
         throws IOException
     {
-        Map<String, java.util.Properties> map = this.templateProfileContextPropertiesCache == null
-                                                    ? null : this.templateProfileContextPropertiesCache.get();
+        Map<String, java.util.Properties> map =
+            this.templateProfileContextPropertiesCache == null
+                ? null
+                : this.templateProfileContextPropertiesCache.get();
 
         if ( map == null )
         {
-            map = new ConcurrentHashMap<String, java.util.Properties>();
-            this.templateProfileContextPropertiesCache = new SoftReference<Map<String, java.util.Properties>>( map );
+            map = new ConcurrentHashMap<>( 32 );
+            this.templateProfileContextPropertiesCache = new SoftReference<>( map );
         }
 
         final String key = profileName + "|" + language;
@@ -1749,8 +1731,6 @@ public class JomcTool
 
         if ( profileProperties == null )
         {
-            InputStream in = null;
-            URL url = null;
             profileProperties = new java.util.Properties();
 
             final String resourceName = TEMPLATE_PREFIX + profileName + ( language == null ? "" : "/" + language )
@@ -1758,69 +1738,44 @@ public class JomcTool
 
             try
             {
-                url = this.getClass().getResource( "/" + resourceName );
+                URL url = this.getClass().getResource( "/" + resourceName );
+
+                if ( url == null && this.getTemplateLocation() != null )
+                {
+                    url = new URL( this.getTemplateLocation(), resourceName );
+                }
 
                 if ( url != null )
                 {
-                    in = url.openStream();
-
-                    if ( this.isLoggable( Level.CONFIG ) )
+                    try ( final InputStream in = url.openStream() )
                     {
-                        this.log( Level.CONFIG, getMessage( "contextPropertiesFound", url.toExternalForm() ), null );
+                        profileProperties.load( in );
+
+                        if ( this.isLoggable( Level.CONFIG ) )
+                        {
+                            this.log( Level.CONFIG, getMessage( "contextPropertiesFound", url.toExternalForm() ),
+                                      null );
+
+                        }
                     }
-
-                    profileProperties.load( in );
-
-                    in.close();
-                    in = null;
-                }
-                else if ( this.getTemplateLocation() != null )
-                {
-                    if ( this.isLoggable( Level.CONFIG ) )
+                    catch ( final FileNotFoundException e )
                     {
-                        this.log( Level.CONFIG, getMessage( "contextPropertiesNotFound", resourceName ), null );
+                        if ( this.isLoggable( Level.CONFIG ) )
+                        {
+                            this.log( Level.CONFIG, getMessage( "contextPropertiesNotFound", url.toExternalForm() ),
+                                      null );
+
+                        }
                     }
-
-                    url = new URL( this.getTemplateLocation(), resourceName );
-                    in = url.openStream();
-
-                    if ( this.isLoggable( Level.CONFIG ) )
-                    {
-                        this.log( Level.CONFIG, getMessage( "contextPropertiesFound", url.toExternalForm() ), null );
-                    }
-
-                    profileProperties.load( in );
-
-                    in.close();
-                    in = null;
                 }
                 else if ( this.isLoggable( Level.CONFIG ) )
                 {
                     this.log( Level.CONFIG, getMessage( "contextPropertiesNotFound", resourceName ), null );
                 }
             }
-            catch ( final FileNotFoundException e )
-            {
-                if ( this.isLoggable( Level.CONFIG ) )
-                {
-                    this.log( Level.CONFIG, getMessage( "contextPropertiesNotFound", url.toExternalForm() ), null );
-                }
-            }
             finally
             {
                 map.put( key, profileProperties );
-
-                try
-                {
-                    if ( in != null )
-                    {
-                        in.close();
-                    }
-                }
-                catch ( final IOException e )
-                {
-                    this.log( Level.SEVERE, getMessage( e ), e );
-                }
             }
         }
 
@@ -1862,44 +1817,13 @@ public class JomcTool
                             velocityContext.put( name, value );
                         }
                     }
-                    catch ( final InstantiationException ex )
+                    catch ( final ReflectiveOperationException ex )
                     {
-                        // JDK: As of JDK 6, "new IOException( message, cause )".
-                        throw (IOException) new IOException( getMessage(
-                            "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
-                            initCause( ex );
-
-                    }
-                    catch ( final IllegalAccessException ex )
-                    {
-                        // JDK: As of JDK 6, "new IOException( message, cause )".
-                        throw (IOException) new IOException( getMessage(
-                            "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
-                            initCause( ex );
-
-                    }
-                    catch ( final InvocationTargetException ex )
-                    {
-                        // JDK: As of JDK 6, "new IOException( message, cause )".
-                        throw (IOException) new IOException( getMessage(
-                            "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
-                            initCause( ex );
-
-                    }
-                    catch ( final NoSuchMethodException ex )
-                    {
-                        // JDK: As of JDK 6, "new IOException( message, cause )".
-                        throw (IOException) new IOException( getMessage(
-                            "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
-                            initCause( ex );
-
-                    }
-                    catch ( final ClassNotFoundException ex )
-                    {
-                        // JDK: As of JDK 6, "new IOException( message, cause )".
-                        throw (IOException) new IOException( getMessage(
-                            "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
-                            initCause( ex );
+                        throw new IOException( getMessage( "contextPropertiesException", profileName
+                                                                                             + ( language != null
+                                                                                                 ? ", " + language
+                                                                                                 : "" ) ),
+                                               ex );
 
                     }
                 }
@@ -1918,91 +1842,60 @@ public class JomcTool
 
         if ( map == null )
         {
-            map = new ConcurrentHashMap<String, java.util.Properties>();
-            this.templateProfilePropertiesCache = new SoftReference<Map<String, java.util.Properties>>( map );
+            map = new ConcurrentHashMap<>( 32 );
+            this.templateProfilePropertiesCache = new SoftReference<>( map );
         }
 
         java.util.Properties profileProperties = map.get( profileName );
 
         if ( profileProperties == null )
         {
-            InputStream in = null;
             profileProperties = new java.util.Properties();
 
             final String resourceName = TEMPLATE_PREFIX + profileName + "/profile.properties";
-            URL url = null;
 
             try
             {
-                url = this.getClass().getResource( "/" + resourceName );
+                URL url = this.getClass().getResource( "/" + resourceName );
+
+                if ( url == null && this.getTemplateLocation() != null )
+                {
+                    url = new URL( this.getTemplateLocation(), resourceName );
+                }
 
                 if ( url != null )
                 {
-                    in = url.openStream();
-
-                    if ( this.isLoggable( Level.CONFIG ) )
+                    try ( final InputStream in = url.openStream() )
                     {
-                        this.log( Level.CONFIG, getMessage( "templateProfilePropertiesFound", url.toExternalForm() ),
-                                  null );
+                        profileProperties.load( in );
 
+                        if ( this.isLoggable( Level.CONFIG ) )
+                        {
+                            this.log( Level.CONFIG, getMessage( "templateProfilePropertiesFound",
+                                                                url.toExternalForm() ),
+                                      null );
+
+                        }
                     }
-
-                    profileProperties.load( in );
-
-                    in.close();
-                    in = null;
-                }
-                else if ( this.getTemplateLocation() != null )
-                {
-                    if ( this.isLoggable( Level.CONFIG ) )
+                    catch ( final FileNotFoundException e )
                     {
-                        this.log( Level.CONFIG, getMessage( "templateProfilePropertiesNotFound", resourceName ), null );
+                        if ( this.isLoggable( Level.CONFIG ) )
+                        {
+                            this.log( Level.CONFIG, getMessage( "templateProfilePropertiesNotFound",
+                                                                url.toExternalForm() ),
+                                      null );
+
+                        }
                     }
-
-                    url = new URL( this.getTemplateLocation(), resourceName );
-                    in = url.openStream();
-
-                    if ( this.isLoggable( Level.CONFIG ) )
-                    {
-                        this.log( Level.CONFIG, getMessage( "templateProfilePropertiesFound", url.toExternalForm() ),
-                                  null );
-
-                    }
-
-                    profileProperties.load( in );
-
-                    in.close();
-                    in = null;
                 }
                 else if ( this.isLoggable( Level.CONFIG ) )
                 {
                     this.log( Level.CONFIG, getMessage( "templateProfilePropertiesNotFound", resourceName ), null );
                 }
             }
-            catch ( final FileNotFoundException e )
-            {
-                if ( this.isLoggable( Level.CONFIG ) )
-                {
-                    this.log( Level.CONFIG, getMessage( "templateProfilePropertiesNotFound", url.toExternalForm() ),
-                              null );
-
-                }
-            }
             finally
             {
                 map.put( profileName, profileProperties );
-
-                try
-                {
-                    if ( in != null )
-                    {
-                        in.close();
-                    }
-                }
-                catch ( final IOException e )
-                {
-                    this.log( Level.SEVERE, getMessage( e ), e );
-                }
             }
         }
 
@@ -2023,8 +1916,8 @@ public class JomcTool
 
             if ( map == null )
             {
-                map = new ConcurrentHashMap<String, TemplateData>( 32 );
-                this.templateCache = new SoftReference<Map<String, TemplateData>>( map );
+                map = new ConcurrentHashMap<>( 32 );
+                this.templateCache = new SoftReference<>( map );
             }
 
             TemplateData templateData = map.get( key );

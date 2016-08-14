@@ -842,9 +842,11 @@ public class JomcToolTest
         final Properties p = new Properties();
         p.setProperty( "template-encoding", "ISO-8859-1" );
 
-        final OutputStream profileProperties = new FileOutputStream( new File( templatesDir, "profile.properties" ) );
-        p.store( profileProperties, this.getClass().getName() );
-        profileProperties.close();
+        try ( final OutputStream profileProperties = new FileOutputStream( new File( templatesDir,
+                                                                                     "profile.properties" ) ) )
+        {
+            p.store( profileProperties, this.getClass().getName() );
+        }
 
         this.getJomcTool().setDefaultTemplateEncoding( null );
         this.getJomcTool().setTemplateLocation( templateLocation.toURI().toURL() );
@@ -1008,9 +1010,11 @@ public class JomcToolTest
         final Properties p = new Properties();
         p.setProperty( "parent-template-profile", "test" );
 
-        final OutputStream profileProperties = new FileOutputStream( new File( templatesDir, "profile.properties" ) );
-        p.store( profileProperties, this.getClass().getName() );
-        profileProperties.close();
+        try ( final OutputStream profileProperties = new FileOutputStream( new File( templatesDir,
+                                                                                     "profile.properties" ) ) )
+        {
+            p.store( profileProperties, this.getClass().getName() );
+        }
 
         this.getJomcTool().setDefaultTemplateProfile( null );
         this.getJomcTool().setTemplateLocation( templateLocation.toURI().toURL() );

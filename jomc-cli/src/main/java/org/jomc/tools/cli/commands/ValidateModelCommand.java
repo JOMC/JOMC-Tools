@@ -32,7 +32,6 @@ package org.jomc.tools.cli.commands;
 
 import java.io.IOException;
 import java.util.Locale;
-import java.util.logging.Level;
 import org.apache.commons.cli.CommandLine;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
@@ -55,26 +54,31 @@ public final class ValidateModelCommand extends AbstractModelCommand
         super();
     }
 
+    @Override
     public String getName()
     {
         return "validate-model";
     }
 
+    @Override
     public String getAbbreviatedName()
     {
         return "vm";
     }
 
+    @Override
     public String getShortDescription( final Locale locale )
     {
         return Messages.getMessage( "validateModelShortDescription" );
     }
 
+    @Override
     public String getLongDescription( final Locale locale )
     {
         return null;
     }
 
+    @Override
     protected void executeCommand( final CommandLine commandLine ) throws CommandExecutionException
     {
         if ( commandLine == null )
@@ -82,11 +86,8 @@ public final class ValidateModelCommand extends AbstractModelCommand
             throw new NullPointerException( "commandLine" );
         }
 
-        CommandLineClassLoader classLoader = null;
-
-        try
+        try ( final CommandLineClassLoader classLoader = new CommandLineClassLoader( commandLine ) )
         {
-            classLoader = new CommandLineClassLoader( commandLine );
             final ModelContext context = this.createModelContext( commandLine, classLoader );
             final Model model = this.getModel( context, commandLine );
             final ModelValidationReport validationReport = context.validateModel( model );
@@ -98,31 +99,10 @@ public final class ValidateModelCommand extends AbstractModelCommand
                                                                           this.getModel( commandLine ) ) );
 
             }
-
-            classLoader.close();
-            classLoader = null;
         }
-        catch ( final IOException e )
+        catch ( final IOException | ModelException e )
         {
             throw new CommandExecutionException( Messages.getMessage( e ), e );
-        }
-        catch ( final ModelException e )
-        {
-            throw new CommandExecutionException( Messages.getMessage( e ), e );
-        }
-        finally
-        {
-            try
-            {
-                if ( classLoader != null )
-                {
-                    classLoader.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                this.log( Level.SEVERE, Messages.getMessage( e ), e );
-            }
         }
     }
 

@@ -269,7 +269,7 @@ public final class MergeModulesTask extends JomcModelTask
     {
         if ( this.moduleIncludes == null )
         {
-            this.moduleIncludes = new HashSet<NameType>();
+            this.moduleIncludes = new HashSet<>( 128 );
         }
 
         return this.moduleIncludes;
@@ -305,7 +305,7 @@ public final class MergeModulesTask extends JomcModelTask
     {
         if ( this.moduleExcludes == null )
         {
-            this.moduleExcludes = new HashSet<NameType>();
+            this.moduleExcludes = new HashSet<>( 128 );
         }
 
         return this.moduleExcludes;
@@ -341,7 +341,7 @@ public final class MergeModulesTask extends JomcModelTask
     {
         if ( this.modelObjectStylesheetResources == null )
         {
-            this.modelObjectStylesheetResources = new LinkedList<TransformerResourceType>();
+            this.modelObjectStylesheetResources = new LinkedList<>();
         }
 
         return this.modelObjectStylesheetResources;
@@ -384,13 +384,10 @@ public final class MergeModulesTask extends JomcModelTask
     @Override
     public void executeTask() throws BuildException
     {
-        ProjectClassLoader classLoader = null;
+        this.log( Messages.getMessage( "mergingModules", this.getModel() ) );
 
-        try
+        try ( final ProjectClassLoader classLoader = this.newProjectClassLoader() )
         {
-            this.log( Messages.getMessage( "mergingModules", this.getModel() ) );
-
-            classLoader = this.newProjectClassLoader();
             final Modules modules = new Modules();
             final Set<ResourceType> resources = new HashSet<ResourceType>( this.getModuleResources() );
             final ModelContext context = this.newModelContext( classLoader );
@@ -434,7 +431,6 @@ public final class MergeModulesTask extends JomcModelTask
                 for ( int i = urls.length - 1; i >= 0; i-- )
                 {
                     URLConnection con = null;
-                    InputStream in = null;
 
                     try
                     {
@@ -444,33 +440,32 @@ public final class MergeModulesTask extends JomcModelTask
                         con.setConnectTimeout( resource.getConnectTimeout() );
                         con.setReadTimeout( resource.getReadTimeout() );
                         con.connect();
-                        in = con.getInputStream();
 
-                        final Source source = new StreamSource( in, urls[i].toURI().toASCIIString() );
-
-                        Object o = unmarshaller.unmarshal( source );
-                        if ( o instanceof JAXBElement<?> )
+                        try ( final InputStream in = con.getInputStream() )
                         {
-                            o = ( (JAXBElement<?>) o ).getValue();
-                        }
+                            final Source source = new StreamSource( in, urls[i].toURI().toASCIIString() );
 
-                        if ( o instanceof Module )
-                        {
-                            modules.getModule().add( (Module) o );
-                        }
-                        else if ( o instanceof Modules )
-                        {
-                            modules.getModule().addAll( ( (Modules) o ).getModule() );
-                        }
-                        else
-                        {
-                            this.log( Messages.getMessage( "unsupportedModuleResource", urls[i].toExternalForm() ),
-                                      Project.MSG_WARN );
+                            Object o = unmarshaller.unmarshal( source );
+                            if ( o instanceof JAXBElement<?> )
+                            {
+                                o = ( (JAXBElement<?>) o ).getValue();
+                            }
 
-                        }
+                            if ( o instanceof Module )
+                            {
+                                modules.getModule().add( (Module) o );
+                            }
+                            else if ( o instanceof Modules )
+                            {
+                                modules.getModule().addAll( ( (Modules) o ).getModule() );
+                            }
+                            else
+                            {
+                                this.log( Messages.getMessage( "unsupportedModuleResource", urls[i].toExternalForm() ),
+                                          Project.MSG_WARN );
 
-                        in.close();
-                        in = null;
+                            }
+                        }
                     }
                     catch ( final SocketTimeoutException e )
                     {
@@ -502,23 +497,9 @@ public final class MergeModulesTask extends JomcModelTask
                     }
                     finally
                     {
-                        try
+                        if ( con instanceof HttpURLConnection )
                         {
-                            if ( in != null )
-                            {
-                                in.close();
-                            }
-                        }
-                        catch ( final IOException e )
-                        {
-                            this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
-                        }
-                        finally
-                        {
-                            if ( con instanceof HttpURLConnection )
-                            {
-                                ( (HttpURLConnection) con ).disconnect();
-                            }
+                            ( (HttpURLConnection) con ).disconnect();
                         }
                     }
                 }
@@ -608,15 +589,8 @@ public final class MergeModulesTask extends JomcModelTask
             marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
             marshaller.setSchema( context.createSchema( this.getModel() ) );
             marshaller.marshal( new ObjectFactory().createModule( mergedModule ), this.getModuleFile() );
-
-            classLoader.close();
-            classLoader = null;
         }
-        catch ( final IOException e )
-        {
-            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
-        }
-        catch ( final URISyntaxException e )
+        catch ( final IOException | URISyntaxException | ModelException e )
         {
             throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
@@ -637,24 +611,6 @@ public final class MergeModulesTask extends JomcModelTask
         catch ( final TransformerException e )
         {
             throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
-        }
-        catch ( final ModelException e )
-        {
-            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
-        }
-        finally
-        {
-            try
-            {
-                if ( classLoader != null )
-                {
-                    classLoader.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
-            }
         }
     }
 
@@ -684,7 +640,7 @@ public final class MergeModulesTask extends JomcModelTask
             }
         }
 
-        return this.getModuleIncludes().isEmpty() ? true : false;
+        return this.getModuleIncludes().isEmpty();
     }
 
     /**
@@ -727,7 +683,7 @@ public final class MergeModulesTask extends JomcModelTask
 
         if ( this.moduleExcludes != null )
         {
-            clone.moduleExcludes = new HashSet<NameType>( this.moduleExcludes.size() );
+            clone.moduleExcludes = new HashSet<>( this.moduleExcludes.size() );
             for ( final NameType e : this.moduleExcludes )
             {
                 clone.moduleExcludes.add( e.clone() );
@@ -736,7 +692,7 @@ public final class MergeModulesTask extends JomcModelTask
 
         if ( this.moduleIncludes != null )
         {
-            clone.moduleIncludes = new HashSet<NameType>( this.moduleIncludes.size() );
+            clone.moduleIncludes = new HashSet<>( this.moduleIncludes.size() );
             for ( final NameType e : this.moduleIncludes )
             {
                 clone.moduleIncludes.add( e.clone() );
@@ -745,8 +701,7 @@ public final class MergeModulesTask extends JomcModelTask
 
         if ( this.modelObjectStylesheetResources != null )
         {
-            clone.modelObjectStylesheetResources =
-                new ArrayList<TransformerResourceType>( this.modelObjectStylesheetResources.size() );
+            clone.modelObjectStylesheetResources = new ArrayList<>( this.modelObjectStylesheetResources.size() );
 
             for ( final TransformerResourceType e : this.modelObjectStylesheetResources )
             {

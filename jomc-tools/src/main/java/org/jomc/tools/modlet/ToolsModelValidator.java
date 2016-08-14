@@ -198,6 +198,7 @@ public class ToolsModelValidator implements ModelValidator
         this.validateJava = value;
     }
 
+    @Override
     public ModelValidationReport validateModel( final ModelContext context, final Model model ) throws ModelException
     {
         if ( context == null )
@@ -1648,7 +1649,7 @@ public class ToolsModelValidator implements ModelValidator
                                 context.log( Level.FINE, message, e );
                             }
 
-                            final List<Object> arguments = new ArrayList<Object>( Arrays.asList( messageArguments ) );
+                            final List<Object> arguments = new ArrayList<>( Arrays.asList( messageArguments ) );
                             arguments.add( s.getName() );
                             arguments.add( p.getName() );
                             arguments.add( message != null && message.length() > 0 ? " " + message : "" );

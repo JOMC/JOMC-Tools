@@ -81,7 +81,7 @@ public class TransformerResourceType extends ResourceType
     {
         if ( this.transformationParameterResources == null )
         {
-            this.transformationParameterResources = new LinkedList<TransformationParameterResource>();
+            this.transformationParameterResources = new LinkedList<>();
         }
 
         return this.transformationParameterResources;
@@ -101,7 +101,7 @@ public class TransformerResourceType extends ResourceType
     {
         if ( this.transformationParameters == null )
         {
-            this.transformationParameters = new LinkedList<TransformationParameter>();
+            this.transformationParameters = new LinkedList<>();
         }
 
         return this.transformationParameters;
@@ -121,7 +121,7 @@ public class TransformerResourceType extends ResourceType
     {
         if ( this.transformationOutputProperties == null )
         {
-            this.transformationOutputProperties = new LinkedList<TransformationOutputProperty>();
+            this.transformationOutputProperties = new LinkedList<>();
         }
 
         return this.transformationOutputProperties;
@@ -139,8 +139,7 @@ public class TransformerResourceType extends ResourceType
 
         if ( this.transformationOutputProperties != null )
         {
-            clone.transformationOutputProperties =
-                new ArrayList<TransformationOutputProperty>( this.transformationOutputProperties.size() );
+            clone.transformationOutputProperties = new ArrayList<>( this.transformationOutputProperties.size() );
 
             for ( final TransformationOutputProperty e : this.transformationOutputProperties )
             {
@@ -150,8 +149,7 @@ public class TransformerResourceType extends ResourceType
 
         if ( this.transformationParameterResources != null )
         {
-            clone.transformationParameterResources =
-                new ArrayList<TransformationParameterResource>( this.transformationParameterResources.size() );
+            clone.transformationParameterResources = new ArrayList<>( this.transformationParameterResources.size() );
 
             for ( final TransformationParameterResource e : this.transformationParameterResources )
             {
@@ -161,8 +159,7 @@ public class TransformerResourceType extends ResourceType
 
         if ( this.transformationParameters != null )
         {
-            clone.transformationParameters =
-                new ArrayList<TransformationParameter>( this.transformationParameters.size() );
+            clone.transformationParameters = new ArrayList<>( this.transformationParameters.size() );
 
             for ( final TransformationParameter e : this.transformationParameters )
             {

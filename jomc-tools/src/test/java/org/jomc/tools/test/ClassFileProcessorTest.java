@@ -33,10 +33,11 @@ package org.jomc.tools.test;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +52,6 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.jomc.model.Dependency;
 import org.jomc.model.Implementation;
 import org.jomc.model.Message;
@@ -196,29 +196,10 @@ public class ClassFileProcessorTest extends JomcToolTest
         final Unmarshaller unmarshaller = this.getModelContext().createUnmarshaller( ModelObject.MODEL_PUBLIC_ID );
         final URL object = this.getClass().getResource( "/java/lang/Object.class" );
 
-        InputStream in = null;
-        JavaClass objectClass = null;
-
-        try
+        final JavaClass objectClass;
+        try ( final InputStream in = object.openStream() )
         {
-            in = object.openStream();
             objectClass = new ClassParser( in, object.toExternalForm() ).parse();
-            in.close();
-            in = null;
-        }
-        finally
-        {
-            try
-            {
-                if ( in != null )
-                {
-                    in.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                // Suppressed.
-            }
         }
 
         try
@@ -1752,8 +1733,9 @@ public class ClassFileProcessorTest extends JomcToolTest
     public final void testClassFileProcessorModelObjectsNotFound() throws Exception
     {
         final File tmpDir = new File( System.getProperty( "java.io.tmpdir", "/tmp" ) );
-        final JavaClass object = new ClassParser(
-            ClassLoader.getSystemResourceAsStream( "java/lang/Object.class" ), "Object.class" ).parse();
+        final JavaClass object =
+            new ClassParser( ClassLoader.getSystemResourceAsStream( "java/lang/Object.class" ), "Object.class" ).
+            parse();
 
         final Module m = new Module();
         m.setName( "DOES_NOT_EXIST" );
@@ -1841,12 +1823,8 @@ public class ClassFileProcessorTest extends JomcToolTest
         FileUtils.deleteDirectory( targetDirectory );
         assertTrue( targetDirectory.mkdirs() );
 
-        ZipInputStream in = null;
-
-        try
+        try ( final ZipInputStream in = new ZipInputStream( resource.openStream() ) )
         {
-            in = new ZipInputStream( resource.openStream() );
-
             for ( ZipEntry e = in.getNextEntry(); e != null; e = in.getNextEntry() )
             {
                 if ( e.isDirectory() )
@@ -1856,45 +1834,11 @@ public class ClassFileProcessorTest extends JomcToolTest
 
                 final File dest = new File( targetDirectory, e.getName() );
                 assertTrue( dest.isAbsolute() );
-                OutputStream out = null;
 
-                try
-                {
-                    out = FileUtils.openOutputStream( dest );
-                    IOUtils.copy( in, out );
-                    out.close();
-                    out = null;
-                }
-                finally
-                {
-                    try
-                    {
-                        if ( out != null )
-                        {
-                            out.close();
-                        }
-                    }
-                    catch ( final IOException ex )
-                    {
-                        // Suppressed.
-                    }
-                }
+                Files.copy( in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING,
+                            StandardCopyOption.COPY_ATTRIBUTES );
 
                 in.closeEntry();
-            }
-        }
-        finally
-        {
-            try
-            {
-                if ( in != null )
-                {
-                    in.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                // Suppressed.
             }
         }
     }

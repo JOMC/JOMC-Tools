@@ -198,7 +198,7 @@ public class JomcModelTask extends JomcTask
     {
         if ( this.moduleResources == null )
         {
-            this.moduleResources = new HashSet<ModuleResourceType>();
+            this.moduleResources = new HashSet<>( 128 );
         }
 
         return this.moduleResources;
@@ -523,7 +523,7 @@ public class JomcModelTask extends JomcTask
 
         if ( this.moduleResources != null )
         {
-            clone.moduleResources = new HashSet<ModuleResourceType>( this.moduleResources.size() );
+            clone.moduleResources = new HashSet<>( this.moduleResources.size() );
             for ( final ModuleResourceType e : this.moduleResources )
             {
                 clone.moduleResources.add( e.clone() );

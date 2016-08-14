@@ -330,7 +330,7 @@ public class JomcTask extends Task
     {
         if ( this.modelContextAttributes == null )
         {
-            this.modelContextAttributes = new LinkedList<KeyValueType>();
+            this.modelContextAttributes = new LinkedList<>();
         }
 
         return this.modelContextAttributes;
@@ -514,7 +514,7 @@ public class JomcTask extends Task
     {
         if ( this.transformationParameters == null )
         {
-            this.transformationParameters = new LinkedList<KeyValueType>();
+            this.transformationParameters = new LinkedList<>();
         }
 
         return this.transformationParameters;
@@ -551,7 +551,7 @@ public class JomcTask extends Task
     {
         if ( this.transformationParameterResources == null )
         {
-            this.transformationParameterResources = new LinkedList<PropertiesResourceType>();
+            this.transformationParameterResources = new LinkedList<>();
         }
 
         return this.transformationParameterResources;
@@ -587,7 +587,7 @@ public class JomcTask extends Task
     {
         if ( this.transformationOutputProperties == null )
         {
-            this.transformationOutputProperties = new LinkedList<KeyValueType>();
+            this.transformationOutputProperties = new LinkedList<>();
         }
 
         return this.transformationOutputProperties;
@@ -837,7 +837,7 @@ public class JomcTask extends Task
             throw new NullPointerException( "location" );
         }
 
-        final Set<URI> uris = new HashSet<URI>();
+        final Set<URI> uris = new HashSet<>( 128 );
 
         try
         {
@@ -846,11 +846,7 @@ public class JomcTask extends Task
                 uris.add( e.nextElement().toURI() );
             }
         }
-        catch ( final URISyntaxException e )
-        {
-            this.log( e, Project.MSG_DEBUG );
-        }
-        catch ( final ModelException e )
+        catch ( final URISyntaxException | ModelException e )
         {
             this.log( e, Project.MSG_DEBUG );
         }
@@ -861,11 +857,7 @@ public class JomcTask extends Task
             {
                 uris.add( new URL( location ).toURI() );
             }
-            catch ( final MalformedURLException e )
-            {
-                this.log( e, Project.MSG_DEBUG );
-            }
-            catch ( final URISyntaxException e )
+            catch ( final MalformedURLException | URISyntaxException e )
             {
                 this.log( e, Project.MSG_DEBUG );
             }
@@ -929,7 +921,7 @@ public class JomcTask extends Task
 
         try
         {
-            URL resource = null;
+            URL resource;
 
             try
             {
@@ -994,6 +986,7 @@ public class JomcTask extends Task
                 final ErrorListener errorListener = new ErrorListener()
                 {
 
+                    @Override
                     public void warning( final TransformerException exception ) throws TransformerException
                     {
                         if ( getProject() != null )
@@ -1002,11 +995,13 @@ public class JomcTask extends Task
                         }
                     }
 
+                    @Override
                     public void error( final TransformerException exception ) throws TransformerException
                     {
                         throw exception;
                     }
 
+                    @Override
                     public void fatalError( final TransformerException exception ) throws TransformerException
                     {
                         throw exception;
@@ -1646,7 +1641,7 @@ public class JomcTask extends Task
 
             if ( this.modelContextAttributes != null )
             {
-                clone.modelContextAttributes = new ArrayList<KeyValueType>( this.modelContextAttributes.size() );
+                clone.modelContextAttributes = new ArrayList<>( this.modelContextAttributes.size() );
 
                 for ( final KeyValueType e : this.modelContextAttributes )
                 {
@@ -1656,8 +1651,7 @@ public class JomcTask extends Task
 
             if ( this.transformationParameters != null )
             {
-                clone.transformationParameters =
-                    new ArrayList<KeyValueType>( this.transformationParameters.size() );
+                clone.transformationParameters = new ArrayList<>( this.transformationParameters.size() );
 
                 for ( final KeyValueType e : this.transformationParameters )
                 {
@@ -1668,7 +1662,7 @@ public class JomcTask extends Task
             if ( this.transformationParameterResources != null )
             {
                 clone.transformationParameterResources =
-                    new ArrayList<PropertiesResourceType>( this.transformationParameterResources.size() );
+                    new ArrayList<>( this.transformationParameterResources.size() );
 
                 for ( final PropertiesResourceType e : this.transformationParameterResources )
                 {
@@ -1678,8 +1672,7 @@ public class JomcTask extends Task
 
             if ( this.transformationOutputProperties != null )
             {
-                clone.transformationOutputProperties =
-                    new ArrayList<KeyValueType>( this.transformationOutputProperties.size() );
+                clone.transformationOutputProperties = new ArrayList<>( this.transformationOutputProperties.size() );
 
                 for ( final KeyValueType e : this.transformationOutputProperties )
                 {

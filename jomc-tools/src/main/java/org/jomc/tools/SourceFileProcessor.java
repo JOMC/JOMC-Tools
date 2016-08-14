@@ -37,6 +37,7 @@ import java.io.StringWriter;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -460,7 +461,7 @@ public class SourceFileProcessor extends JomcTool
          */
         public SourceFileEditor()
         {
-            this( (LineEditor) null, (String) null );
+            this( null, null );
         }
 
         /**
@@ -472,7 +473,7 @@ public class SourceFileProcessor extends JomcTool
          */
         public SourceFileEditor( final String lineSeparator )
         {
-            this( (LineEditor) null, lineSeparator );
+            this( null, lineSeparator );
         }
 
         /**
@@ -740,8 +741,7 @@ public class SourceFileProcessor extends JomcTool
             }
             catch ( final VelocityException e )
             {
-                // JDK: As of JDK 6, "new IOException( message, cause )".
-                throw (IOException) new IOException( getMessage( e ) ).initCause( e );
+                throw new IOException( getMessage( e ), e );
             }
         }
 
@@ -893,10 +893,7 @@ public class SourceFileProcessor extends JomcTool
                     }
                     catch ( final IOException e )
                     {
-                        // JDK: As of JDK 6, "new IOException( message, cause )".
-                        throw (IOException) new IOException( getMessage(
-                            "failedEditing", f.getAbsolutePath(), getMessage( e ) ) ).initCause( e );
-
+                        throw new IOException( getMessage( "failedEditing", f.getAbsolutePath(), getMessage( e ) ), e );
                     }
 
                     if ( !edited.equals( content ) || edited.length() == 0 )
@@ -924,10 +921,7 @@ public class SourceFileProcessor extends JomcTool
                 }
                 catch ( final VelocityException e )
                 {
-                    // JDK: As of JDK 6, "new IOException( message, cause )".
-                    throw (IOException) new IOException( getMessage(
-                        "failedEditing", f.getAbsolutePath(), getMessage( e ) ) ).initCause( e );
-
+                    throw new IOException( getMessage( "failedEditing", f.getAbsolutePath(), getMessage( e ) ), e );
                 }
             }
         }
@@ -939,42 +933,27 @@ public class SourceFileProcessor extends JomcTool
                 throw new NullPointerException( "file" );
             }
 
-            RandomAccessFile randomAccessFile = null;
-            FileChannel fileChannel = null;
-            FileLock fileLock = null;
+            final Charset charset = Charset.forName( getInputEncoding() );
+            final StringBuilder appendable =
+                new StringBuilder( file.length() > 0L ? Long.valueOf( file.length() ).intValue() : 1 );
 
-            //final Charset charset = Charset.forName( getInputEncoding() );
-            final int length = file.length() > 0L ? Long.valueOf( file.length() ).intValue() : 1;
-            final ByteBuffer buf = ByteBuffer.allocate( length );
-            final StringBuilder appendable = new StringBuilder( length );
+            final ByteBuffer buf = ByteBuffer.allocateDirect( 524288 );
 
-            try
+            try ( final RandomAccessFile randomAccessFile = new RandomAccessFile( file, "r" );
+                  final FileChannel fileChannel = randomAccessFile.getChannel();
+                  final FileLock fileLock = fileChannel.lock( 0L, file.length(), true ) )
             {
-                randomAccessFile = new RandomAccessFile( file, "r" );
-                fileChannel = randomAccessFile.getChannel();
-                fileLock = fileChannel.lock( 0L, file.length(), true );
                 fileChannel.position( 0L );
 
-                for ( int read = fileChannel.read( buf ); read >= 0; buf.clear(), read = fileChannel.read( buf ) )
+                for ( int read = fileChannel.read( buf ); read >= 0; buf.position( 0 ), read = fileChannel.read( buf ) )
                 {
-                    // JDK: As of JDK 6, new String( byte[], int, int, Charset )
-                    appendable.append( new String( buf.array(), buf.arrayOffset(), read, getInputEncoding() ) );
+                    final byte[] chunk = new byte[ read ];
+                    buf.position( 0 );
+                    buf.get( chunk );
+                    appendable.append( new String( chunk, charset ) );
                 }
 
-                fileLock.release();
-                fileLock = null;
-
-                fileChannel.close();
-                fileChannel = null;
-
-                randomAccessFile.close();
-                randomAccessFile = null;
-
                 return appendable.toString();
-            }
-            finally
-            {
-                this.releaseAndClose( fileLock, fileChannel, randomAccessFile );
             }
         }
 
@@ -989,78 +968,16 @@ public class SourceFileProcessor extends JomcTool
                 throw new NullPointerException( "content" );
             }
 
-            RandomAccessFile randomAccessFile = null;
-            FileChannel fileChannel = null;
-            FileLock fileLock = null;
             final byte[] bytes = content.getBytes( getOutputEncoding() );
 
-            try
+            try ( final RandomAccessFile randomAccessFile = new RandomAccessFile( file, "rw" );
+                  final FileChannel fileChannel = randomAccessFile.getChannel();
+                  final FileLock fileLock = fileChannel.lock() )
             {
-                randomAccessFile = new RandomAccessFile( file, "rw" );
-                fileChannel = randomAccessFile.getChannel();
-                fileLock = fileChannel.lock( 0L, bytes.length, false );
                 fileChannel.truncate( bytes.length );
                 fileChannel.position( 0L );
                 fileChannel.write( ByteBuffer.wrap( bytes ) );
                 fileChannel.force( true );
-
-                fileLock.release();
-                fileLock = null;
-
-                fileChannel.close();
-                fileChannel = null;
-
-                randomAccessFile.close();
-                randomAccessFile = null;
-            }
-            finally
-            {
-                this.releaseAndClose( fileLock, fileChannel, randomAccessFile );
-            }
-        }
-
-        private void releaseAndClose( final FileLock fileLock, final FileChannel fileChannel,
-                                      final RandomAccessFile randomAccessFile )
-            throws IOException
-        {
-            try
-            {
-                if ( fileLock != null )
-                {
-                    fileLock.release();
-                }
-            }
-            catch ( final IOException e )
-            {
-                log( Level.SEVERE, getMessage( e ), e );
-            }
-            finally
-            {
-                try
-                {
-                    if ( fileChannel != null )
-                    {
-                        fileChannel.close();
-                    }
-                }
-                catch ( final IOException e )
-                {
-                    log( Level.SEVERE, getMessage( e ), e );
-                }
-                finally
-                {
-                    try
-                    {
-                        if ( randomAccessFile != null )
-                        {
-                            randomAccessFile.close();
-                        }
-                    }
-                    catch ( final IOException e )
-                    {
-                        log( Level.SEVERE, getMessage( e ), e );
-                    }
-                }
             }
         }
 

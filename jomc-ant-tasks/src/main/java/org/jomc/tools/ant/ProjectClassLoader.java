@@ -32,20 +32,17 @@ package org.jomc.tools.ant;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -57,7 +54,6 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Path;
-import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelException;
@@ -153,7 +149,7 @@ public class ProjectClassLoader extends URLClassLoader
     /**
      * Set of temporary resources.
      */
-    private final Set<File> temporaryResources = new HashSet<File>();
+    private final Set<File> temporaryResources = new HashSet<>( 128 );
 
     /**
      * Creates a new {@code ProjectClassLoader} instance taking a project and a class path.
@@ -216,7 +212,7 @@ public class ProjectClassLoader extends URLClassLoader
 
             return resource;
         }
-        catch ( final IOException e )
+        catch ( final IOException | ModelException e )
         {
             this.getProject().log( Messages.getMessage( e ), Project.MSG_ERR );
             return null;
@@ -230,11 +226,6 @@ public class ProjectClassLoader extends URLClassLoader
             }
 
             this.getProject().log( message, Project.MSG_ERR );
-            return null;
-        }
-        catch ( final ModelException e )
-        {
-            this.getProject().log( Messages.getMessage( e ), Project.MSG_ERR );
             return null;
         }
     }
@@ -258,7 +249,7 @@ public class ProjectClassLoader extends URLClassLoader
             if ( this.getProviderResourceLocations().contains( name )
                      || this.getModletResourceLocations().contains( name ) )
             {
-                final List<URI> filtered = new LinkedList<URI>();
+                final List<URI> filtered = new LinkedList<>();
 
                 while ( resources.hasMoreElements() )
                 {
@@ -279,11 +270,13 @@ public class ProjectClassLoader extends URLClassLoader
                 resources = new Enumeration<URL>()
                 {
 
+                    @Override
                     public boolean hasMoreElements()
                     {
                         return it.hasNext();
                     }
 
+                    @Override
                     public URL nextElement()
                     {
                         try
@@ -301,10 +294,9 @@ public class ProjectClassLoader extends URLClassLoader
 
             return resources;
         }
-        catch ( final URISyntaxException e )
+        catch ( final URISyntaxException | ModelException e )
         {
-            // JDK: As of JDK 6, new IOException( message, e );
-            throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
+            throw new IOException( Messages.getMessage( e ), e );
         }
         catch ( final JAXBException e )
         {
@@ -314,13 +306,7 @@ public class ProjectClassLoader extends URLClassLoader
                 message = Messages.getMessage( e.getLinkedException() );
             }
 
-            // JDK: As of JDK 6, new IOException( message, e );
-            throw (IOException) new IOException( message ).initCause( e );
-        }
-        catch ( final ModelException e )
-        {
-            // JDK: As of JDK 6, new IOException( message, e );
-            throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
+            throw new IOException( message, e );
         }
     }
 
@@ -338,7 +324,7 @@ public class ProjectClassLoader extends URLClassLoader
     {
         if ( this.modletResourceLocations == null )
         {
-            this.modletResourceLocations = new HashSet<String>();
+            this.modletResourceLocations = new HashSet<>( 128 );
         }
 
         return this.modletResourceLocations;
@@ -358,7 +344,7 @@ public class ProjectClassLoader extends URLClassLoader
     {
         if ( this.providerResourceLocations == null )
         {
-            this.providerResourceLocations = new HashSet<String>();
+            this.providerResourceLocations = new HashSet<>( 128 );
         }
 
         return this.providerResourceLocations;
@@ -378,7 +364,7 @@ public class ProjectClassLoader extends URLClassLoader
     {
         if ( this.modletExcludes == null )
         {
-            this.modletExcludes = new HashSet<String>();
+            this.modletExcludes = new HashSet<>( 128 );
         }
 
         return this.modletExcludes;
@@ -430,7 +416,7 @@ public class ProjectClassLoader extends URLClassLoader
     {
         if ( this.providerExcludes == null )
         {
-            this.providerExcludes = new HashSet<String>();
+            this.providerExcludes = new HashSet<>( 128 );
         }
 
         return this.providerExcludes;
@@ -462,7 +448,7 @@ public class ProjectClassLoader extends URLClassLoader
     {
         if ( this.excludedProviders == null )
         {
-            this.excludedProviders = new HashSet<String>();
+            this.excludedProviders = new HashSet<>( 128 );
         }
 
         return this.excludedProviders;
@@ -482,7 +468,7 @@ public class ProjectClassLoader extends URLClassLoader
     {
         if ( this.serviceExcludes == null )
         {
-            this.serviceExcludes = new HashSet<String>();
+            this.serviceExcludes = new HashSet<>( 128 );
         }
 
         return this.serviceExcludes;
@@ -534,7 +520,7 @@ public class ProjectClassLoader extends URLClassLoader
     {
         if ( this.schemaExcludes == null )
         {
-            this.schemaExcludes = new HashSet<String>();
+            this.schemaExcludes = new HashSet<>( 128 );
         }
 
         return this.schemaExcludes;
@@ -578,7 +564,6 @@ public class ProjectClassLoader extends URLClassLoader
      * @throws IOException if closing the class loader fails.
      */
     @Override
-    @IgnoreJRERequirement
     public void close() throws IOException
     {
         for ( final Iterator<File> it = this.temporaryResources.iterator(); it.hasNext(); )
@@ -591,10 +576,7 @@ public class ProjectClassLoader extends URLClassLoader
             }
         }
 
-        if ( Closeable.class.isAssignableFrom( ProjectClassLoader.class ) )
-        {
-            super.close();
-        }
+        super.close();
     }
 
     /**
@@ -622,18 +604,13 @@ public class ProjectClassLoader extends URLClassLoader
 
     private URL filterProviders( final URL resource ) throws IOException
     {
-        InputStream in = null;
-        BufferedReader reader = null;
-        OutputStream out = null;
-        BufferedWriter writer = null;
         URL filteredResource = resource;
-        final List<String> filteredLines = new ArrayList<String>();
+        final List<String> filteredLines = new LinkedList<>();
 
-        try
+        try ( final BufferedReader reader = new BufferedReader( new InputStreamReader( resource.openStream(),
+                                                                                       "UTF-8" ) ) )
         {
             boolean filtered = false;
-            in = resource.openStream();
-            reader = new BufferedReader( new InputStreamReader( in, "UTF-8" ) );
 
             for ( String line = reader.readLine(); line != null; line = reader.readLine() )
             {
@@ -653,106 +630,37 @@ public class ProjectClassLoader extends URLClassLoader
                 }
             }
 
-            reader.close();
-            reader = null;
-            in = null;
-
             if ( filtered )
             {
                 final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
                 this.temporaryResources.add( tmpResource );
 
-                out = new FileOutputStream( tmpResource );
-                writer = new BufferedWriter( new OutputStreamWriter( out, "UTF-8" ) );
-
-                for ( final String line : filteredLines )
+                try ( final BufferedWriter writer = new BufferedWriter( new OutputStreamWriter(
+                    new FileOutputStream( tmpResource ), "UTF-8" ) ) )
                 {
-                    writer.write( line );
-                    writer.newLine();
+                    for ( final String line : filteredLines )
+                    {
+                        writer.write( line );
+                        writer.newLine();
+                    }
                 }
-
-                writer.close();
-                writer = null;
-                out = null;
 
                 filteredResource = tmpResource.toURI().toURL();
             }
 
             return filteredResource;
         }
-        finally
-        {
-            try
-            {
-                if ( reader != null )
-                {
-                    reader.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
-            }
-            finally
-            {
-                try
-                {
-                    if ( in != null )
-                    {
-                        in.close();
-                    }
-                }
-                catch ( final IOException e )
-                {
-                    this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
-                }
-                finally
-                {
-                    try
-                    {
-                        if ( writer != null )
-                        {
-                            writer.close();
-                        }
-                    }
-                    catch ( final IOException e )
-                    {
-                        this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
-                    }
-                    finally
-                    {
-                        try
-                        {
-                            if ( out != null )
-                            {
-                                out.close();
-                            }
-                        }
-                        catch ( final IOException e )
-                        {
-                            this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private URL filterModlets( final URL resource ) throws ModelException, IOException, JAXBException
     {
-        InputStream in = null;
-
-        try
+        try ( final InputStream in = resource.openStream() )
         {
             URL filteredResource = resource;
-            in = resource.openStream();
 
             final ModelContext modelContext = ModelContextFactory.newInstance().newModelContext();
             final JAXBElement<?> e =
                 (JAXBElement<?>) modelContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID ).unmarshal( in );
-
-            in.close();
-            in = null;
 
             final Object o = e.getValue();
             Modlets modlets = null;
@@ -803,20 +711,6 @@ public class ProjectClassLoader extends URLClassLoader
             }
 
             return filteredResource;
-        }
-        finally
-        {
-            try
-            {
-                if ( in != null )
-                {
-                    in.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
-            }
         }
     }
 
@@ -900,11 +794,7 @@ public class ProjectClassLoader extends URLClassLoader
                 this.getExcludedModlets().getModlet().add( modlet );
             }
         }
-        catch ( final ParseException e )
-        {
-            this.getProject().log( Messages.getMessage( e ), e, Project.MSG_WARN );
-        }
-        catch ( final TokenMgrError e )
+        catch ( final ParseException | TokenMgrError e )
         {
             this.getProject().log( Messages.getMessage( e ), e, Project.MSG_WARN );
         }
@@ -935,16 +825,11 @@ public class ProjectClassLoader extends URLClassLoader
 
     private static Set<String> readDefaultExcludes( final String location ) throws IOException
     {
-        InputStream in = null;
-        BufferedReader reader = null;
-        final Set<String> defaultExcludes = new HashSet<String>();
+        final Set<String> defaultExcludes = new HashSet<>( 128 );
 
-        try
+        try ( final BufferedReader reader = new BufferedReader( new InputStreamReader(
+            ProjectClassLoader.class.getResourceAsStream( location ), "UTF-8" ) ) )
         {
-            in = ProjectClassLoader.class.getResourceAsStream( location );
-            assert in != null : "Expected resource '" + location + "' not found.";
-            reader = new BufferedReader( new InputStreamReader( in, "UTF-8" ) );
-
             for ( String line = reader.readLine(); line != null; line = reader.readLine() )
             {
                 final String normalized = line.trim();
@@ -955,39 +840,7 @@ public class ProjectClassLoader extends URLClassLoader
                 }
             }
 
-            reader.close();
-            reader = null;
-            in = null;
-
             return Collections.unmodifiableSet( defaultExcludes );
-        }
-        finally
-        {
-            try
-            {
-                if ( reader != null )
-                {
-                    reader.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                // Suppressed.
-            }
-            finally
-            {
-                try
-                {
-                    if ( in != null )
-                    {
-                        in.close();
-                    }
-                }
-                catch ( final IOException e )
-                {
-                    // Suppressed.
-                }
-            }
         }
     }
 

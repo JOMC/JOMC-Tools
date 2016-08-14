@@ -274,19 +274,7 @@ public class JomcTaskTest
             ProjectHelper.configureProject( p, buildFile );
             return p;
         }
-        catch ( final IOException e )
-        {
-            throw new AssertionError( e );
-        }
-        catch ( final ModelException e )
-        {
-            throw new AssertionError( e );
-        }
-        catch ( final JAXBException e )
-        {
-            throw new AssertionError( e );
-        }
-        catch ( final BuildException e )
+        catch ( final IOException | ModelException | JAXBException | BuildException e )
         {
             throw new AssertionError( e );
         }
@@ -447,7 +435,7 @@ public class JomcTaskTest
             System.out.println( e );
         }
 
-        final Collection<NameType> names = new ArrayList<NameType>( 1 );
+        final Collection<NameType> names = new ArrayList<>( 1 );
         names.add( new NameType() );
 
         try
@@ -476,7 +464,7 @@ public class JomcTaskTest
             System.out.println( e );
         }
 
-        final Collection<KeyValueType> keys = new ArrayList<KeyValueType>( 1 );
+        final Collection<KeyValueType> keys = new ArrayList<>( 1 );
         keys.add( new KeyValueType() );
 
         try
@@ -505,7 +493,7 @@ public class JomcTaskTest
             System.out.println( e );
         }
 
-        final Collection<PropertiesResourceType> locations = new ArrayList<PropertiesResourceType>( 1 );
+        final Collection<PropertiesResourceType> locations = new ArrayList<>( 1 );
         locations.add( new PropertiesResourceType() );
 
         try

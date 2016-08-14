@@ -533,6 +533,7 @@ public class ToolsModelProcessor implements ModelProcessor
      * @see #HEAD_COMMENT_ATTRIBUTE_NAME
      * @see #TAIL_COMMENT_ATTRIBUTE_NAME
      */
+    @Override
     public Model processModel( final ModelContext context, final Model model ) throws ModelException
     {
         if ( context == null )

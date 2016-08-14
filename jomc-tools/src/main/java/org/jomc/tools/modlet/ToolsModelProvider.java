@@ -547,6 +547,7 @@ public class ToolsModelProvider implements ModelProvider
      * @see #HEAD_COMMENT_ATTRIBUTE_NAME
      * @see #TAIL_COMMENT_ATTRIBUTE_NAME
      */
+    @Override
     public Model findModel( final ModelContext context, final Model model ) throws ModelException
     {
         if ( context == null )
@@ -628,8 +629,7 @@ public class ToolsModelProvider implements ModelProvider
                 if ( modules.getImplementations() != null )
                 {
                     final Map<Implementation, SourceFilesType> userSourceFiles =
-                        new HashMap<Implementation, SourceFilesType>(
-                            modules.getImplementations().getImplementation().size() );
+                        new HashMap<>( modules.getImplementations().getImplementation().size() );
 
                     InheritanceModel imodel = new InheritanceModel( modules );
 
@@ -1006,8 +1006,8 @@ public class ToolsModelProvider implements ModelProvider
             contextTailComment = null;
         }
 
-        final Set<String> uniqueSectionNames = new HashSet<String>( 16 );
-        final Set<String> sectionNames = new HashSet<String>( 16 );
+        final Set<String> uniqueSectionNames = new HashSet<>( 16 );
+        final Set<String> sectionNames = new HashSet<>( 16 );
         sectionNames.add( LICENSE_SECTION_NAME );
         sectionNames.add( ANNOTATIONS_SECTION_NAME );
         sectionNames.add( DOCUMENTATION_SECTION_NAME );
@@ -1128,8 +1128,8 @@ public class ToolsModelProvider implements ModelProvider
             contextTailComment = null;
         }
 
-        final Set<String> uniqueSectionNames = new HashSet<String>( 16 );
-        final ArrayList<String> sectionNames = new ArrayList<String>( 16 );
+        final Set<String> uniqueSectionNames = new HashSet<>( 16 );
+        final ArrayList<String> sectionNames = new ArrayList<>( 16 );
         sectionNames.add( LICENSE_SECTION_NAME );
         sectionNames.add( ANNOTATIONS_SECTION_NAME );
         sectionNames.add( DOCUMENTATION_SECTION_NAME );

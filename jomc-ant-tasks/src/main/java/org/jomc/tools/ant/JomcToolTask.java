@@ -596,7 +596,7 @@ public class JomcToolTask extends JomcModelTask
     {
         if ( this.velocityProperties == null )
         {
-            this.velocityProperties = new LinkedList<KeyValueType>();
+            this.velocityProperties = new LinkedList<>();
         }
 
         return this.velocityProperties;
@@ -632,7 +632,7 @@ public class JomcToolTask extends JomcModelTask
     {
         if ( this.velocityPropertyResources == null )
         {
-            this.velocityPropertyResources = new LinkedList<PropertiesResourceType>();
+            this.velocityPropertyResources = new LinkedList<>();
         }
 
         return this.velocityPropertyResources;
@@ -668,7 +668,7 @@ public class JomcToolTask extends JomcModelTask
     {
         if ( this.templateParameters == null )
         {
-            this.templateParameters = new LinkedList<KeyValueType>();
+            this.templateParameters = new LinkedList<>();
         }
 
         return this.templateParameters;
@@ -704,7 +704,7 @@ public class JomcToolTask extends JomcModelTask
     {
         if ( this.templateParameterResources == null )
         {
-            this.templateParameterResources = new LinkedList<PropertiesResourceType>();
+            this.templateParameterResources = new LinkedList<>();
         }
 
         return this.templateParameterResources;
@@ -916,8 +916,7 @@ public class JomcToolTask extends JomcModelTask
 
         if ( this.velocityPropertyResources != null )
         {
-            clone.velocityPropertyResources =
-                new ArrayList<PropertiesResourceType>( this.velocityPropertyResources.size() );
+            clone.velocityPropertyResources = new ArrayList<>( this.velocityPropertyResources.size() );
 
             for ( final PropertiesResourceType e : this.velocityPropertyResources )
             {
@@ -927,7 +926,7 @@ public class JomcToolTask extends JomcModelTask
 
         if ( this.velocityProperties != null )
         {
-            clone.velocityProperties = new ArrayList<KeyValueType>( this.velocityProperties.size() );
+            clone.velocityProperties = new ArrayList<>( this.velocityProperties.size() );
 
             for ( final KeyValueType e : this.velocityProperties )
             {
@@ -937,8 +936,7 @@ public class JomcToolTask extends JomcModelTask
 
         if ( this.velocityPropertyResources != null )
         {
-            clone.velocityPropertyResources =
-                new ArrayList<PropertiesResourceType>( this.velocityPropertyResources.size() );
+            clone.velocityPropertyResources = new ArrayList<>( this.velocityPropertyResources.size() );
 
             for ( final PropertiesResourceType e : this.velocityPropertyResources )
             {
@@ -948,7 +946,7 @@ public class JomcToolTask extends JomcModelTask
 
         if ( this.templateParameters != null )
         {
-            clone.templateParameters = new ArrayList<KeyValueType>( this.templateParameters.size() );
+            clone.templateParameters = new ArrayList<>( this.templateParameters.size() );
 
             for ( final KeyValueType e : this.templateParameters )
             {
@@ -958,8 +956,7 @@ public class JomcToolTask extends JomcModelTask
 
         if ( this.templateParameterResources != null )
         {
-            clone.templateParameterResources =
-                new ArrayList<PropertiesResourceType>( this.templateParameterResources.size() );
+            clone.templateParameterResources = new ArrayList<>( this.templateParameterResources.size() );
 
             for ( final PropertiesResourceType e : this.templateParameterResources )
             {

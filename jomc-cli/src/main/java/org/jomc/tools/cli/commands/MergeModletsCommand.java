@@ -98,26 +98,31 @@ public final class MergeModletsCommand extends AbstractModletCommand
         return options;
     }
 
+    @Override
     public String getName()
     {
         return "merge-modlets";
     }
 
+    @Override
     public String getAbbreviatedName()
     {
         return "mmd";
     }
 
+    @Override
     public String getShortDescription( final Locale locale )
     {
         return Messages.getMessage( "mergeModletsShortDescription" );
     }
 
+    @Override
     public String getLongDescription( final Locale locale )
     {
         return null;
     }
 
+    @Override
     protected void executeCommand( final CommandLine commandLine ) throws CommandExecutionException
     {
         if ( commandLine == null )
@@ -125,11 +130,8 @@ public final class MergeModletsCommand extends AbstractModletCommand
             throw new NullPointerException( "commandLine" );
         }
 
-        CommandLineClassLoader classLoader = null;
-
-        try
+        try ( final CommandLineClassLoader classLoader = new CommandLineClassLoader( commandLine ) )
         {
-            classLoader = new CommandLineClassLoader( commandLine );
             final Modlets modlets = new Modlets();
             final ModelContext context = this.createModelContext( commandLine, classLoader );
             final Marshaller marshaller = context.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
@@ -360,11 +362,8 @@ public final class MergeModletsCommand extends AbstractModletCommand
             {
                 this.log( Level.INFO, Messages.getMessage( "writingResource", modletFile.getAbsolutePath() ), null );
             }
-
-            classLoader.close();
-            classLoader = null;
         }
-        catch ( final IOException e )
+        catch ( final IOException | ModelException e )
         {
             throw new CommandExecutionException( Messages.getMessage( e ), e );
         }
@@ -387,24 +386,6 @@ public final class MergeModletsCommand extends AbstractModletCommand
             }
 
             throw new CommandExecutionException( message, e );
-        }
-        catch ( final ModelException e )
-        {
-            throw new CommandExecutionException( Messages.getMessage( e ), e );
-        }
-        finally
-        {
-            try
-            {
-                if ( classLoader != null )
-                {
-                    classLoader.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                this.log( Level.SEVERE, Messages.getMessage( e ), e );
-            }
         }
     }
 

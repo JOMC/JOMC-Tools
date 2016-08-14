@@ -32,14 +32,11 @@ package org.jomc.tools.cli.commands;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
@@ -47,7 +44,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -68,7 +64,6 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import org.apache.commons.cli.CommandLine;
-import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 import org.jomc.model.ModelObject;
 import org.jomc.modlet.DefaultModelContext;
 import org.jomc.modlet.DefaultModletProvider;
@@ -147,16 +142,19 @@ public abstract class AbstractModletCommand extends AbstractCommand
         final ErrorListener errorListener = new ErrorListener()
         {
 
+            @Override
             public void warning( final TransformerException exception ) throws TransformerException
             {
                 log( Level.WARNING, null, exception );
             }
 
+            @Override
             public void error( final TransformerException exception ) throws TransformerException
             {
                 throw exception;
             }
 
+            @Override
             public void fatalError( final TransformerException exception ) throws TransformerException
             {
                 throw exception;
@@ -292,7 +290,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
     protected void log( final ModelValidationReport validationReport, final Marshaller marshaller )
         throws CommandExecutionException
     {
-        Object jaxbFormattedOutput = null;
+        Object jaxbFormattedOutput;
         try
         {
             jaxbFormattedOutput = marshaller.getProperty( Marshaller.JAXB_FORMATTED_OUTPUT );
@@ -357,7 +355,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
     {
         try
         {
-            final Set<File> files = new HashSet<File>();
+            final Set<File> files = new HashSet<>( 128 );
 
             if ( commandLine.hasOption( Options.DOCUMENTS_OPTION.getOpt() ) )
             {
@@ -479,17 +477,17 @@ public abstract class AbstractModletCommand extends AbstractCommand
         /**
          * Set of provider resource locations to filter.
          */
-        private final Set<String> providerResourceLocations = new HashSet<String>();
+        private final Set<String> providerResourceLocations = new HashSet<>( 128 );
 
         /**
          * Set of modlet resource locations to filter.
          */
-        private final Set<String> modletResourceLocations = new HashSet<String>();
+        private final Set<String> modletResourceLocations = new HashSet<>( 128 );
 
         /**
          * Set of temporary resources.
          */
-        private final Set<File> temporaryResources = new HashSet<File>();
+        private final Set<File> temporaryResources = new HashSet<>( 128 );
 
         /**
          * Creates a new {@code CommandLineClassLoader} taking a command line backing the class loader.
@@ -507,7 +505,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
             {
                 if ( commandLine.hasOption( Options.CLASSPATH_OPTION.getOpt() ) )
                 {
-                    final Set<URI> uris = new HashSet<URI>();
+                    final Set<URI> uris = new HashSet<>( 128 );
                     final String[] elements = commandLine.getOptionValues( Options.CLASSPATH_OPTION.getOpt() );
 
                     if ( elements != null )
@@ -517,12 +515,9 @@ public abstract class AbstractModletCommand extends AbstractCommand
                             if ( e.startsWith( "@" ) )
                             {
                                 final File file = new File( e.substring( 1 ) );
-                                BufferedReader reader = null;
 
-                                try
+                                try ( final BufferedReader reader = new BufferedReader( new FileReader( file ) ) )
                                 {
-                                    reader = new BufferedReader( new FileReader( file ) );
-
                                     for ( String line = reader.readLine(); line != null; line = reader.readLine() )
                                     {
                                         line = line.trim();
@@ -544,23 +539,6 @@ public abstract class AbstractModletCommand extends AbstractCommand
 
                                             }
                                         }
-                                    }
-
-                                    reader.close();
-                                    reader = null;
-                                }
-                                finally
-                                {
-                                    try
-                                    {
-                                        if ( reader != null )
-                                        {
-                                            reader.close();
-                                        }
-                                    }
-                                    catch ( final IOException ex )
-                                    {
-                                        log( Level.SEVERE, Messages.getMessage( ex ), ex );
                                     }
                                 }
                             }
@@ -660,17 +638,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
 
                 return resource;
             }
-            catch ( final IOException e )
-            {
-                log( Level.SEVERE, Messages.getMessage( e ), e );
-                return null;
-            }
-            catch ( final JAXBException e )
-            {
-                log( Level.SEVERE, Messages.getMessage( e ), e );
-                return null;
-            }
-            catch ( final ModelException e )
+            catch ( final IOException | JAXBException | ModelException e )
             {
                 log( Level.SEVERE, Messages.getMessage( e ), e );
                 return null;
@@ -696,7 +664,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
                 if ( this.providerResourceLocations.contains( name )
                          || this.modletResourceLocations.contains( name ) )
                 {
-                    final List<URI> filtered = new LinkedList<URI>();
+                    final List<URI> filtered = new LinkedList<>();
 
                     while ( resources.hasMoreElements() )
                     {
@@ -717,11 +685,13 @@ public abstract class AbstractModletCommand extends AbstractCommand
                     resources = new Enumeration<URL>()
                     {
 
+                        @Override
                         public boolean hasMoreElements()
                         {
                             return it.hasNext();
                         }
 
+                        @Override
                         public URL nextElement()
                         {
                             try
@@ -739,10 +709,9 @@ public abstract class AbstractModletCommand extends AbstractCommand
 
                 return resources;
             }
-            catch ( final URISyntaxException e )
+            catch ( final URISyntaxException | ModelException e )
             {
-                // JDK: As of JDK 6, new IOException( message, e );
-                throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
+                throw new IOException( Messages.getMessage( e ), e );
             }
             catch ( final JAXBException e )
             {
@@ -752,13 +721,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
                     message = Messages.getMessage( e.getLinkedException() );
                 }
 
-                // JDK: As of JDK 6, new IOException( message, e );
-                throw (IOException) new IOException( message ).initCause( e );
-            }
-            catch ( final ModelException e )
-            {
-                // JDK: As of JDK 6, new IOException( message, e );
-                throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
+                throw new IOException( message, e );
             }
         }
 
@@ -768,7 +731,6 @@ public abstract class AbstractModletCommand extends AbstractCommand
          * @throws IOException if closing the class loader fails.
          */
         @Override
-        @IgnoreJRERequirement
         public void close() throws IOException
         {
             for ( final Iterator<File> it = this.temporaryResources.iterator(); it.hasNext(); )
@@ -781,10 +743,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
                 }
             }
 
-            if ( Closeable.class.isAssignableFrom( CommandLineClassLoader.class ) )
-            {
-                super.close();
-            }
+            super.close();
         }
 
         /**
@@ -812,19 +771,14 @@ public abstract class AbstractModletCommand extends AbstractCommand
 
         private URL filterProviders( final URL resource ) throws IOException
         {
-            InputStream in = null;
-            BufferedReader reader = null;
-            OutputStream out = null;
-            BufferedWriter writer = null;
             final Set<String> providerExcludes = this.getProviderExcludes();
-            final List<String> lines = new ArrayList<String>();
+            final List<String> lines = new LinkedList<>();
 
-            try
+            try ( final BufferedReader reader = new BufferedReader( new InputStreamReader(
+                resource.openStream(), "UTF-8" ) ) )
             {
                 URL filteredResource = resource;
                 boolean filtered = false;
-                in = resource.openStream();
-                reader = new BufferedReader( new InputStreamReader( in, "UTF-8" ) );
 
                 for ( String line = reader.readLine(); line != null; line = reader.readLine() )
                 {
@@ -842,88 +796,25 @@ public abstract class AbstractModletCommand extends AbstractCommand
                     }
                 }
 
-                reader.close();
-                reader = null;
-                in = null;
-
                 if ( filtered )
                 {
                     final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
                     this.temporaryResources.add( tmpResource );
 
-                    out = new FileOutputStream( tmpResource );
-                    writer = new BufferedWriter( new OutputStreamWriter( out, "UTF-8" ) );
-
-                    for ( final String line : lines )
+                    try ( final BufferedWriter writer = new BufferedWriter( new OutputStreamWriter(
+                        new FileOutputStream( tmpResource ), "UTF-8" ) ) )
                     {
-                        writer.write( line );
-                        writer.newLine();
+                        for ( final String line : lines )
+                        {
+                            writer.write( line );
+                            writer.newLine();
+                        }
                     }
-
-                    writer.close();
-                    writer = null;
-                    out = null;
 
                     filteredResource = tmpResource.toURI().toURL();
                 }
 
                 return filteredResource;
-            }
-            finally
-            {
-                try
-                {
-                    if ( reader != null )
-                    {
-                        reader.close();
-                    }
-                }
-                catch ( final IOException e )
-                {
-                    log( Level.SEVERE, Messages.getMessage( e ), e );
-                }
-                finally
-                {
-                    try
-                    {
-                        if ( in != null )
-                        {
-                            in.close();
-                        }
-                    }
-                    catch ( final IOException e )
-                    {
-                        log( Level.SEVERE, Messages.getMessage( e ), e );
-                    }
-                    finally
-                    {
-                        try
-                        {
-                            if ( writer != null )
-                            {
-                                writer.close();
-                            }
-                        }
-                        catch ( final IOException e )
-                        {
-                            log( Level.SEVERE, Messages.getMessage( e ), e );
-                        }
-                        finally
-                        {
-                            try
-                            {
-                                if ( out != null )
-                                {
-                                    out.close();
-                                }
-                            }
-                            catch ( final IOException e )
-                            {
-                                log( Level.SEVERE, Messages.getMessage( e ), e );
-                            }
-                        }
-                    }
-                }
             }
         }
 
@@ -1101,16 +992,11 @@ public abstract class AbstractModletCommand extends AbstractCommand
 
         private Set<String> readDefaultExcludes( final String location ) throws IOException
         {
-            InputStream in = null;
-            BufferedReader reader = null;
-            final Set<String> defaultExcludes = new HashSet<String>();
+            final Set<String> defaultExcludes = new HashSet<>( 128 );
 
-            try
+            try ( final BufferedReader reader = new BufferedReader( new InputStreamReader(
+                CommandLineClassLoader.class.getResourceAsStream( location ), "UTF-8" ) ) )
             {
-                in = CommandLineClassLoader.class.getResourceAsStream( location );
-                assert in != null : "Expected resource '" + location + "' not found.";
-                reader = new BufferedReader( new InputStreamReader( in, "UTF-8" ) );
-
                 for ( String line = reader.readLine(); line != null; line = reader.readLine() )
                 {
                     final String normalized = line.trim();
@@ -1121,39 +1007,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
                     }
                 }
 
-                reader.close();
-                reader = null;
-                in = null;
-
                 return Collections.unmodifiableSet( defaultExcludes );
-            }
-            finally
-            {
-                try
-                {
-                    if ( reader != null )
-                    {
-                        reader.close();
-                    }
-                }
-                catch ( final IOException e )
-                {
-                    // Suppressed.
-                }
-                finally
-                {
-                    try
-                    {
-                        if ( in != null )
-                        {
-                            in.close();
-                        }
-                    }
-                    catch ( final IOException e )
-                    {
-                        // Suppressed.
-                    }
-                }
             }
         }
 

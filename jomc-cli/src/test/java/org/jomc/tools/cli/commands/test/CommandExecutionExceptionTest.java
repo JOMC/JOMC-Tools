@@ -30,7 +30,6 @@
  */
 package org.jomc.tools.cli.commands.test;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import org.jomc.tools.cli.commands.CommandExecutionException;
 import org.junit.Test;
@@ -61,35 +60,14 @@ public class CommandExecutionExceptionTest
     @Test
     public final void testSerializable() throws Exception
     {
-        ObjectInputStream in = null;
-
-        try
+        final CommandExecutionException e;
+        try ( final ObjectInputStream in = new ObjectInputStream( this.getClass().getResourceAsStream(
+            ABSOLUTE_RESOURCE_NAME_PREFIX + "CommandExecutionException.ser" ) ) )
         {
-            in = new ObjectInputStream( this.getClass().getResourceAsStream( ABSOLUTE_RESOURCE_NAME_PREFIX
-                                                                                 + "CommandExecutionException.ser" ) );
-
-            final CommandExecutionException e = (CommandExecutionException) in.readObject();
-
-            in.close();
-            in = null;
-
-            assertEquals( "TEST", e.getMessage() );
+            e = (CommandExecutionException) in.readObject();
         }
-        finally
-        {
 
-            try
-            {
-                if ( in != null )
-                {
-                    in.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                // Suppressed
-            }
-        }
+        assertEquals( "TEST", e.getMessage() );
     }
 
 }
