@@ -36,8 +36,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.nio.channels.FileLock;
 import java.text.MessageFormat;
 import java.util.LinkedList;
@@ -1416,24 +1418,26 @@ public class SourceFileProcessor extends JomcTool
             }
 
             FileOutputStream out = null;
+            Writer writer = null;
             FileLock fileLock = null;
             try
             {
                 out = new FileOutputStream( file );
+                writer = new OutputStreamWriter( out, getOutputEncoding() );
                 fileLock = out.getChannel().lock();
 
-                out.write( content.getBytes( getOutputEncoding() ) );
+                writer.write( content );
                 out.getChannel().force( true );
 
                 fileLock.release();
                 fileLock = null;
 
-                out.close();
-                out = null;
+                writer.close();
+                writer = null;
             }
             finally
             {
-                this.releaseAndClose( fileLock, out );
+                this.releaseAndClose( fileLock, writer );
             }
         }
 
