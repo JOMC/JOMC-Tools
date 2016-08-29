@@ -34,11 +34,10 @@
   <parent>
     <groupId>org.jomc</groupId>
     <artifactId>jomc-pom</artifactId>
-    <version>1.3</version>
+    <version>1.4</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.jomc.tools</groupId>
-  <artifactId>pom</artifactId>
+  <artifactId>jomc-tools-pom</artifactId>
   <packaging>pom</packaging>
   <name>JOMC Tools</name>
   <version>1.10-SNAPSHOT</version>
@@ -231,13 +230,14 @@
     </site>
   </distributionManagement>
   <properties>
-    <jomc-util.artifact.version>1.9</jomc-util.artifact.version>
+    <jomc-util.artifact.version>1.10-SNAPSHOT</jomc-util.artifact.version>
     <jomc-modlet.artifact.version>1.9</jomc-modlet.artifact.version>
     <jomc-model.artifact.version>1.9</jomc-model.artifact.version>
     <jomc-tools.artifact.version>1.10-SNAPSHOT</jomc-tools.artifact.version>
     <maven-jomc-plugin.artifact.version>1.10-SNAPSHOT</maven-jomc-plugin.artifact.version>
     <jomc-ant-tasks.artifact.version>1.10-SNAPSHOT</jomc-ant-tasks.artifact.version>
     <!-- Parent. -->
+    <maven.surefire.memory>128m</maven.surefire.memory>
     <jomc.scm.location>jomc-tools</jomc.scm.location>
     <jomc.site.location>jomc-tools/1.10-SNAPSHOT</jomc.site.location>
     <jomc.trac.query>order=id&amp;version=1.10-SNAPSHOT&amp;component=JOMC Tools|${project.name}</jomc.trac.query>

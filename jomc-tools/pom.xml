@@ -32,12 +32,11 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <groupId>org.jomc.tools</groupId>
-    <artifactId>pom</artifactId>
+    <groupId>org.jomc</groupId>
+    <artifactId>jomc-tools-pom</artifactId>
     <version>1.10-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.jomc</groupId>
   <artifactId>jomc-tools</artifactId>
   <name>JOMC ⁑ Tools</name>
   <description>Object management and configuration tools.</description>
