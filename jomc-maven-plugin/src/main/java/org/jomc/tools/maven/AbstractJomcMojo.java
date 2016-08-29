@@ -60,6 +60,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -671,6 +675,18 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private List<String> modletIncludes;
 
     /**
+     * A formula used to calculate the maximum number of threads to create for running tasks in parallel. If the
+     * formular contains the character {@code C}, the number of threads will be calculated by multiplying the value by
+     * the number of available processors. The default number of threads is the number of available processors (1.0C).
+     *
+     * @since 2.0
+     */
+    @Parameter( name = "threads",
+                property = "jomc.threads",
+                defaultValue = "1.0C" )
+    private String threads;
+
+    /**
      * The Maven project of the instance.
      */
     @Parameter( name = "mavenProject",
@@ -698,6 +714,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 readonly = true,
                 required = true )
     private MavenSession mavenSession;
+
+    /**
+     * The executor service, if using threads.
+     *
+     * @since 2.0
+     */
+    private ExecutorService executorService;
 
     /**
      * Creates a new {@code AbstractJomcMojo} instance.
@@ -743,7 +766,18 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         finally
         {
-            this.logSeparator();
+            try
+            {
+                this.logSeparator();
+            }
+            finally
+            {
+                if ( this.executorService != null )
+                {
+                    this.executorService.shutdown();
+                    this.executorService = null;
+                }
+            }
         }
     }
 
@@ -871,6 +905,67 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
+    }
+
+    /**
+     * Gets the {@code ExecutorService} used to run tasks in parallel.
+     *
+     * @return The {@code ExecutorService} used to run tasks in parallel or {@code null}.
+     */
+    protected final ExecutorService getExecutorService()
+    {
+        if ( this.executorService == null )
+        {
+            final Double parallelism =
+                this.threads != null
+                    ? this.threads.toLowerCase( Locale.ROOT ).contains( "c" )
+                          ? Double.valueOf( this.threads.toLowerCase( Locale.ROOT ).replace( "c", "" ) )
+                                * Runtime.getRuntime().availableProcessors()
+                          : Double.valueOf( this.threads )
+                    : 0.0D;
+
+            if ( parallelism.intValue() > 1 )
+            {
+                this.executorService = Executors.newFixedThreadPool(
+                    parallelism.intValue(), new ThreadFactory()
+                {
+
+                    private final ThreadGroup group;
+
+                    private final AtomicInteger threadNumber = new AtomicInteger( 1 );
+
+
+                    {
+                        final SecurityManager s = System.getSecurityManager();
+                        this.group = s != null
+                                         ? s.getThreadGroup()
+                                         : Thread.currentThread().getThreadGroup();
+
+                    }
+
+                    @Override
+                    public Thread newThread( final Runnable r )
+                    {
+                        final Thread t =
+                            new Thread( this.group, r, "jomc-maven-plugin-" + this.threadNumber.getAndIncrement(), 0 );
+
+                        if ( t.isDaemon() )
+                        {
+                            t.setDaemon( false );
+                        }
+                        if ( t.getPriority() != Thread.NORM_PRIORITY )
+                        {
+                            t.setPriority( Thread.NORM_PRIORITY );
+                        }
+
+                        return t;
+                    }
+
+                } );
+            }
+        }
+
+        return this.executorService;
     }
 
     /**
@@ -2464,6 +2559,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
         try
         {
+            context.setExecutorService( this.getExecutorService() );
             context.setModletSchemaSystemId( this.modletSchemaSystemId );
             context.getListeners().add( new ModelContext.Listener()
             {
@@ -2608,6 +2704,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 tool.setLogLevel( this.getLog().isDebugEnabled() ? Level.ALL : Level.INFO );
             }
 
+            tool.setExecutorService( this.getExecutorService() );
             tool.getListeners().add( new JomcTool.Listener()
             {
 
@@ -2790,58 +2887,65 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
 
         Files.walkFileTree( source.toPath(), new FileVisitor<Path>()
-        {
+                        {
 
-            @Override
-            public FileVisitResult preVisitDirectory( final Path sourceDir, final BasicFileAttributes attrs )
-                throws IOException
-            {
-                final Path targetDir = target.toPath().resolve( source.toPath().relativize( sourceDir ) );
-                Files.copy( sourceDir, targetDir, StandardCopyOption.REPLACE_EXISTING,
-                            StandardCopyOption.COPY_ATTRIBUTES );
+                            @Override
+                            public FileVisitResult preVisitDirectory( final Path sourceDir,
+                                                                      final BasicFileAttributes attrs )
+                                throws IOException
+                            {
+                                final Path targetDir =
+                                    target.toPath().resolve( source.toPath().relativize( sourceDir ) );
 
-                return FileVisitResult.CONTINUE;
-            }
+                                Files.copy( sourceDir, targetDir, StandardCopyOption.REPLACE_EXISTING,
+                                            StandardCopyOption.COPY_ATTRIBUTES );
 
-            @Override
-            public FileVisitResult visitFile( final Path sourceFile, final BasicFileAttributes attrs )
-                throws IOException
-            {
-                final Path targetFile = target.toPath().resolve( source.toPath().relativize( sourceFile ) );
-                Files.copy( sourceFile, targetFile, StandardCopyOption.REPLACE_EXISTING,
-                            StandardCopyOption.COPY_ATTRIBUTES );
+                                return FileVisitResult.CONTINUE;
+                            }
 
-                return FileVisitResult.CONTINUE;
-            }
+                            @Override
+                            public FileVisitResult visitFile( final Path sourceFile, final BasicFileAttributes attrs )
+                                throws IOException
+                            {
+                                final Path targetFile =
+                                    target.toPath().resolve( source.toPath().relativize( sourceFile ) );
 
-            @Override
-            public FileVisitResult visitFileFailed( final Path file, final IOException exc )
-                throws IOException
-            {
-                if ( exc != null )
-                {
-                    throw exc;
-                }
+                                Files.copy( sourceFile, targetFile, StandardCopyOption.REPLACE_EXISTING,
+                                            StandardCopyOption.COPY_ATTRIBUTES );
 
-                return FileVisitResult.TERMINATE;
-            }
+                                return FileVisitResult.CONTINUE;
+                            }
 
-            @Override
-            public FileVisitResult postVisitDirectory( final Path sourceDir, final IOException exc )
-                throws IOException
-            {
-                if ( exc != null )
-                {
-                    throw exc;
-                }
+                            @Override
+                            public FileVisitResult visitFileFailed( final Path file, final IOException exc )
+                                throws IOException
+                            {
+                                if ( exc != null )
+                                {
+                                    throw exc;
+                                }
 
-                final Path targetDir = target.toPath().resolve( source.toPath().relativize( sourceDir ) );
-                final FileTime time = Files.getLastModifiedTime( sourceDir );
-                Files.setLastModifiedTime( targetDir, time );
-                return FileVisitResult.CONTINUE;
-            }
+                                return FileVisitResult.TERMINATE;
+                            }
 
-        } );
+                            @Override
+                            public FileVisitResult postVisitDirectory( final Path sourceDir, final IOException exc )
+                                throws IOException
+                            {
+                                if ( exc != null )
+                                {
+                                    throw exc;
+                                }
+
+                                final Path targetDir =
+                                    target.toPath().resolve( source.toPath().relativize( sourceDir ) );
+
+                                final FileTime time = Files.getLastModifiedTime( sourceDir );
+                                Files.setLastModifiedTime( targetDir, time );
+                                return FileVisitResult.CONTINUE;
+                            }
+
+                        } );
     }
 
     private Artifact getPluginArtifact( final Artifact a )

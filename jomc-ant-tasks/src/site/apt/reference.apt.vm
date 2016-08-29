@@ -158,6 +158,14 @@ Task and Type Reference
 | <<<templateProfile>>>                       | The template profile to use when accessing | No. {{{B}[B]}}         |
 |                                             | templates.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<threads>>>                               | A formula used to calculate the maximum    | No. The default number |
+|                                             | number of threads to create for running    | of threads is the      |
+|                                             | tasks in parallel. If the formular         | number of available    |
+|                                             | contains the character <<<C>>>, the number | processors             |
+|                                             | of threads will be calculated by           | (<<<1.0C>>>).          |
+|                                             | multiplying the value by the number of     |                        |
+|                                             | available processors.                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -355,6 +363,14 @@ Task and Type Reference
 | <<<templateProfile>>>                       | The template profile to use when accessing | No. {{{B}[B]}}         |
 |                                             | templates.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<threads>>>                               | A formula used to calculate the maximum    | No. The default number |
+|                                             | number of threads to create for running    | of threads is the      |
+|                                             | tasks in parallel. If the formular         | number of available    |
+|                                             | contains the character <<<C>>>, the number | processors             |
+|                                             | of threads will be calculated by           | (<<<1.0C>>>).          |
+|                                             | multiplying the value by the number of     |                        |
+|                                             | available processors.                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -545,6 +561,14 @@ Task and Type Reference
 | <<<templateProfile>>>                       | The template profile to use when accessing | No. {{{B}[B]}}         |
 |                                             | templates.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<threads>>>                               | A formula used to calculate the maximum    | No. The default number |
+|                                             | number of threads to create for running    | of threads is the      |
+|                                             | tasks in parallel. If the formular         | number of available    |
+|                                             | contains the character <<<C>>>, the number | processors             |
+|                                             | of threads will be calculated by           | (<<<1.0C>>>).          |
+|                                             | multiplying the value by the number of     |                        |
+|                                             | available processors.                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -734,6 +758,14 @@ Task and Type Reference
 | <<<templateProfile>>>                       | The template profile to use when accessing | No. {{{B}[B]}}         |
 |                                             | templates.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<threads>>>                               | A formula used to calculate the maximum    | No. The default number |
+|                                             | number of threads to create for running    | of threads is the      |
+|                                             | tasks in parallel. If the formular         | number of available    |
+|                                             | contains the character <<<C>>>, the number | processors             |
+|                                             | of threads will be calculated by           | (<<<1.0C>>>).          |
+|                                             | multiplying the value by the number of     |                        |
+|                                             | available processors.                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -921,6 +953,14 @@ Task and Type Reference
 | <<<templateProfile>>>                       | The template profile to use when accessing | No. {{{B}[B]}}         |
 |                                             | templates.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<threads>>>                               | A formula used to calculate the maximum    | No. The default number |
+|                                             | number of threads to create for running    | of threads is the      |
+|                                             | tasks in parallel. If the formular         | number of available    |
+|                                             | contains the character <<<C>>>, the number | processors             |
+|                                             | of threads will be calculated by           | (<<<1.0C>>>).          |
+|                                             | multiplying the value by the number of     |                        |
+|                                             | available processors.                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -1042,6 +1082,14 @@ Task and Type Reference
 | <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
 |                                             | providers.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<threads>>>                               | A formula used to calculate the maximum    | No. The default number |
+|                                             | number of threads to create for running    | of threads is the      |
+|                                             | tasks in parallel. If the formular         | number of available    |
+|                                             | contains the character <<<C>>>, the number | processors             |
+|                                             | of threads will be calculated by           | (<<<1.0C>>>).          |
+|                                             | multiplying the value by the number of     |                        |
+|                                             | available processors.                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -1144,6 +1192,14 @@ Task and Type Reference
 *---------------------------------------+--------------------------------------------+------------------------+
 | <<<providerLocation>>>                | The class path location searched for       | No. {{{I}[I]}}         |
 |                                       | providers.                                 |                        |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<threads>>>                         | A formula used to calculate the maximum    | No. The default number |
+|                                       | number of threads to create for running    | of threads is the      |
+|                                       | tasks in parallel. If the formular         | number of available    |
+|                                       | contains the character <<<C>>>, the number | processors             |
+|                                       | of threads will be calculated by           | (<<<1.0C>>>).          |
+|                                       | multiplying the value by the number of     |                        |
+|                                       | available processors.                      |                        |
 *---------------------------------------+--------------------------------------------+------------------------+
 | <<<unless>>>                          | Object controlling the execution of the    | No.                    |
 |                                       | task.                                      |                        |
@@ -1262,6 +1318,14 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
 |                                             | providers.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<threads>>>                               | A formula used to calculate the maximum    | No. The default number |
+|                                             | number of threads to create for running    | of threads is the      |
+|                                             | tasks in parallel. If the formular         | number of available    |
+|                                             | contains the character <<<C>>>, the number | processors             |
+|                                             | of threads will be calculated by           | (<<<1.0C>>>).          |
+|                                             | multiplying the value by the number of     |                        |
+|                                             | available processors.                      |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
 |                                             | transformers.                              |                        |
@@ -1392,6 +1456,14 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<specificationModelFile>>>                | File to write the specification to.        | No.                    |
 |                                             | <Since 1.6>                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<threads>>>                               | A formula used to calculate the maximum    | No. The default number |
+|                                             | number of threads to create for running    | of threads is the      |
+|                                             | tasks in parallel. If the formular         | number of available    |
+|                                             | contains the character <<<C>>>, the number | processors             |
+|                                             | of threads will be calculated by           | (<<<1.0C>>>).          |
+|                                             | multiplying the value by the number of     |                        |
+|                                             | available processors.                      |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
 |                                             | transformers.                              |                        |

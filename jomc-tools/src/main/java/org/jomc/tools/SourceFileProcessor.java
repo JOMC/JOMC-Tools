@@ -191,6 +191,7 @@ public class SourceFileProcessor extends JomcTool
                 new SourceFileProcessor.SourceFileEditor( new TrailingWhitespaceEditor( this.getLineSeparator() ),
                                                           this.getLineSeparator() );
 
+            this.sourceFileEditor.setExecutorService( this.getExecutorService() );
         }
 
         return this.sourceFileEditor;
@@ -679,13 +680,20 @@ public class SourceFileProcessor extends JomcTool
 
                         }
 
+                        VelocityContext ctx = null;
+
                         if ( sourceSectionType.getHeadTemplate() != null
                                  && ( !sourceSectionType.isEditable()
                                       || s.getHeadContent().toString().trim().length() == 0 ) )
                         {
                             final StringWriter writer = new StringWriter();
                             final Template template = getVelocityTemplate( sourceSectionType.getHeadTemplate() );
-                            final VelocityContext ctx = getVelocityContext();
+
+                            if ( ctx == null )
+                            {
+                                ctx = (VelocityContext) this.getVelocityContext().clone();
+                            }
+
                             ctx.put( "template", template );
                             ctx.put( "ssection", sourceSectionType );
                             template.merge( ctx, writer );
@@ -702,7 +710,12 @@ public class SourceFileProcessor extends JomcTool
                         {
                             final StringWriter writer = new StringWriter();
                             final Template template = getVelocityTemplate( sourceSectionType.getTailTemplate() );
-                            final VelocityContext ctx = getVelocityContext();
+
+                            if ( ctx == null )
+                            {
+                                ctx = (VelocityContext) this.getVelocityContext().clone();
+                            }
+
                             ctx.put( "template", template );
                             ctx.put( "ssection", sourceSectionType );
                             template.merge( ctx, writer );
@@ -713,30 +726,27 @@ public class SourceFileProcessor extends JomcTool
                             ctx.remove( "ssection" );
                         }
                     }
-                    else
+                    else if ( isLoggable( Level.WARNING ) )
                     {
-                        if ( isLoggable( Level.WARNING ) )
+                        if ( this.implementation != null )
                         {
-                            if ( this.implementation != null )
-                            {
-                                final Module m =
-                                    getModules().getModuleOfImplementation( this.implementation.getIdentifier() );
+                            final Module m =
+                                getModules().getModuleOfImplementation( this.implementation.getIdentifier() );
 
-                                log( Level.WARNING, getMessage(
-                                     "unknownImplementationSection", m.getName(), this.implementation.getIdentifier(),
-                                     model.getIdentifier(), s.getName() ), null );
+                            log( Level.WARNING, getMessage(
+                                 "unknownImplementationSection", m.getName(), this.implementation.getIdentifier(),
+                                 model.getIdentifier(), s.getName() ), null );
 
-                            }
-                            else if ( this.specification != null )
-                            {
-                                final Module m =
-                                    getModules().getModuleOfSpecification( this.specification.getIdentifier() );
+                        }
+                        else if ( this.specification != null )
+                        {
+                            final Module m =
+                                getModules().getModuleOfSpecification( this.specification.getIdentifier() );
 
-                                log( Level.WARNING, getMessage(
-                                     "unknownSpecificationSection", m.getName(), this.specification.getIdentifier(),
-                                     model.getIdentifier(), s.getName() ), null );
+                            log( Level.WARNING, getMessage(
+                                 "unknownSpecificationSection", m.getName(), this.specification.getIdentifier(),
+                                 model.getIdentifier(), s.getName() ), null );
 
-                            }
                         }
                     }
                 }
@@ -863,7 +873,6 @@ public class SourceFileProcessor extends JomcTool
                     String content = "";
                     String edited = null;
                     boolean creating = false;
-
                     if ( !f.exists() )
                     {
                         if ( model.getTemplate() != null )

@@ -105,17 +105,17 @@ public final class Jomc
     /**
      * Print writer of the instance.
      */
-    private PrintWriter printWriter;
+    private volatile PrintWriter printWriter;
 
     /**
      * Log level of the instance.
      */
-    private Level logLevel;
+    private volatile Level logLevel;
 
     /**
      * Greatest severity logged by the command.
      */
-    private Level severity = Level.ALL;
+    private volatile Level severity = Level.ALL;
 
     /**
      * Creates a new {@code Jomc} instance.
@@ -408,7 +408,7 @@ public final class Jomc
             this.log( Level.SEVERE, Messages.getMessage( "illegalArgumentsInformation", cmd.getName(), "help" ), e );
             return Command.STATUS_FAILURE;
         }
-        catch ( final Throwable t )
+        catch ( final IOException | NullPointerException | IllegalArgumentException t )
         {
             this.log( Level.SEVERE, null, t );
             return Command.STATUS_FAILURE;

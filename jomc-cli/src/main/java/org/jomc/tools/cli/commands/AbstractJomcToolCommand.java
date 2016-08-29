@@ -149,6 +149,7 @@ public abstract class AbstractJomcToolCommand extends AbstractModelCommand
 
         final T tool = this.createObject( className, type );
         tool.setLogLevel( this.getLogLevel() );
+        tool.setExecutorService( this.getExecutorService( commandLine ) );
         tool.setLocale( this.getLocale( commandLine ) );
         tool.getListeners().add( new JomcTool.Listener()
         {

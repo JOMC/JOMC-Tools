@@ -40,6 +40,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import org.apache.commons.io.FileUtils;
@@ -60,6 +61,7 @@ import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.ModelValidationReport;
 import org.jomc.tools.JomcTool;
+import org.junit.After;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -89,27 +91,32 @@ public class JomcToolTest
     /**
      * The {@code JomcTool} instance tests are performed with.
      */
-    private JomcTool jomcTool;
+    private volatile JomcTool jomcTool;
 
     /**
      * The {@code ModelContext} of the instance.
      */
-    private ModelContext modelContext;
+    private volatile ModelContext modelContext;
+
+    /**
+     * The {@code ExecutorService} backing the tests.
+     */
+    private volatile ExecutorService executorService;
 
     /**
      * The {@code Model} of the instance.
      */
-    private Model model;
+    private volatile Model model;
 
     /**
      * The name of the encoding to use when reading or writing resources.
      */
-    private String resourceEncoding;
+    private volatile String resourceEncoding;
 
     /**
      * The output directory of the instance.
      */
-    private File outputDirectory;
+    private volatile File outputDirectory;
 
     /**
      * Serial number of next output directories.
@@ -237,6 +244,7 @@ public class JomcToolTest
         if ( this.jomcTool == null )
         {
             this.jomcTool = this.newJomcTool();
+            this.jomcTool.setExecutorService( this.getExecutorService() );
             this.jomcTool.setModel( this.getModel() );
             this.jomcTool.getListeners().add( new JomcTool.Listener()
             {
@@ -284,6 +292,7 @@ public class JomcToolTest
         if ( this.modelContext == null )
         {
             this.modelContext = this.newModelContext();
+            this.modelContext.setExecutorService( this.getExecutorService() );
             this.modelContext.getListeners().add( new ModelContext.Listener()
             {
 
@@ -316,6 +325,50 @@ public class JomcToolTest
     protected ModelContext newModelContext()
     {
         return ModelContextFactory.newInstance().newModelContext();
+    }
+
+    /**
+     * Gets the {@code ExecutorService} backing the tests.
+     *
+     * @return The {@code ExecutorService} backing the tests.
+     *
+     * @see #newExecutorService()
+     * @since 1.10
+     */
+    public final ExecutorService getExecutorService()
+    {
+        if ( this.executorService == null )
+        {
+            this.executorService = this.newExecutorService();
+        }
+
+        return this.executorService;
+    }
+
+    /**
+     * Creates a new {@code ExecutorService} backing the tests.
+     *
+     * @return A new {@code ExecutorService} backing the tests, or {@code null}.
+     *
+     * @see #getExecutorService()
+     * @since 1.10
+     */
+    protected ExecutorService newExecutorService()
+    {
+        return null;
+    }
+
+    /**
+     * Shuts down the {@code ExecutorService} backing the tests, if not {@code null}.
+     */
+    @After
+    public final void shutdown()
+    {
+        if ( this.executorService != null )
+        {
+            this.executorService.shutdown();
+            this.executorService = null;
+        }
     }
 
     /**

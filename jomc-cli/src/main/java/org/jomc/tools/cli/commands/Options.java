@@ -296,6 +296,11 @@ class Options
      */
     static final Option MODLET_EXCLUDES_OPTION;
 
+    /**
+     * Command line option.
+     */
+    static final Option THREADS_OPTION;
+
     static
     {
         CLASSPATH_OPTION =
@@ -551,6 +556,11 @@ class Options
             valueSeparator( File.pathSeparatorChar ).
             desc( Messages.getMessage( "modletExcludesOptionOptionDescription", File.pathSeparator ) ).
             argName( Messages.getMessage( "modletExcludesOptionArgumentDescription" ) ).build();
+
+        THREADS_OPTION =
+            Option.builder( "T" ).longOpt( "threads" ).hasArg().optionalArg( false ).
+            desc( Messages.getMessage( "threadsOptionOptionDescription", File.pathSeparator ) ).
+            argName( Messages.getMessage( "threadsOptionArgumentDescription" ) ).build();
 
     }
 

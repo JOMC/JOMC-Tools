@@ -109,7 +109,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
     @Override
     public org.apache.commons.cli.Options getOptions()
     {
-        final org.apache.commons.cli.Options options = new org.apache.commons.cli.Options();
+        final org.apache.commons.cli.Options options = super.getOptions();
         options.addOption( Options.CLASSPATH_OPTION );
         options.addOption( Options.DOCUMENTS_OPTION );
         options.addOption( Options.MODEL_CONTEXT_FACTORY_CLASSNAME_OPTION );
@@ -204,10 +204,12 @@ public abstract class AbstractModletCommand extends AbstractCommand
         final ModelContextFactory modelContextFactory =
             commandLine.hasOption( Options.MODEL_CONTEXT_FACTORY_CLASSNAME_OPTION.getOpt() )
                 ? ModelContextFactory.newInstance( commandLine.getOptionValue(
-                        Options.MODEL_CONTEXT_FACTORY_CLASSNAME_OPTION.getOpt() ) )
+                Options.MODEL_CONTEXT_FACTORY_CLASSNAME_OPTION.getOpt() ) )
                 : ModelContextFactory.newInstance();
 
         final ModelContext modelContext = modelContextFactory.newModelContext( classLoader );
+
+        modelContext.setExecutorService( this.getExecutorService( commandLine ) );
 
         if ( commandLine.hasOption( Options.MODLET_SCHEMA_SYSTEM_ID_OPTION.getOpt() ) )
         {
