@@ -239,7 +239,7 @@ public abstract class AbstractCommand implements Command
      *
      * @return The {@code ExecutorService} used to run tasks in parallel or {@code null}.
      *
-     * @since 2.0
+     * @since 1.10
      */
     protected final ExecutorService getExecutorService( final CommandLine commandLine )
     {

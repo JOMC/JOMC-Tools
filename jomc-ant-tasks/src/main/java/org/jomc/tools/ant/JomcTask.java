@@ -180,12 +180,14 @@ public class JomcTask extends Task
     /**
      * Formula used to calculate the maximum number of threads to create for running tasks in parallel.
      *
-     * @since 2.0
+     * @since 1.10
      */
     private String threads = "1.0C";
 
     /**
      * The {@code ExecutorService} of the task.
+     *
+     * @since 1.10
      */
     private ExecutorService executorService;
 
@@ -657,6 +659,8 @@ public class JomcTask extends Task
      * @return A formula used to calculate the number of threads.
      *
      * @see Runtime#availableProcessors()
+     *
+     * @since 1.10
      */
     public final String getThreads()
     {
@@ -671,6 +675,8 @@ public class JomcTask extends Task
      *
      * @param value The formula to use to calculate the maximum number of threads or {@code null}, to disable any
      * parallelism.
+     *
+     * @since 1.10
      */
     public final void setThreads( final String value )
     {
@@ -682,6 +688,8 @@ public class JomcTask extends Task
      *
      * @return The {@code ExecutorService} used to run tasks in parallel or {@code null}, if the maximum number of
      * threads to create for running tasks in parallel is not greater than 1.
+     *
+     * @since 1.10
      */
     protected final ExecutorService getExecutorService()
     {

@@ -679,7 +679,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * formular contains the character {@code C}, the number of threads will be calculated by multiplying the value by
      * the number of available processors. The default number of threads is the number of available processors (1.0C).
      *
-     * @since 2.0
+     * @since 1.10
      */
     @Parameter( name = "threads",
                 property = "jomc.threads",
@@ -718,7 +718,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * The executor service, if using threads.
      *
-     * @since 2.0
+     * @since 1.10
      */
     private ExecutorService executorService;
 
@@ -911,6 +911,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * Gets the {@code ExecutorService} used to run tasks in parallel.
      *
      * @return The {@code ExecutorService} used to run tasks in parallel or {@code null}.
+     *
+     * @since 1.10
      */
     protected final ExecutorService getExecutorService()
     {

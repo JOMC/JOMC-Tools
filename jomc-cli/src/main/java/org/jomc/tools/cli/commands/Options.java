@@ -298,6 +298,8 @@ class Options
 
     /**
      * Command line option.
+     *
+     * @since 1.10
      */
     static final Option THREADS_OPTION;
 
