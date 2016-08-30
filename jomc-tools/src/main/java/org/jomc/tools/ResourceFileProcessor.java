@@ -763,6 +763,12 @@ public class ResourceFileProcessor extends JomcTool
         }
     }
 
+    void initDefaults()
+    {
+        super.initDefaults();
+        this.getResourceBundleDefaultLocale();
+    }
+
     private static String getMessage( final Throwable t )
     {
         return t != null

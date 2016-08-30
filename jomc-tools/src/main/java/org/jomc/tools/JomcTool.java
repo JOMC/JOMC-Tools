@@ -2538,11 +2538,9 @@ public class JomcTool
      *
      * @return The {@code VelocityEngine} of the instance.
      *
-     * @throws IOException if initializing a new velocity engine fails.
-     *
      * @see #setVelocityEngine(org.apache.velocity.app.VelocityEngine)
      */
-    public final VelocityEngine getVelocityEngine() throws IOException
+    public final VelocityEngine getVelocityEngine()
     {
         if ( this.velocityEngine == null )
         {
@@ -3218,6 +3216,10 @@ public class JomcTool
     public final void setExecutorService( final ExecutorService value )
     {
         this.executorService = value;
+        if ( this.executorService != null )
+        {
+            this.initDefaults();
+        }
     }
 
     /**
@@ -3282,6 +3284,20 @@ public class JomcTool
                 listener.onLog( level, message, throwable );
             }
         }
+    }
+
+    void initDefaults()
+    {
+        this.getLogLevel();
+        this.getModel();
+        this.getVelocityEngine();
+        this.getDefaultTemplateEncoding();
+        this.getInputEncoding();
+        this.getOutputEncoding();
+        this.getTemplateProfile();
+        this.getIndentation();
+        this.getLineSeparator();
+        this.getLocale();
     }
 
     private Template findVelocityTemplate( final String location, final String encoding ) throws IOException
