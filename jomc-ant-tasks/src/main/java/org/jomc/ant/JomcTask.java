@@ -186,6 +186,8 @@ public class JomcTask extends Task
 
     /**
      * The {@code ExecutorService} of the task.
+     *
+     * @since 1.10
      */
     private ExecutorService executorService;
 
