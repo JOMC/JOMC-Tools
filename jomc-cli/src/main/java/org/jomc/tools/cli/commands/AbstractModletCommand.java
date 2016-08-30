@@ -474,7 +474,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
         /**
          * {@code Modlets} excluded by the instance.
          */
-        private Modlets excludedModlets;
+        private final Modlets excludedModlets = new Modlets();
 
         /**
          * Set of provider resource locations to filter.
@@ -603,11 +603,6 @@ public abstract class AbstractModletCommand extends AbstractCommand
          */
         public Modlets getExcludedModlets()
         {
-            if ( this.excludedModlets == null )
-            {
-                this.excludedModlets = new Modlets();
-            }
-
             return this.excludedModlets;
         }
 
@@ -854,7 +849,10 @@ public abstract class AbstractModletCommand extends AbstractCommand
                     {
                         it.remove();
                         filtered = true;
-                        this.getExcludedModlets().getModlet().add( m );
+                        synchronized ( this )
+                        {
+                            this.getExcludedModlets().getModlet().add( m );
+                        }
                         log( Level.FINE,
                              Messages.getMessage( "modletExclusionInfo", resource.toExternalForm(), m.getName() ),
                              null );

@@ -99,7 +99,7 @@ public class ProjectClassLoader extends URLClassLoader
     /**
      * Excluded modlets.
      */
-    private Modlets excludedModlets;
+    private final Modlets excludedModlets = new Modlets();
 
     /**
      * Set of service class names to exclude.
@@ -109,7 +109,7 @@ public class ProjectClassLoader extends URLClassLoader
     /**
      * Excluded services.
      */
-    private Services excludedServices;
+    private final Services excludedServices = new Services();
 
     /**
      * Set of schema public ids to exclude.
@@ -119,7 +119,7 @@ public class ProjectClassLoader extends URLClassLoader
     /**
      * Excluded schemas.
      */
-    private Schemas excludedSchemas;
+    private final Schemas excludedSchemas = new Schemas();
 
     /**
      * Set of providers to exclude.
@@ -129,7 +129,7 @@ public class ProjectClassLoader extends URLClassLoader
     /**
      * Set of excluded providers.
      */
-    private Set<String> excludedProviders;
+    private final Set<String> excludedProviders = Collections.synchronizedSet( new HashSet<String>( 128 ) );
 
     /**
      * The project the class loader is associated with.
@@ -149,7 +149,7 @@ public class ProjectClassLoader extends URLClassLoader
     /**
      * Set of temporary resources.
      */
-    private final Set<File> temporaryResources = new HashSet<>( 128 );
+    private final Set<File> temporaryResources = Collections.synchronizedSet( new HashSet<File>( 128 ) );
 
     /**
      * Creates a new {@code ProjectClassLoader} instance taking a project and a class path.
@@ -394,11 +394,6 @@ public class ProjectClassLoader extends URLClassLoader
      */
     public final Modlets getExcludedModlets()
     {
-        if ( this.excludedModlets == null )
-        {
-            this.excludedModlets = new Modlets();
-        }
-
         return this.excludedModlets;
     }
 
@@ -446,11 +441,6 @@ public class ProjectClassLoader extends URLClassLoader
      */
     public final Set<String> getExcludedProviders()
     {
-        if ( this.excludedProviders == null )
-        {
-            this.excludedProviders = new HashSet<>( 128 );
-        }
-
         return this.excludedProviders;
     }
 
@@ -498,11 +488,6 @@ public class ProjectClassLoader extends URLClassLoader
      */
     public final Services getExcludedServices()
     {
-        if ( this.excludedServices == null )
-        {
-            this.excludedServices = new Services();
-        }
-
         return this.excludedServices;
     }
 
@@ -550,11 +535,6 @@ public class ProjectClassLoader extends URLClassLoader
      */
     public final Schemas getExcludedSchemas()
     {
-        if ( this.excludedSchemas == null )
-        {
-            this.excludedSchemas = new Schemas();
-        }
-
         return this.excludedSchemas;
     }
 
@@ -774,7 +754,7 @@ public class ProjectClassLoader extends URLClassLoader
         return filteredSchemas || filteredServices;
     }
 
-    private void addExcludedModlet( final Modlet modlet )
+    private synchronized void addExcludedModlet( final Modlet modlet )
     {
         try
         {
@@ -800,7 +780,7 @@ public class ProjectClassLoader extends URLClassLoader
         }
     }
 
-    private void addExcludedSchema( final Schema schema )
+    private synchronized void addExcludedSchema( final Schema schema )
     {
         if ( this.getExcludedSchemas().getSchemaBySystemId( schema.getSystemId() ) == null )
         {
@@ -808,7 +788,7 @@ public class ProjectClassLoader extends URLClassLoader
         }
     }
 
-    private void addExcludedService( final Service service )
+    private synchronized void addExcludedService( final Service service )
     {
         for ( int i = 0, s0 = this.getExcludedServices().getService().size(); i < s0; i++ )
         {
