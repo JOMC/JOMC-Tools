@@ -85,12 +85,7 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
                 : ResourceFileProcessor.class.getName();
 
         final ResourceFileProcessor tool = this.createJomcTool( className, ResourceFileProcessor.class, commandLine );
-
-        if ( tool != null )
-        {
-            tool.setResourceBundleDefaultLocale( this.getLocale( commandLine ) );
-        }
-
+        tool.setResourceBundleDefaultLocale( this.getLocale( commandLine ) );
         return tool;
     }
 

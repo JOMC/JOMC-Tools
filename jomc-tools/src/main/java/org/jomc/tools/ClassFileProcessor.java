@@ -38,11 +38,18 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.net.URL;
 import java.nio.channels.FileLock;
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -66,6 +73,7 @@ import org.jomc.model.Dependencies;
 import org.jomc.model.Dependency;
 import org.jomc.model.Implementation;
 import org.jomc.model.Implementations;
+import org.jomc.model.JavaTypeName;
 import org.jomc.model.Message;
 import org.jomc.model.Messages;
 import org.jomc.model.ModelObject;
@@ -170,11 +178,8 @@ public class ClassFileProcessor extends JomcTool
         {
             if ( this.getModules() != null )
             {
-                final Marshaller m = context.createMarshaller( this.getModel().getIdentifier() );
-                m.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
-
                 this.commitModelObjects( this.getModules().getSpecifications(), this.getModules().getImplementations(),
-                                         m, classesDirectory );
+                                         classesDirectory, context );
 
             }
             else if ( this.isLoggable( Level.WARNING ) )
@@ -222,10 +227,9 @@ public class ClassFileProcessor extends JomcTool
         {
             if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
             {
-                final Marshaller m = context.createMarshaller( this.getModel().getIdentifier() );
-                m.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+                this.commitModelObjects( module.getSpecifications(), module.getImplementations(), classesDirectory,
+                                         context );
 
-                this.commitModelObjects( module.getSpecifications(), module.getImplementations(), m, classesDirectory );
             }
             else if ( this.isLoggable( Level.WARNING ) )
             {
@@ -273,10 +277,18 @@ public class ClassFileProcessor extends JomcTool
             if ( this.getModules() != null
                      && this.getModules().getSpecification( specification.getIdentifier() ) != null )
             {
-                final Marshaller m = context.createMarshaller( this.getModel().getIdentifier() );
-                m.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+                if ( specification.isClassDeclaration() && specification.getJavaTypeName() != null )
+                {
+                    final File javaClassfile =
+                        this.getJavaClassfile( specification.getJavaTypeName(), classesDirectory );
 
-                this.commitModelObjects( specification, m, classesDirectory );
+                    final Marshaller m = context.createMarshaller( this.getModel().getIdentifier() );
+                    m.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+
+                    final JavaClass javaClass = this.readJavaClass( javaClassfile );
+                    this.commitModelObjects( specification, m, javaClass );
+                    this.writeJavaClass( javaClass, javaClassfile );
+                }
             }
             else if ( this.isLoggable( Level.WARNING ) )
             {
@@ -324,10 +336,18 @@ public class ClassFileProcessor extends JomcTool
             if ( this.getModules() != null
                      && this.getModules().getImplementation( implementation.getIdentifier() ) != null )
             {
-                final Marshaller m = context.createMarshaller( this.getModel().getIdentifier() );
-                m.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+                if ( implementation.isClassDeclaration() && implementation.getJavaTypeName() != null )
+                {
+                    final File javaClassfile =
+                        this.getJavaClassfile( implementation.getJavaTypeName(), classesDirectory );
 
-                this.commitModelObjects( implementation, m, classesDirectory );
+                    final Marshaller m = context.createMarshaller( this.getModel().getIdentifier() );
+                    m.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+
+                    final JavaClass javaClass = this.readJavaClass( javaClassfile );
+                    this.commitModelObjects( implementation, m, javaClass );
+                    this.writeJavaClass( javaClass, javaClassfile );
+                }
             }
             else if ( this.isLoggable( Level.WARNING ) )
             {
@@ -367,6 +387,11 @@ public class ClassFileProcessor extends JomcTool
             throw new NullPointerException( "javaClass" );
         }
 
+        if ( this.isLoggable( Level.INFO ) )
+        {
+            this.log( Level.INFO, getMessage( "committingSpecification", specification.getIdentifier() ), null );
+        }
+
         if ( this.getModules() != null
                  && this.getModules().getSpecification( specification.getIdentifier() ) != null )
         {
@@ -404,6 +429,11 @@ public class ClassFileProcessor extends JomcTool
         if ( javaClass == null )
         {
             throw new NullPointerException( "javaClass" );
+        }
+
+        if ( this.isLoggable( Level.INFO ) )
+        {
+            this.log( Level.INFO, getMessage( "committingImplementation", implementation.getIdentifier() ), null );
         }
 
         if ( this.getModules() != null
@@ -511,10 +541,9 @@ public class ClassFileProcessor extends JomcTool
 
             if ( this.getModules() != null )
             {
-                final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
-                u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
                 report = this.validateModelObjects( this.getModules().getSpecifications(),
-                                                    this.getModules().getImplementations(), u, context );
+                                                    this.getModules().getImplementations(),
+                                                    context );
 
             }
             else if ( this.isLoggable( Level.WARNING ) )
@@ -563,9 +592,7 @@ public class ClassFileProcessor extends JomcTool
 
             if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
             {
-                final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
-                u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
-                report = this.validateModelObjects( module.getSpecifications(), module.getImplementations(), u,
+                report = this.validateModelObjects( module.getSpecifications(), module.getImplementations(),
                                                     context );
 
             }
@@ -616,9 +643,13 @@ public class ClassFileProcessor extends JomcTool
             if ( this.getModules() != null
                      && this.getModules().getSpecification( specification.getIdentifier() ) != null )
             {
-                final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
-                u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
-                report = this.validateModelObjects( specification, u, context );
+                if ( specification.isClassDeclaration() && specification.getJavaTypeName() != null )
+                {
+                    final URL javaClassfile = this.getJavaClassfile( specification.getJavaTypeName(), context );
+                    final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
+                    u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+                    report = this.validateModelObjects( specification, u, this.readJavaClass( javaClassfile ) );
+                }
             }
             else if ( this.isLoggable( Level.WARNING ) )
             {
@@ -667,9 +698,13 @@ public class ClassFileProcessor extends JomcTool
             if ( this.getModules() != null
                      && this.getModules().getImplementation( implementation.getIdentifier() ) != null )
             {
-                final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
-                u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
-                report = this.validateModelObjects( implementation, u, context );
+                if ( implementation.isClassDeclaration() && implementation.getJavaTypeName() != null )
+                {
+                    final URL javaClassfile = this.getJavaClassfile( implementation.getJavaTypeName(), context );
+                    final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
+                    u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+                    report = this.validateModelObjects( implementation, u, this.readJavaClass( javaClassfile ) );
+                }
             }
             else if ( this.isLoggable( Level.WARNING ) )
             {
@@ -716,10 +751,9 @@ public class ClassFileProcessor extends JomcTool
 
             if ( this.getModules() != null )
             {
-                final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
-                u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
                 report = this.validateModelObjects( this.getModules().getSpecifications(),
-                                                    this.getModules().getImplementations(), u, classesDirectory );
+                                                    this.getModules().getImplementations(),
+                                                    classesDirectory, context );
 
             }
             else if ( this.isLoggable( Level.WARNING ) )
@@ -773,10 +807,8 @@ public class ClassFileProcessor extends JomcTool
 
             if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
             {
-                final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
-                u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
-                report = this.validateModelObjects( module.getSpecifications(), module.getImplementations(), u,
-                                                    classesDirectory );
+                report = this.validateModelObjects( module.getSpecifications(), module.getImplementations(),
+                                                    classesDirectory, context );
 
             }
             else if ( this.isLoggable( Level.WARNING ) )
@@ -833,9 +865,16 @@ public class ClassFileProcessor extends JomcTool
             if ( this.getModules() != null
                      && this.getModules().getSpecification( specification.getIdentifier() ) != null )
             {
-                final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
-                u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
-                report = this.validateModelObjects( specification, u, classesDirectory );
+                if ( specification.isClassDeclaration() && specification.getJavaTypeName() != null )
+                {
+                    final File javaClassfile =
+                        this.getJavaClassfile( specification.getJavaTypeName(), classesDirectory );
+
+                    final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
+                    u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+
+                    report = this.validateModelObjects( specification, u, this.readJavaClass( javaClassfile ) );
+                }
             }
             else if ( this.isLoggable( Level.WARNING ) )
             {
@@ -891,9 +930,16 @@ public class ClassFileProcessor extends JomcTool
             if ( this.getModules() != null
                      && this.getModules().getImplementation( implementation.getIdentifier() ) != null )
             {
-                final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
-                u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
-                report = this.validateModelObjects( implementation, u, classesDirectory );
+                if ( implementation.isClassDeclaration() && implementation.getJavaTypeName() != null )
+                {
+                    final File javaClassfile =
+                        this.getJavaClassfile( implementation.getJavaTypeName(), classesDirectory );
+
+                    final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
+                    u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+
+                    report = this.validateModelObjects( implementation, u, this.readJavaClass( javaClassfile ) );
+                }
             }
             else if ( this.isLoggable( Level.WARNING ) )
             {
@@ -939,6 +985,11 @@ public class ClassFileProcessor extends JomcTool
         }
 
         ModelValidationReport report = null;
+
+        if ( this.isLoggable( Level.INFO ) )
+        {
+            this.log( Level.INFO, getMessage( "validatingSpecification", specification.getIdentifier() ), null );
+        }
 
         if ( this.getModules() != null && this.getModules().getSpecification( specification.getIdentifier() ) != null )
         {
@@ -1031,6 +1082,11 @@ public class ClassFileProcessor extends JomcTool
         if ( javaClass == null )
         {
             throw new NullPointerException( "javaClass" );
+        }
+
+        if ( this.isLoggable( Level.INFO ) )
+        {
+            this.log( Level.INFO, getMessage( "validatingImplementation", implementation.getIdentifier() ), null );
         }
 
         try
@@ -2127,225 +2183,452 @@ public class ClassFileProcessor extends JomcTool
     }
 
     private void commitModelObjects( final Specifications specifications, final Implementations implementations,
-                                     final Marshaller marshaller, final File classesDirectory )
-        throws IOException, ModelObjectException
-    {
-        if ( specifications != null )
-        {
-            for ( int i = specifications.getSpecification().size() - 1; i >= 0; i-- )
-            {
-                this.commitModelObjects( specifications.getSpecification().get( i ), marshaller, classesDirectory );
-            }
-        }
-
-        if ( implementations != null )
-        {
-            for ( int i = implementations.getImplementation().size() - 1; i >= 0; i-- )
-            {
-                this.commitModelObjects( implementations.getImplementation().get( i ), marshaller, classesDirectory );
-            }
-        }
-    }
-
-    private void commitModelObjects( final Specification specification, final Marshaller marshaller,
-                                     final File classesDirectory ) throws IOException, ModelObjectException
-    {
-        if ( specification.isClassDeclaration() && specification.getJavaTypeName() != null )
-        {
-            final String classLocation =
-                specification.getJavaTypeName().getClassName().replace( '.', File.separatorChar ) + ".class";
-
-            final File classFile = new File( classesDirectory, classLocation );
-
-            if ( !classesDirectory.isDirectory() )
-            {
-                throw new IOException( getMessage( "directoryNotFound", classesDirectory.getAbsolutePath() ) );
-            }
-            if ( !classFile.isFile() )
-            {
-                throw new IOException( getMessage( "fileNotFound", classFile.getAbsolutePath() ) );
-            }
-            if ( !( classFile.canRead() && classFile.canWrite() ) )
-            {
-                throw new IOException( getMessage( "fileAccessDenied", classFile.getAbsolutePath() ) );
-            }
-
-            if ( this.isLoggable( Level.INFO ) )
-            {
-                this.log( Level.INFO, getMessage( "committing", classFile.getAbsolutePath() ), null );
-            }
-
-            final JavaClass javaClass = this.readJavaClass( classFile );
-            this.commitModelObjects( specification, marshaller, javaClass );
-            this.writeJavaClass( javaClass, classFile );
-        }
-    }
-
-    private void commitModelObjects( final Implementation implementation, final Marshaller marshaller,
-                                     final File classesDirectory ) throws IOException, ModelObjectException
-    {
-        if ( implementation.isClassDeclaration() && implementation.getJavaTypeName() != null )
-        {
-            final String classLocation =
-                implementation.getJavaTypeName().getClassName().replace( '.', File.separatorChar ) + ".class";
-
-            final File classFile = new File( classesDirectory, classLocation );
-
-            if ( !classesDirectory.isDirectory() )
-            {
-                throw new IOException( getMessage( "directoryNotFound", classesDirectory.getAbsolutePath() ) );
-            }
-            if ( !classFile.isFile() )
-            {
-                throw new IOException( getMessage( "fileNotFound", classFile.getAbsolutePath() ) );
-            }
-            if ( !( classFile.canRead() && classFile.canWrite() ) )
-            {
-                throw new IOException( getMessage( "fileAccessDenied", classFile.getAbsolutePath() ) );
-            }
-
-            if ( this.isLoggable( Level.INFO ) )
-            {
-                this.log( Level.INFO, getMessage( "committing", classFile.getAbsolutePath() ), null );
-            }
-
-            final JavaClass javaClass = this.readJavaClass( classFile );
-            this.commitModelObjects( implementation, marshaller, javaClass );
-            this.writeJavaClass( javaClass, classFile );
-        }
-    }
-
-    private ModelValidationReport validateModelObjects( final Specifications specifications,
-                                                        final Implementations implementations,
-                                                        final Unmarshaller unmarshaller, final File classesDirectory )
-        throws IOException, ModelObjectException
-    {
-        final ModelValidationReport report = new ModelValidationReport();
-
-        if ( specifications != null )
-        {
-            for ( int i = 0, s0 = specifications.getSpecification().size(); i < s0; i++ )
-            {
-                final ModelValidationReport current = this.validateModelObjects(
-                    specifications.getSpecification().get( i ), unmarshaller, classesDirectory );
-
-                report.getDetails().addAll( current.getDetails() );
-            }
-        }
-
-        if ( implementations != null )
-        {
-            for ( int i = 0, s0 = implementations.getImplementation().size(); i < s0; i++ )
-            {
-                final ModelValidationReport current = this.validateModelObjects(
-                    implementations.getImplementation().get( i ), unmarshaller, classesDirectory );
-
-                report.getDetails().addAll( current.getDetails() );
-            }
-        }
-
-        return report;
-    }
-
-    private ModelValidationReport validateModelObjects( final Specification specification,
-                                                        final Unmarshaller unmarshaller,
-                                                        final File classesDirectory )
-        throws IOException, ModelObjectException
-    {
-        final ModelValidationReport report = new ModelValidationReport();
-
-        if ( specification.isClassDeclaration() && specification.getJavaTypeName() != null )
-        {
-            final String classLocation =
-                specification.getJavaTypeName().getClassName().replace( '.', File.separatorChar ) + ".class";
-
-            final File classFile = new File( classesDirectory, classLocation );
-
-            if ( !classesDirectory.isDirectory() )
-            {
-                throw new IOException( getMessage( "directoryNotFound", classesDirectory.getAbsolutePath() ) );
-            }
-            if ( !classFile.isFile() )
-            {
-                throw new IOException( getMessage( "fileNotFound", classFile.getAbsolutePath() ) );
-            }
-            if ( !classFile.canRead() )
-            {
-                throw new IOException( getMessage( "fileAccessDenied", classFile.getAbsolutePath() ) );
-            }
-
-            if ( this.isLoggable( Level.INFO ) )
-            {
-                this.log( Level.INFO, getMessage( "validating", classFile.getAbsolutePath() ), null );
-            }
-
-            final JavaClass javaClass = this.readJavaClass( classFile );
-
-            report.getDetails().addAll(
-                this.validateModelObjects( specification, unmarshaller, javaClass ).getDetails() );
-
-        }
-
-        return report;
-    }
-
-    private ModelValidationReport validateModelObjects( final Implementation implementation,
-                                                        final Unmarshaller unmarshaller,
-                                                        final File classesDirectory )
-        throws IOException, ModelObjectException
-    {
-        final ModelValidationReport report = new ModelValidationReport();
-
-        if ( implementation.isClassDeclaration() && implementation.getJavaTypeName() != null )
-        {
-            final String classLocation =
-                implementation.getJavaTypeName().getClassName().replace( '.', File.separatorChar ) + ".class";
-
-            final File classFile = new File( classesDirectory, classLocation );
-
-            if ( !classesDirectory.isDirectory() )
-            {
-                throw new IOException( getMessage( "directoryNotFound", classesDirectory.getAbsolutePath() ) );
-            }
-            if ( !classFile.isFile() )
-            {
-                throw new IOException( getMessage( "fileNotFound", classFile.getAbsolutePath() ) );
-            }
-            if ( !classFile.canRead() )
-            {
-                throw new IOException( getMessage( "fileAccessDenied", classFile.getAbsolutePath() ) );
-            }
-
-            if ( this.isLoggable( Level.INFO ) )
-            {
-                this.log( Level.INFO, getMessage( "validating", classFile.getAbsolutePath() ), null );
-            }
-
-            final JavaClass javaClass = this.readJavaClass( classFile );
-
-            report.getDetails().addAll(
-                this.validateModelObjects( implementation, unmarshaller, javaClass ).getDetails() );
-
-        }
-
-        return report;
-    }
-
-    private ModelValidationReport validateModelObjects( final Specifications specifications,
-                                                        final Implementations implementations,
-                                                        final Unmarshaller unmarshaller, final ModelContext context )
+                                     final File classesDirectory, final ModelContext context )
         throws IOException, ModelException
     {
-        final ModelValidationReport report = new ModelValidationReport();
+        try
+        {
+            final ThreadLocal<Marshaller> threadLocalMarshaller = new ThreadLocal<Marshaller>();
+            final Schema schema = context.createSchema( this.getModel().getIdentifier() );
+
+            class CommitModelObjectsTask implements Callable<Void>
+            {
+
+                final File javaClassfile;
+
+                Specification specification;
+
+                Implementation implementation;
+
+                CommitModelObjectsTask( final File javaClassfile )
+                {
+                    super();
+                    this.javaClassfile = javaClassfile;
+                }
+
+                @Override
+                public Void call() throws IOException, ModelException
+                {
+                    Marshaller marshaller = threadLocalMarshaller.get();
+                    if ( marshaller == null )
+                    {
+                        marshaller = context.createMarshaller( getModel().getIdentifier() );
+                        marshaller.setSchema( schema );
+                        threadLocalMarshaller.set( marshaller );
+                    }
+
+                    final JavaClass javaClass = readJavaClass( this.javaClassfile );
+
+                    if ( this.specification != null )
+                    {
+                        commitModelObjects( this.specification, marshaller, javaClass );
+                    }
+                    if ( this.implementation != null )
+                    {
+                        commitModelObjects( this.implementation, marshaller, javaClass );
+                    }
+
+                    writeJavaClass( javaClass, this.javaClassfile );
+                    return null;
+                }
+
+            }
+
+            final Map<String, CommitModelObjectsTask> tasks = new HashMap<String, CommitModelObjectsTask>( 512 );
+
+            if ( specifications != null )
+            {
+                for ( int i = specifications.getSpecification().size() - 1; i >= 0; i-- )
+                {
+                    final Specification specification = specifications.getSpecification().get( i );
+
+                    if ( specification.isClassDeclaration() && specification.getJavaTypeName() != null )
+                    {
+                        final File javaClassfile =
+                            this.getJavaClassfile( specification.getJavaTypeName(), classesDirectory );
+
+                        CommitModelObjectsTask task = tasks.get( javaClassfile.getAbsolutePath() );
+
+                        if ( task == null )
+                        {
+                            task = new CommitModelObjectsTask( javaClassfile );
+                            tasks.put( javaClassfile.getAbsolutePath(), task );
+                        }
+
+                        task.specification = specification;
+                    }
+                }
+            }
+
+            if ( implementations != null )
+            {
+                for ( int i = implementations.getImplementation().size() - 1; i >= 0; i-- )
+                {
+                    final Implementation implementation = implementations.getImplementation().get( i );
+
+                    if ( implementation.isClassDeclaration() && implementation.getJavaTypeName() != null )
+                    {
+                        final File javaClassfile =
+                            this.getJavaClassfile( implementation.getJavaTypeName(), classesDirectory );
+
+                        CommitModelObjectsTask task = tasks.get( javaClassfile.getAbsolutePath() );
+
+                        if ( task == null )
+                        {
+                            task = new CommitModelObjectsTask( javaClassfile );
+                            tasks.put( javaClassfile.getAbsolutePath(), task );
+                        }
+
+                        task.implementation = implementation;
+                    }
+                }
+            }
+
+            if ( this.getExecutorService() != null && tasks.size() > 1 )
+            {
+                for ( final Future<Void> task : this.getExecutorService().invokeAll( tasks.values() ) )
+                {
+                    task.get();
+                }
+            }
+            else
+            {
+                for ( final CommitModelObjectsTask task : tasks.values() )
+                {
+                    task.call();
+                }
+            }
+        }
+        catch ( final CancellationException e )
+        {
+            // JDK: As of JDK6 new IOException( getMessage( e.getCause() ), e.getCause() )
+            throw (IOException) new IOException( getMessage( e.getCause() ) ).initCause( e.getCause() );
+        }
+        catch ( final InterruptedException e )
+        {
+            // JDK: As of JDK6 new IOException( getMessage( e.getCause() ), e.getCause() )
+            throw (IOException) new IOException( getMessage( e.getCause() ) ).initCause( e.getCause() );
+        }
+        catch ( final ExecutionException e )
+        {
+            if ( e.getCause() instanceof ModelException )
+            {
+                throw (ModelException) e.getCause();
+            }
+            else if ( e.getCause() instanceof IOException )
+            {
+                throw (IOException) e.getCause();
+            }
+            else if ( e.getCause() instanceof RuntimeException )
+            {
+                // The fork-join framework breaks the exception handling contract of Callable by re-throwing any
+                // exception caught using a runtime exception.
+                if ( e.getCause().getCause() instanceof ModelException )
+                {
+                    throw (ModelException) e.getCause().getCause();
+                }
+                else if ( e.getCause().getCause() instanceof IOException )
+                {
+                    throw (IOException) e.getCause().getCause();
+                }
+                else if ( e.getCause().getCause() instanceof RuntimeException )
+                {
+                    throw (RuntimeException) e.getCause().getCause();
+                }
+                else if ( e.getCause().getCause() instanceof Error )
+                {
+                    throw (Error) e.getCause().getCause();
+                }
+                else if ( e.getCause().getCause() instanceof Exception )
+                {
+                    // Checked exception not declared to be thrown by the Callable's 'call' method.
+                    throw new UndeclaredThrowableException( e.getCause().getCause() );
+                }
+                else
+                {
+                    throw (RuntimeException) e.getCause();
+                }
+            }
+            else if ( e.getCause() instanceof Error )
+            {
+                throw (Error) e.getCause();
+            }
+            else
+            {
+                // Checked exception not declared to be thrown by the Callable's 'call' method.
+                throw new UndeclaredThrowableException( e.getCause() );
+            }
+        }
+    }
+
+    private ModelValidationReport validateModelObjects( final Specifications specifications,
+                                                        final Implementations implementations,
+                                                        final File classesDirectory,
+                                                        final ModelContext context )
+        throws IOException, ModelException
+    {
+        try
+        {
+            final ThreadLocal<Unmarshaller> threadLocalUnmarshaller = new ThreadLocal<Unmarshaller>();
+            final Schema schema = context.createSchema( this.getModel().getIdentifier() );
+
+            class ValidateModelObjectsTask implements Callable<ModelValidationReport>
+            {
+
+                final File javaClassfile;
+
+                Specification specification;
+
+                Implementation implementation;
+
+                ValidateModelObjectsTask( final File javaClassfile )
+                {
+                    super();
+                    this.javaClassfile = javaClassfile;
+                }
+
+                @Override
+                public ModelValidationReport call() throws IOException, ModelException
+                {
+                    Unmarshaller unmarshaller = threadLocalUnmarshaller.get();
+                    if ( unmarshaller == null )
+                    {
+                        unmarshaller = context.createUnmarshaller( getModel().getIdentifier() );
+                        unmarshaller.setSchema( schema );
+                        threadLocalUnmarshaller.set( unmarshaller );
+                    }
+
+                    final ModelValidationReport report = new ModelValidationReport();
+                    final JavaClass javaClass = readJavaClass( this.javaClassfile );
+
+                    if ( this.specification != null )
+                    {
+                        report.getDetails().
+                            addAll( validateModelObjects( this.specification, unmarshaller, javaClass ).getDetails() );
+
+                    }
+                    if ( this.implementation != null )
+                    {
+                        report.getDetails().
+                            addAll( validateModelObjects( this.implementation, unmarshaller, javaClass ).getDetails() );
+
+                    }
+
+                    return report;
+                }
+
+            }
+
+            final Map<String, ValidateModelObjectsTask> tasks = new HashMap<String, ValidateModelObjectsTask>();
+
+            if ( specifications != null )
+            {
+                for ( int i = 0, s0 = specifications.getSpecification().size(); i < s0; i++ )
+                {
+                    final Specification specification = specifications.getSpecification().get( i );
+
+                    if ( specification.isClassDeclaration() && specification.getJavaTypeName() != null )
+                    {
+                        final File javaClassfile =
+                            this.getJavaClassfile( specification.getJavaTypeName(), classesDirectory );
+
+                        ValidateModelObjectsTask task = tasks.get( javaClassfile.getAbsolutePath() );
+
+                        if ( task == null )
+                        {
+                            task = new ValidateModelObjectsTask( javaClassfile );
+                            tasks.put( javaClassfile.getAbsolutePath(), task );
+                        }
+
+                        task.specification = specification;
+                    }
+                }
+            }
+
+            if ( implementations != null )
+            {
+                for ( int i = 0, s0 = implementations.getImplementation().size(); i < s0; i++ )
+                {
+                    final Implementation implementation = implementations.getImplementation().get( i );
+
+                    if ( implementation.isClassDeclaration() && implementation.getJavaTypeName() != null )
+                    {
+                        final File javaClassfile =
+                            this.getJavaClassfile( implementation.getJavaTypeName(), classesDirectory );
+
+                        ValidateModelObjectsTask task = tasks.get( javaClassfile.getAbsolutePath() );
+
+                        if ( task == null )
+                        {
+                            task = new ValidateModelObjectsTask( javaClassfile );
+                            tasks.put( javaClassfile.getAbsolutePath(), task );
+                        }
+
+                        task.implementation = implementation;
+                    }
+                }
+            }
+
+            final ModelValidationReport report = new ModelValidationReport();
+
+            if ( this.getExecutorService() != null && tasks.size() > 1 )
+            {
+                for ( final Future<ModelValidationReport> task : this.getExecutorService().invokeAll( tasks.values() ) )
+                {
+                    report.getDetails().addAll( task.get().getDetails() );
+                }
+            }
+            else
+            {
+                for ( final ValidateModelObjectsTask task : tasks.values() )
+                {
+                    report.getDetails().addAll( task.call().getDetails() );
+                }
+            }
+
+            return report;
+        }
+        catch ( final CancellationException e )
+        {
+            // JDK: As of JDK6 new IOException( getMessage( e.getCause() ), e.getCause() )
+            throw (IOException) new IOException( getMessage( e.getCause() ) ).initCause( e.getCause() );
+        }
+        catch ( final InterruptedException e )
+        {
+            // JDK: As of JDK6 new IOException( getMessage( e.getCause() ), e.getCause() )
+            throw (IOException) new IOException( getMessage( e.getCause() ) ).initCause( e.getCause() );
+        }
+        catch ( final ExecutionException e )
+        {
+            if ( e.getCause() instanceof ModelException )
+            {
+                throw (ModelException) e.getCause();
+            }
+            else if ( e.getCause() instanceof IOException )
+            {
+                throw (IOException) e.getCause();
+            }
+            else if ( e.getCause() instanceof RuntimeException )
+            {
+                // The fork-join framework breaks the exception handling contract of Callable by re-throwing any
+                // exception caught using a runtime exception.
+                if ( e.getCause().getCause() instanceof ModelException )
+                {
+                    throw (ModelException) e.getCause().getCause();
+                }
+                else if ( e.getCause().getCause() instanceof IOException )
+                {
+                    throw (IOException) e.getCause().getCause();
+                }
+                else if ( e.getCause().getCause() instanceof RuntimeException )
+                {
+                    throw (RuntimeException) e.getCause().getCause();
+                }
+                else if ( e.getCause().getCause() instanceof Error )
+                {
+                    throw (Error) e.getCause().getCause();
+                }
+                else if ( e.getCause().getCause() instanceof Exception )
+                {
+                    // Checked exception not declared to be thrown by the Callable's 'call' method.
+                    throw new UndeclaredThrowableException( e.getCause().getCause() );
+                }
+                else
+                {
+                    throw (RuntimeException) e.getCause();
+                }
+            }
+            else if ( e.getCause() instanceof Error )
+            {
+                throw (Error) e.getCause();
+            }
+            else
+            {
+                // Checked exception not declared to be thrown by the Callable's 'call' method.
+                throw new UndeclaredThrowableException( e.getCause() );
+            }
+        }
+    }
+
+    private ModelValidationReport validateModelObjects( final Specifications specifications,
+                                                        final Implementations implementations,
+                                                        final ModelContext context )
+        throws IOException, ModelException
+    {
+        final ThreadLocal<Unmarshaller> threadLocalUnmarshaller = new ThreadLocal<Unmarshaller>();
+        final Schema schema = context.createSchema( this.getModel().getIdentifier() );
+
+        class ValidateModelObjectsTask implements Callable<ModelValidationReport>
+        {
+
+            final URL javaClassfile;
+
+            Specification specification;
+
+            Implementation implementation;
+
+            ValidateModelObjectsTask( final URL javaClassfile )
+            {
+                super();
+                this.javaClassfile = javaClassfile;
+            }
+
+            @Override
+            public ModelValidationReport call() throws IOException, ModelException
+            {
+                Unmarshaller unmarshaller = threadLocalUnmarshaller.get();
+                if ( unmarshaller == null )
+                {
+                    unmarshaller = context.createUnmarshaller( getModel().getIdentifier() );
+                    unmarshaller.setSchema( schema );
+                    threadLocalUnmarshaller.set( unmarshaller );
+                }
+
+                final JavaClass javaClass = readJavaClass( this.javaClassfile );
+
+                final ModelValidationReport report = new ModelValidationReport();
+
+                if ( this.specification != null )
+                {
+                    report.getDetails().
+                        addAll( validateModelObjects( this.specification, unmarshaller, javaClass ).getDetails() );
+
+                }
+                if ( this.implementation != null )
+                {
+                    report.getDetails().
+                        addAll( validateModelObjects( this.implementation, unmarshaller, javaClass ).getDetails() );
+
+                }
+
+                return report;
+            }
+
+        }
+
+        final Map<String, ValidateModelObjectsTask> tasks = new HashMap<String, ValidateModelObjectsTask>();
 
         if ( specifications != null )
         {
             for ( int i = 0, s0 = specifications.getSpecification().size(); i < s0; i++ )
             {
-                final ModelValidationReport current = this.validateModelObjects(
-                    specifications.getSpecification().get( i ), unmarshaller, context );
+                final Specification specification = specifications.getSpecification().get( i );
 
-                report.getDetails().addAll( current.getDetails() );
+                if ( specification.isClassDeclaration() && specification.getJavaTypeName() != null )
+                {
+                    final URL javaClassfile =
+                        this.getJavaClassfile( specification.getJavaTypeName(), context );
+
+                    ValidateModelObjectsTask task = tasks.get( javaClassfile.toExternalForm() );
+
+                    if ( task == null )
+                    {
+                        task = new ValidateModelObjectsTask( javaClassfile );
+                        tasks.put( javaClassfile.toExternalForm(), task );
+                    }
+
+                    task.specification = specification;
+                }
             }
         }
 
@@ -2353,124 +2636,108 @@ public class ClassFileProcessor extends JomcTool
         {
             for ( int i = 0, s0 = implementations.getImplementation().size(); i < s0; i++ )
             {
-                final ModelValidationReport current = this.validateModelObjects(
-                    implementations.getImplementation().get( i ), unmarshaller, context );
+                final Implementation implementation = implementations.getImplementation().get( i );
 
-                report.getDetails().addAll( current.getDetails() );
-            }
-        }
-
-        return report;
-    }
-
-    private ModelValidationReport validateModelObjects( final Specification specification,
-                                                        final Unmarshaller unmarshaller,
-                                                        final ModelContext context ) throws IOException, ModelException
-    {
-        final ModelValidationReport report = new ModelValidationReport();
-
-        if ( specification.isClassDeclaration() && specification.getJavaTypeName() != null )
-        {
-            final String classLocation =
-                specification.getJavaTypeName().getClassName().replace( '.', '/' ) + ".class";
-
-            final URL classUrl = context.findResource( classLocation );
-
-            if ( classUrl == null )
-            {
-                throw new IOException( getMessage( "resourceNotFound", classLocation ) );
-            }
-
-            if ( this.isLoggable( Level.INFO ) )
-            {
-                this.log( Level.INFO, getMessage( "validatingSpecification", specification.getIdentifier() ), null );
-            }
-
-            InputStream in = null;
-            JavaClass javaClass = null;
-
-            try
-            {
-                in = classUrl.openStream();
-                javaClass = new ClassParser( in, classUrl.toExternalForm() ).parse();
-                in.close();
-                in = null;
-            }
-            finally
-            {
-                try
+                if ( implementation.isClassDeclaration() && implementation.getJavaTypeName() != null )
                 {
-                    if ( in != null )
+                    final URL javaClassfile =
+                        this.getJavaClassfile( implementation.getJavaTypeName(), context );
+
+                    ValidateModelObjectsTask task = tasks.get( javaClassfile.toExternalForm() );
+
+                    if ( task == null )
                     {
-                        in.close();
+                        task = new ValidateModelObjectsTask( javaClassfile );
+                        tasks.put( javaClassfile.toExternalForm(), task );
                     }
-                }
-                catch ( final IOException e )
-                {
-                    this.log( Level.SEVERE, getMessage( e ), e );
+
+                    task.implementation = implementation;
                 }
             }
-
-            report.getDetails().addAll(
-                this.validateModelObjects( specification, unmarshaller, javaClass ).getDetails() );
-
         }
 
-        return report;
-    }
-
-    private ModelValidationReport validateModelObjects( final Implementation implementation,
-                                                        final Unmarshaller unmarshaller,
-                                                        final ModelContext context ) throws IOException, ModelException
-    {
-        final ModelValidationReport report = new ModelValidationReport();
-
-        if ( implementation.isClassDeclaration() && implementation.getJavaTypeName() != null )
+        try
         {
-            final String classLocation = implementation.getJavaTypeName().getClassName().replace( '.', '/' ) + ".class";
-            final URL classUrl = context.findResource( classLocation );
+            final ModelValidationReport report = new ModelValidationReport();
 
-            if ( classUrl == null )
+            if ( this.getExecutorService() != null && tasks.size() > 1 )
             {
-                throw new IOException( getMessage( "resourceNotFound", classLocation ) );
-            }
-
-            if ( this.isLoggable( Level.INFO ) )
-            {
-                this.log( Level.INFO, getMessage( "validatingImplementation", implementation.getIdentifier() ), null );
-            }
-
-            InputStream in = null;
-            JavaClass javaClass = null;
-
-            try
-            {
-                in = classUrl.openStream();
-                javaClass = new ClassParser( in, classUrl.toExternalForm() ).parse();
-                in.close();
-                in = null;
-            }
-            finally
-            {
-                try
+                for ( final Future<ModelValidationReport> task
+                          : this.getExecutorService().invokeAll( tasks.values() ) )
                 {
-                    if ( in != null )
-                    {
-                        in.close();
-                    }
+                    report.getDetails().addAll( task.get().getDetails() );
                 }
-                catch ( final IOException e )
+            }
+            else
+            {
+                for ( final ValidateModelObjectsTask task : tasks.values() )
                 {
-                    this.log( Level.SEVERE, getMessage( e ), e );
+                    report.getDetails().addAll( task.call().getDetails() );
                 }
             }
 
-            report.getDetails().addAll(
-                this.validateModelObjects( implementation, unmarshaller, javaClass ).getDetails() );
-
+            return report;
         }
-
-        return report;
+        catch ( final CancellationException e )
+        {
+            // JDK: As of JDK6 new IOException( getMessage( e.getCause() ), e.getCause() )
+            throw (IOException) new IOException( getMessage( e.getCause() ) ).initCause( e.getCause() );
+        }
+        catch ( final InterruptedException e )
+        {
+            // JDK: As of JDK6 new IOException( getMessage( e.getCause() ), e.getCause() )
+            throw (IOException) new IOException( getMessage( e.getCause() ) ).initCause( e.getCause() );
+        }
+        catch ( final ExecutionException e )
+        {
+            if ( e.getCause() instanceof ModelException )
+            {
+                throw (ModelException) e.getCause();
+            }
+            else if ( e.getCause() instanceof IOException )
+            {
+                throw (IOException) e.getCause();
+            }
+            else if ( e.getCause() instanceof RuntimeException )
+            {
+                // The fork-join framework breaks the exception handling contract of Callable by re-throwing any
+                // exception caught using a runtime exception.
+                if ( e.getCause().getCause() instanceof ModelException )
+                {
+                    throw (ModelException) e.getCause().getCause();
+                }
+                else if ( e.getCause().getCause() instanceof IOException )
+                {
+                    throw (IOException) e.getCause().getCause();
+                }
+                else if ( e.getCause().getCause() instanceof RuntimeException )
+                {
+                    throw (RuntimeException) e.getCause().getCause();
+                }
+                else if ( e.getCause().getCause() instanceof Error )
+                {
+                    throw (Error) e.getCause().getCause();
+                }
+                else if ( e.getCause().getCause() instanceof Exception )
+                {
+                    // Checked exception not declared to be thrown by the Callable's 'call' method.
+                    throw new UndeclaredThrowableException( e.getCause().getCause() );
+                }
+                else
+                {
+                    throw (RuntimeException) e.getCause();
+                }
+            }
+            else if ( e.getCause() instanceof Error )
+            {
+                throw (Error) e.getCause();
+            }
+            else
+            {
+                // Checked exception not declared to be thrown by the Callable's 'call' method.
+                throw new UndeclaredThrowableException( e.getCause() );
+            }
+        }
     }
 
     private void transformModelObjects( final Specifications specifications, final Implementations implementations,
@@ -2569,6 +2836,41 @@ public class ClassFileProcessor extends JomcTool
         }
     }
 
+    private File getJavaClassfile( final JavaTypeName javaTypeName, final File classesDirectory ) throws IOException
+    {
+        final String classLocation = javaTypeName.getClassName().replace( '.', File.separatorChar ) + ".class";
+        final File classFile = new File( classesDirectory, classLocation );
+
+        if ( !classesDirectory.isDirectory() )
+        {
+            throw new IOException( getMessage( "directoryNotFound", classesDirectory.getAbsolutePath() ) );
+        }
+        if ( !classFile.isFile() )
+        {
+            throw new IOException( getMessage( "fileNotFound", classFile.getAbsolutePath() ) );
+        }
+        if ( !( classFile.canRead() && classFile.canWrite() ) )
+        {
+            throw new IOException( getMessage( "fileAccessDenied", classFile.getAbsolutePath() ) );
+        }
+
+        return classFile;
+    }
+
+    private URL getJavaClassfile( final JavaTypeName javaTypeName, final ModelContext context )
+        throws IOException, ModelException
+    {
+        final String javaClassfileLocation = javaTypeName.getClassName().replace( '.', '/' ) + ".class";
+        final URL javaClassfileUrl = context.findResource( javaClassfileLocation );
+
+        if ( javaClassfileUrl == null )
+        {
+            throw new IOException( getMessage( "resourceNotFound", javaClassfileLocation ) );
+        }
+
+        return javaClassfileUrl;
+    }
+
     private JavaClass readJavaClass( final File classFile ) throws IOException
     {
         FileInputStream in = null;
@@ -2583,6 +2885,28 @@ public class ClassFileProcessor extends JomcTool
 
             fileLock.release();
             fileLock = null;
+
+            in.close();
+            in = null;
+
+            return javaClass;
+        }
+        finally
+        {
+            this.releaseAndClose( fileLock, in );
+        }
+    }
+
+    private JavaClass readJavaClass( final URL url ) throws IOException
+    {
+        InputStream in = null;
+        FileLock fileLock = null;
+
+        try
+        {
+            in = url.openStream();
+
+            final JavaClass javaClass = new ClassParser( in, url.toExternalForm() ).parse();
 
             in.close();
             in = null;

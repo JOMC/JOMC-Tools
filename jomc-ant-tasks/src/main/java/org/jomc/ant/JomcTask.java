@@ -50,9 +50,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -171,6 +176,18 @@ public class JomcTask extends Task
      * Property controlling the execution of the task.
      */
     private Object unless;
+
+    /**
+     * Formula used to calculate the maximum number of threads to create for running tasks in parallel.
+     *
+     * @since 1.10
+     */
+    private String threads = "1.0C";
+
+    /**
+     * The {@code ExecutorService} of the task.
+     */
+    private ExecutorService executorService;
 
     /**
      * Creates a new {@code JomcTask} instance.
@@ -633,6 +650,100 @@ public class JomcTask extends Task
     }
 
     /**
+     * Gets a formula used to calculate the maximum number of threads to create for running tasks in parallel. If the
+     * formular contains the character {@code C}, the number of threads will be calculated by multiplying the value by
+     * the number of available processors. The default number of threads is the number of available processors (1.0C).
+     *
+     * @return A formula used to calculate the number of threads.
+     *
+     * @see Runtime#availableProcessors()
+     *
+     * @since 1.10
+     */
+    public final String getThreads()
+    {
+        return this.threads;
+    }
+
+    /**
+     * Sets the formula to use to calculate the maximum number of threads to create for running tasks in parallel. If
+     * the formular contains the character {@code C}, the number of threads will be calculated by multiplying the value
+     * by the number of available processors. The default number of threads is the number of available processors
+     * (1.0C).
+     *
+     * @param value The formula to use to calculate the maximum number of threads or {@code null}, to disable any
+     * parallelism.
+     *
+     * @since 1.10
+     */
+    public final void setThreads( final String value )
+    {
+        this.threads = value;
+    }
+
+    /**
+     * Gets the {@code ExecutorService} used to run tasks in parallel.
+     *
+     * @return The {@code ExecutorService} used to run tasks in parallel or {@code null}, if the maximum number of
+     * threads to create for running tasks in parallel is not greater than 1.
+     *
+     * @since 1.10
+     */
+    protected final ExecutorService getExecutorService()
+    {
+        if ( this.executorService == null )
+        {
+            final Double parallelism =
+                this.getThreads().toLowerCase( new Locale( "" ) ).contains( "c" )
+                    ? Double.valueOf( this.getThreads().toLowerCase( new Locale( "" ) ).replace( "c", "" ) )
+                          * Runtime.getRuntime().availableProcessors()
+                    : Double.valueOf( this.getThreads() );
+
+            if ( parallelism.intValue() > 1 )
+            {
+                this.executorService = Executors.newFixedThreadPool(
+                    parallelism.intValue(), new ThreadFactory()
+                {
+
+                    private final ThreadGroup group;
+
+                    private final AtomicInteger threadNumber = new AtomicInteger( 1 );
+
+
+                    {
+                        final SecurityManager s = System.getSecurityManager();
+                        this.group = s != null
+                                         ? s.getThreadGroup()
+                                         : Thread.currentThread().getThreadGroup();
+
+                    }
+
+                    @Override
+                    public Thread newThread( final Runnable r )
+                    {
+                        final Thread t =
+                            new Thread( this.group, r, "jomc-ant-tasks-" + this.threadNumber.getAndIncrement(), 0 );
+
+                        if ( t.isDaemon() )
+                        {
+                            t.setDaemon( false );
+                        }
+                        if ( t.getPriority() != Thread.NORM_PRIORITY )
+                        {
+                            t.setPriority( Thread.NORM_PRIORITY );
+                        }
+
+                        return t;
+                    }
+
+                } );
+            }
+        }
+
+        return this.executorService;
+    }
+
+    /**
      * Called by the project to let the task do its work.
      *
      * @throws BuildException if execution fails.
@@ -657,7 +768,18 @@ public class JomcTask extends Task
             }
             finally
             {
-                this.postExecuteTask();
+                try
+                {
+                    this.postExecuteTask();
+                }
+                finally
+                {
+                    if ( this.executorService != null )
+                    {
+                        this.executorService.shutdown();
+                        this.executorService = null;
+                    }
+                }
             }
         }
     }
@@ -837,7 +959,7 @@ public class JomcTask extends Task
             throw new NullPointerException( "location" );
         }
 
-        final Set<URI> uris = new HashSet<URI>();
+        final Set<URI> uris = new HashSet<URI>( 128 );
 
         try
         {
@@ -929,7 +1051,7 @@ public class JomcTask extends Task
 
         try
         {
-            URL resource = null;
+            URL resource;
 
             try
             {
@@ -1322,17 +1444,13 @@ public class JomcTask extends Task
      */
     public ModelContext newModelContext( final ClassLoader classLoader ) throws ModelException
     {
-        final ModelContextFactory modelContextFactory;
-        if ( this.modelContextFactoryClassName != null )
-        {
-            modelContextFactory = ModelContextFactory.newInstance( this.getModelContextFactoryClassName() );
-        }
-        else
-        {
-            modelContextFactory = ModelContextFactory.newInstance();
-        }
+        final ModelContextFactory modelContextFactory =
+            this.modelContextFactoryClassName != null
+                ? ModelContextFactory.newInstance( this.getModelContextFactoryClassName() )
+                : ModelContextFactory.newInstance();
 
         final ModelContext modelContext = modelContextFactory.newModelContext( classLoader );
+        modelContext.setExecutorService( this.getExecutorService() );
         modelContext.setLogLevel( Level.ALL );
         modelContext.setModletSchemaSystemId( this.getModletSchemaSystemId() );
 
@@ -1530,6 +1648,9 @@ public class JomcTask extends Task
                     log( line, Project.MSG_DEBUG );
                 }
             }
+
+            reader.close();
+            reader = null;
         }
         catch ( final IOException e )
         {
@@ -1647,6 +1768,7 @@ public class JomcTask extends Task
         try
         {
             final JomcTask clone = (JomcTask) super.clone();
+            clone.executorService = this.executorService;
             clone.classpath = (Path) ( this.classpath != null ? this.classpath.clone() : null );
 
             if ( this.modelContextAttributes != null )

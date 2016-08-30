@@ -302,6 +302,11 @@ class Options
     @Deprecated
     static final Option TEMPLATE_ENCODING_OPTION;
 
+    /**
+     * Command line option.
+     */
+    static final Option THREADS_OPTION;
+
     static
     {
         CLASSPATH_OPTION =
@@ -562,6 +567,11 @@ class Options
             Option.builder( "te" ).longOpt( "template-encoding" ).hasArg().optionalArg( false ).
             desc( Messages.getMessage( "templateEncodingOptionOptionDescription", File.pathSeparator ) ).
             argName( Messages.getMessage( "templateEncodingOptionArgumentDescription" ) ).build();
+
+        THREADS_OPTION =
+            Option.builder( "T" ).longOpt( "threads" ).hasArg().optionalArg( false ).
+            desc( Messages.getMessage( "threadsOptionOptionDescription", File.pathSeparator ) ).
+            argName( Messages.getMessage( "threadsOptionArgumentDescription" ) ).build();
 
     }
 

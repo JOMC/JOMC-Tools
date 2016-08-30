@@ -231,7 +231,7 @@
   </distributionManagement>
   <properties>
     <jomc-util.artifact.version>1.10-SNAPSHOT</jomc-util.artifact.version>
-    <jomc-modlet.artifact.version>1.9</jomc-modlet.artifact.version>
+    <jomc-modlet.artifact.version>1.10-SNAPSHOT</jomc-modlet.artifact.version>
     <jomc-model.artifact.version>1.9</jomc-model.artifact.version>
     <jomc-tools.artifact.version>1.10-SNAPSHOT</jomc-tools.artifact.version>
     <maven-jomc-plugin.artifact.version>1.10-SNAPSHOT</maven-jomc-plugin.artifact.version>

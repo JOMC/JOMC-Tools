@@ -805,6 +805,7 @@ public class JomcToolTask extends JomcModelTask
 
         try
         {
+            tool.setExecutorService( this.getExecutorService() );
             tool.setLogLevel( Level.ALL );
             tool.setIndentation( StringEscapeUtils.unescapeJava( this.getIndentation() ) );
             tool.setInputEncoding( this.getInputEncoding() );

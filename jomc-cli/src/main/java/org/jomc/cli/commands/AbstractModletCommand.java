@@ -47,7 +47,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -114,7 +113,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
     @Override
     public org.apache.commons.cli.Options getOptions()
     {
-        final org.apache.commons.cli.Options options = new org.apache.commons.cli.Options();
+        final org.apache.commons.cli.Options options = super.getOptions();
         options.addOption( Options.CLASSPATH_OPTION );
         options.addOption( Options.DOCUMENTS_OPTION );
         options.addOption( Options.MODEL_CONTEXT_FACTORY_CLASSNAME_OPTION );
@@ -206,10 +205,12 @@ public abstract class AbstractModletCommand extends AbstractCommand
         final ModelContextFactory modelContextFactory =
             commandLine.hasOption( Options.MODEL_CONTEXT_FACTORY_CLASSNAME_OPTION.getOpt() )
                 ? ModelContextFactory.newInstance( commandLine.getOptionValue(
-                        Options.MODEL_CONTEXT_FACTORY_CLASSNAME_OPTION.getOpt() ) )
+                Options.MODEL_CONTEXT_FACTORY_CLASSNAME_OPTION.getOpt() ) )
                 : ModelContextFactory.newInstance();
 
         final ModelContext modelContext = modelContextFactory.newModelContext( classLoader );
+
+        modelContext.setExecutorService( this.getExecutorService( commandLine ) );
 
         if ( commandLine.hasOption( Options.MODLET_SCHEMA_SYSTEM_ID_OPTION.getOpt() ) )
         {
@@ -292,7 +293,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
     protected void log( final ModelValidationReport validationReport, final Marshaller marshaller )
         throws CommandExecutionException
     {
-        Object jaxbFormattedOutput = null;
+        Object jaxbFormattedOutput;
         try
         {
             jaxbFormattedOutput = marshaller.getProperty( Marshaller.JAXB_FORMATTED_OUTPUT );
@@ -357,7 +358,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
     {
         try
         {
-            final Set<File> files = new HashSet<File>();
+            final Set<File> files = new HashSet<File>( 128 );
 
             if ( commandLine.hasOption( Options.DOCUMENTS_OPTION.getOpt() ) )
             {
@@ -479,17 +480,17 @@ public abstract class AbstractModletCommand extends AbstractCommand
         /**
          * Set of provider resource locations to filter.
          */
-        private final Set<String> providerResourceLocations = new HashSet<String>();
+        private final Set<String> providerResourceLocations = new HashSet<String>( 128 );
 
         /**
          * Set of modlet resource locations to filter.
          */
-        private final Set<String> modletResourceLocations = new HashSet<String>();
+        private final Set<String> modletResourceLocations = new HashSet<String>( 128 );
 
         /**
          * Set of temporary resources.
          */
-        private final Set<File> temporaryResources = new HashSet<File>();
+        private final Set<File> temporaryResources = new HashSet<File>( 128 );
 
         /**
          * Creates a new {@code CommandLineClassLoader} taking a command line backing the class loader.
@@ -507,7 +508,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
             {
                 if ( commandLine.hasOption( Options.CLASSPATH_OPTION.getOpt() ) )
                 {
-                    final Set<URI> uris = new HashSet<URI>();
+                    final Set<URI> uris = new HashSet<URI>( 128 );
                     final String[] elements = commandLine.getOptionValues( Options.CLASSPATH_OPTION.getOpt() );
 
                     if ( elements != null )
@@ -817,7 +818,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
             OutputStream out = null;
             BufferedWriter writer = null;
             final Set<String> providerExcludes = this.getProviderExcludes();
-            final List<String> lines = new ArrayList<String>();
+            final List<String> lines = new LinkedList<String>();
 
             try
             {

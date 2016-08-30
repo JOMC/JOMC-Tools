@@ -56,6 +56,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -701,6 +705,18 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private List<String> modletIncludes;
 
     /**
+     * A formula used to calculate the maximum number of threads to create for running tasks in parallel. If the
+     * formular contains the character {@code C}, the number of threads will be calculated by multiplying the value by
+     * the number of available processors. The default number of threads is the number of available processors (1.0C).
+     *
+     * @since 1.10
+     */
+    @Parameter( name = "threads",
+                property = "jomc.threads",
+                defaultValue = "1.0C" )
+    private String threads;
+
+    /**
      * The Maven project of the instance.
      */
     @Parameter( name = "mavenProject",
@@ -728,6 +744,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 readonly = true,
                 required = true )
     private MavenSession mavenSession;
+
+    /**
+     * The executor service, if using threads.
+     *
+     * @since 1.10
+     */
+    private ExecutorService executorService;
 
     /**
      * Creates a new {@code AbstractJomcMojo} instance.
@@ -773,8 +796,19 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         finally
         {
-            JomcTool.setDefaultTemplateProfile( null );
-            this.logSeparator();
+            try
+            {
+                JomcTool.setDefaultTemplateProfile( null );
+                this.logSeparator();
+            }
+            finally
+            {
+                if ( this.executorService != null )
+                {
+                    this.executorService.shutdown();
+                    this.executorService = null;
+                }
+            }
         }
     }
 
@@ -902,6 +936,69 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
+    }
+
+    /**
+     * Gets the {@code ExecutorService} used to run tasks in parallel.
+     *
+     * @return The {@code ExecutorService} used to run tasks in parallel or {@code null}.
+     *
+     * @since 1.10
+     */
+    protected final ExecutorService getExecutorService()
+    {
+        if ( this.executorService == null )
+        {
+            final Double parallelism =
+                this.threads != null
+                    ? this.threads.toLowerCase( new Locale( "" ) ).contains( "c" )
+                          ? Double.valueOf( this.threads.toLowerCase( new Locale( "" ) ).replace( "c", "" ) )
+                                * Runtime.getRuntime().availableProcessors()
+                          : Double.valueOf( this.threads )
+                    : 0.0D;
+
+            if ( parallelism.intValue() > 1 )
+            {
+                this.executorService = Executors.newFixedThreadPool(
+                    parallelism.intValue(), new ThreadFactory()
+                {
+
+                    private final ThreadGroup group;
+
+                    private final AtomicInteger threadNumber = new AtomicInteger( 1 );
+
+
+                    {
+                        final SecurityManager s = System.getSecurityManager();
+                        this.group = s != null
+                                         ? s.getThreadGroup()
+                                         : Thread.currentThread().getThreadGroup();
+
+                    }
+
+                    @Override
+                    public Thread newThread( final Runnable r )
+                    {
+                        final Thread t =
+                            new Thread( this.group, r, "maven-jomc-plugin-" + this.threadNumber.getAndIncrement(), 0 );
+
+                        if ( t.isDaemon() )
+                        {
+                            t.setDaemon( false );
+                        }
+                        if ( t.getPriority() != Thread.NORM_PRIORITY )
+                        {
+                            t.setPriority( Thread.NORM_PRIORITY );
+                        }
+
+                        return t;
+                    }
+
+                } );
+            }
+        }
+
+        return this.executorService;
     }
 
     /**
@@ -1144,7 +1241,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             return new URLClassLoader( urls, Thread.currentThread().getContextClassLoader() );
         }
-        catch ( final IOException e )
+        catch ( final MalformedURLException e )
         {
             throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
@@ -1192,7 +1289,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             return new URLClassLoader( urls, Thread.currentThread().getContextClassLoader() );
         }
-        catch ( final IOException e )
+        catch ( final MalformedURLException e )
         {
             throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
@@ -2007,7 +2104,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
         try
         {
-            URL resource = null;
+            URL resource;
 
             try
             {
@@ -3150,6 +3247,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
         try
         {
+            context.setExecutorService( this.getExecutorService() );
             context.setModletSchemaSystemId( this.modletSchemaSystemId );
             context.getListeners().add( new ModelContext.Listener()
             {
@@ -3299,6 +3397,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 tool.setLogLevel( this.getLog().isDebugEnabled() ? Level.ALL : Level.INFO );
             }
 
+            tool.setExecutorService( this.getExecutorService() );
             tool.getListeners().add( new JomcTool.Listener()
             {
 

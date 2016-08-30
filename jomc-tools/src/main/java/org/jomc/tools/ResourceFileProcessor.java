@@ -34,22 +34,31 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.nio.channels.FileLock;
 import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import org.apache.velocity.VelocityContext;
 import org.jomc.model.Implementation;
+import org.jomc.model.Implementations;
 import org.jomc.model.JavaTypeName;
 import org.jomc.model.Message;
 import org.jomc.model.Messages;
 import org.jomc.model.ModelObjectException;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
+import org.jomc.model.Specifications;
 import org.jomc.model.Text;
 
 /**
@@ -74,7 +83,7 @@ public class ResourceFileProcessor extends JomcTool
     /**
      * The language of the default language properties file of generated resource bundle resources.
      */
-    private Locale resourceBundleDefaultLocale;
+    private volatile Locale resourceBundleDefaultLocale;
 
     /**
      * Creates a new {@code ResourceFileProcessor} instance.
@@ -156,10 +165,10 @@ public class ResourceFileProcessor extends JomcTool
 
         if ( this.getModules() != null )
         {
-            for ( int i = 0, s0 = this.getModules().getModule().size(); i < s0; i++ )
-            {
-                this.writeResourceBundleResourceFiles( this.getModules().getModule().get( i ), resourcesDirectory );
-            }
+            this.writeResourceBundleResourceFiles( this.getModules().getSpecifications(),
+                                                   this.getModules().getImplementations(),
+                                                   resourcesDirectory );
+
         }
         else if ( this.isLoggable( Level.WARNING ) )
         {
@@ -194,25 +203,9 @@ public class ResourceFileProcessor extends JomcTool
 
         if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
         {
-            if ( module.getSpecifications() != null )
-            {
-                for ( int i = 0, s0 = module.getSpecifications().getSpecification().size(); i < s0; i++ )
-                {
-                    this.writeResourceBundleResourceFiles( module.getSpecifications().getSpecification().get( i ),
-                                                           resourcesDirectory );
+            this.writeResourceBundleResourceFiles( module.getSpecifications(), module.getImplementations(),
+                                                   resourcesDirectory );
 
-                }
-            }
-
-            if ( module.getImplementations() != null )
-            {
-                for ( int i = 0, s0 = module.getImplementations().getImplementation().size(); i < s0; i++ )
-                {
-                    this.writeResourceBundleResourceFiles( module.getImplementations().getImplementation().get( i ),
-                                                           resourcesDirectory );
-
-                }
-            }
         }
         else if ( this.isLoggable( Level.WARNING ) )
         {
@@ -419,6 +412,187 @@ public class ResourceFileProcessor extends JomcTool
         }
 
         return properties;
+    }
+
+    private void writeResourceBundleResourceFiles( final Specifications specifications,
+                                                   final Implementations implementations,
+                                                   final File resourcesDirectory )
+        throws IOException, ModelObjectException
+    {
+        try
+        {
+            class WriteResourceBundleResourceFilesTask implements Callable<Void>
+            {
+
+                final Specification specification;
+
+                final Implementation implementation;
+
+                WriteResourceBundleResourceFilesTask( final Specification specification,
+                                                      final Implementation implementation )
+                {
+                    super();
+                    this.specification = specification;
+                    this.implementation = implementation;
+                }
+
+                @Override
+                public Void call() throws IOException, ModelObjectException
+                {
+                    if ( this.specification != null )
+                    {
+                        writeResourceBundleResourceFiles( this.specification, resourcesDirectory );
+                    }
+                    if ( this.implementation != null )
+                    {
+                        writeResourceBundleResourceFiles( this.implementation, resourcesDirectory );
+                    }
+
+                    return null;
+                }
+
+            }
+
+            final List<WriteResourceBundleResourceFilesTask> tasks =
+                new LinkedList<WriteResourceBundleResourceFilesTask>();
+
+            if ( specifications != null )
+            {
+                for ( int i = 0, s0 = specifications.getSpecification().size(); i < s0; i++ )
+                {
+                    final Specification specification = specifications.getSpecification().get( i );
+                    tasks.add( new WriteResourceBundleResourceFilesTask( specification, null ) );
+
+                    if ( specification.isClassDeclaration() && specification.getJavaTypeName() != null )
+                    {
+                        if ( !resourcesDirectory.isDirectory() )
+                        {
+                            throw new IOException( getMessage( "directoryNotFound",
+                                                               resourcesDirectory.getAbsolutePath() ) );
+
+                        }
+
+                        final String bundlePath =
+                            specification.getJavaTypeName().getQualifiedName().replace( '.', File.separatorChar );
+
+                        final File bundleDirectory = new File( resourcesDirectory, bundlePath ).getParentFile();
+
+                        if ( !bundleDirectory.exists() && !bundleDirectory.mkdirs() )
+                        {
+                            throw new IOException( getMessage( "failedCreatingDirectory",
+                                                               bundleDirectory.getAbsolutePath() ) );
+
+                        }
+                    }
+                }
+            }
+
+            if ( implementations != null )
+            {
+                for ( int i = 0, s0 = implementations.getImplementation().size(); i < s0; i++ )
+                {
+                    final Implementation implementation = implementations.getImplementation().get( i );
+                    tasks.add( new WriteResourceBundleResourceFilesTask( null, implementation ) );
+
+                    if ( implementation.isClassDeclaration() && implementation.getJavaTypeName() != null )
+                    {
+                        if ( !resourcesDirectory.isDirectory() )
+                        {
+                            throw new IOException( getMessage( "directoryNotFound",
+                                                               resourcesDirectory.getAbsolutePath() ) );
+
+                        }
+
+                        final String bundlePath =
+                            implementation.getJavaTypeName().getQualifiedName().replace( '.', File.separatorChar );
+
+                        final File bundleDirectory = new File( resourcesDirectory, bundlePath ).getParentFile();
+
+                        if ( !bundleDirectory.exists() && !bundleDirectory.mkdirs() )
+                        {
+                            throw new IOException( getMessage( "failedCreatingDirectory",
+                                                               bundleDirectory.getAbsolutePath() ) );
+
+                        }
+                    }
+                }
+            }
+
+            if ( this.getExecutorService() != null && tasks.size() > 1 )
+            {
+                for ( final Future<Void> task : this.getExecutorService().invokeAll( tasks ) )
+                {
+                    task.get();
+                }
+            }
+            else
+            {
+                for ( int i = 0, s0 = tasks.size(); i < s0; i++ )
+                {
+                    tasks.get( i ).call();
+                }
+            }
+        }
+        catch ( final CancellationException e )
+        {
+            // JDK: As of JDK6 new IOException( getMessage( e.getCause() ), e.getCause() )
+            throw (IOException) new IOException( getMessage( e.getCause() ) ).initCause( e.getCause() );
+        }
+        catch ( final InterruptedException e )
+        {
+            // JDK: As of JDK6 new IOException( getMessage( e.getCause() ), e.getCause() )
+            throw (IOException) new IOException( getMessage( e.getCause() ) ).initCause( e.getCause() );
+        }
+        catch ( final ExecutionException e )
+        {
+            if ( e.getCause() instanceof ModelObjectException )
+            {
+                throw (ModelObjectException) e.getCause();
+            }
+            else if ( e.getCause() instanceof IOException )
+            {
+                throw (IOException) e.getCause();
+            }
+            else if ( e.getCause() instanceof RuntimeException )
+            {
+                // The fork-join framework breaks the exception handling contract of Callable by re-throwing any
+                // exception caught using a runtime exception.
+                if ( e.getCause().getCause() instanceof ModelObjectException )
+                {
+                    throw (ModelObjectException) e.getCause().getCause();
+                }
+                else if ( e.getCause().getCause() instanceof IOException )
+                {
+                    throw (IOException) e.getCause().getCause();
+                }
+                else if ( e.getCause().getCause() instanceof RuntimeException )
+                {
+                    throw (RuntimeException) e.getCause().getCause();
+                }
+                else if ( e.getCause().getCause() instanceof Error )
+                {
+                    throw (Error) e.getCause().getCause();
+                }
+                else if ( e.getCause().getCause() instanceof Exception )
+                {
+                    // Checked exception not declared to be thrown by the Callable's 'call' method.
+                    throw new UndeclaredThrowableException( e.getCause().getCause() );
+                }
+                else
+                {
+                    throw (RuntimeException) e.getCause();
+                }
+            }
+            else if ( e.getCause() instanceof Error )
+            {
+                throw (Error) e.getCause();
+            }
+            else
+            {
+                // Checked exception not declared to be thrown by the Callable's 'call' method.
+                throw new UndeclaredThrowableException( e.getCause() );
+            }
+        }
     }
 
     private void writeResourceBundleResourceFiles( final Map<Locale, Properties> resources,

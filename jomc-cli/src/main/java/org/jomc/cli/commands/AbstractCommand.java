@@ -30,8 +30,13 @@
  */
 package org.jomc.cli.commands;
 
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import org.apache.commons.cli.CommandLine;
 import org.jomc.cli.Command;
@@ -52,12 +57,19 @@ public abstract class AbstractCommand implements Command
     /**
      * Log level of the instance.
      */
-    private Level logLevel;
+    private volatile Level logLevel;
 
     /**
      * The listeners of the instance.
      */
-    private List<Listener> listeners;
+    private volatile List<Listener> listeners = new CopyOnWriteArrayList<Listener>();
+
+    /**
+     * The {@code ExecutorService} of the command.
+     *
+     * @since 1.10
+     */
+    private volatile ExecutorService executorService;
 
     /**
      * Creates a new {@code AbstractCommand} instance.
@@ -157,11 +169,6 @@ public abstract class AbstractCommand implements Command
      */
     public final List<Listener> getListeners()
     {
-        if ( this.listeners == null )
-        {
-            this.listeners = new LinkedList<Listener>();
-        }
-
         return this.listeners;
     }
 
@@ -216,6 +223,82 @@ public abstract class AbstractCommand implements Command
         }
     }
 
+    @Override
+    public org.apache.commons.cli.Options getOptions()
+    {
+        final org.apache.commons.cli.Options options = new org.apache.commons.cli.Options();
+        options.addOption( Options.THREADS_OPTION );
+        return options;
+    }
+
+    /**
+     * Gets the {@code ExecutorService} used to run tasks in parallel.
+     *
+     * @param commandLine The {@code CommandLine} to use for setting up an executor service when not already created.
+     *
+     * @return The {@code ExecutorService} used to run tasks in parallel or {@code null}.
+     *
+     * @since 1.10
+     */
+    protected final ExecutorService getExecutorService( final CommandLine commandLine )
+    {
+        if ( this.executorService == null )
+        {
+            final String formular =
+                commandLine.hasOption( Options.THREADS_OPTION.getOpt() )
+                    ? commandLine.getOptionValue( Options.THREADS_OPTION.getOpt() ).toLowerCase( new Locale( "" ) )
+                    : "1.0c";
+
+            final Double parallelism =
+                formular.contains( "c" )
+                    ? Double.valueOf( formular.replace( "c", "" ) ) * Runtime.getRuntime().availableProcessors()
+                    : Double.valueOf( formular );
+
+            if ( parallelism.intValue() > 1 )
+            {
+                this.executorService = Executors.newFixedThreadPool(
+                    parallelism.intValue(), new ThreadFactory()
+                {
+
+                    private final ThreadGroup group;
+
+                    private final AtomicInteger threadNumber = new AtomicInteger( 1 );
+
+
+                    {
+                        final SecurityManager s = System.getSecurityManager();
+                        this.group = s != null
+                                         ? s.getThreadGroup()
+                                         : Thread.currentThread().getThreadGroup();
+
+                    }
+
+                    @Override
+                    public Thread newThread( final Runnable r )
+                    {
+                        final Thread t =
+                            new Thread( this.group, r, "jomc-cli-" + this.threadNumber.getAndIncrement(), 0 );
+
+                        if ( t.isDaemon() )
+                        {
+                            t.setDaemon( false );
+                        }
+                        if ( t.getPriority() != Thread.NORM_PRIORITY )
+                        {
+                            t.setPriority( Thread.NORM_PRIORITY );
+                        }
+
+                        return t;
+                    }
+
+                } );
+            }
+        }
+
+        return this.executorService;
+    }
+
+    @Override
     public final int execute( final CommandLine commandLine )
     {
         if ( commandLine == null )
@@ -254,6 +337,14 @@ public abstract class AbstractCommand implements Command
             {
                 this.log( Level.SEVERE, null, t );
                 status = STATUS_FAILURE;
+            }
+            finally
+            {
+                if ( this.executorService != null )
+                {
+                    this.executorService.shutdown();
+                    this.executorService = null;
+                }
             }
         }
 

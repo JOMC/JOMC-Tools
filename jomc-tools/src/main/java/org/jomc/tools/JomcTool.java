@@ -62,6 +62,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
 import java.util.logging.Level;
 import javax.activation.MimeTypeParseException;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -175,7 +176,7 @@ public class JomcTool
      *
      * @since 1.3
      */
-    private String defaultTemplateEncoding;
+    private volatile String defaultTemplateEncoding;
 
     /**
      * The default template profile.
@@ -197,75 +198,84 @@ public class JomcTool
     /**
      * The model of the instance.
      */
-    private Model model;
+    private volatile Model model;
 
     /**
      * The {@code VelocityEngine} of the instance.
      */
-    private VelocityEngine velocityEngine;
+    private volatile VelocityEngine velocityEngine;
 
     /**
      * Flag indicating the default {@code VelocityEngine}.
      *
      * @since 1.2.4
      */
-    private boolean defaultVelocityEngine;
+    private volatile boolean defaultVelocityEngine;
 
     /**
      * The location to search for templates in addition to searching the class path.
      *
      * @since 1.2
      */
-    private URL templateLocation;
+    private volatile URL templateLocation;
 
     /**
      * The encoding to use for reading files.
      */
-    private String inputEncoding;
+    private volatile String inputEncoding;
 
     /**
      * The encoding to use for writing files.
      */
-    private String outputEncoding;
+    private volatile String outputEncoding;
 
     /**
      * The template parameters.
      *
      * @since 1.2
      */
-    private Map<String, Object> templateParameters;
+    private final Map<String, Object> templateParameters =
+        Collections.synchronizedMap( new HashMap<String, Object>( 32 ) );
+    // ConcurrentHashMap does not allow for putting null values.
 
     /**
      * The template profile of the instance.
      */
-    private String templateProfile;
+    private volatile String templateProfile;
 
     /**
      * The indentation string of the instance.
      */
-    private String indentation;
+    private volatile String indentation;
 
     /**
      * The line separator of the instance.
      */
-    private String lineSeparator;
+    private volatile String lineSeparator;
 
     /**
      * The listeners of the instance.
      */
-    private List<Listener> listeners;
+    private final List<Listener> listeners = new CopyOnWriteArrayList<Listener>();
 
     /**
      * The log level of the instance.
      */
-    private Level logLevel;
+    private volatile Level logLevel;
 
     /**
      * The locale of the instance.
      *
      * @since 1.2
      */
-    private Locale locale;
+    private volatile Locale locale;
+
+    /**
+     * The {@code ExecutorService} of the instance.
+     *
+     * @since 1.10
+     */
+    private volatile ExecutorService executorService;
 
     /**
      * Cached indentation strings.
@@ -326,7 +336,7 @@ public class JomcTool
         this.indentation = tool.indentation;
         this.inputEncoding = tool.inputEncoding;
         this.lineSeparator = tool.lineSeparator;
-        this.listeners = tool.listeners != null ? new CopyOnWriteArrayList<Listener>( tool.listeners ) : null;
+        this.listeners.addAll( tool.listeners );
         this.logLevel = tool.logLevel;
         this.model = tool.model != null ? tool.model.clone() : null;
         this.outputEncoding = tool.outputEncoding;
@@ -335,14 +345,11 @@ public class JomcTool
         this.velocityEngine = tool.velocityEngine;
         this.defaultVelocityEngine = tool.defaultVelocityEngine;
         this.locale = tool.locale;
-        this.templateParameters =
-            tool.templateParameters != null
-                ? Collections.synchronizedMap( new HashMap<String, Object>( tool.templateParameters ) )
-                : null;
-
+        this.templateParameters.putAll( tool.templateParameters );
         this.templateLocation =
             tool.templateLocation != null ? new URL( tool.templateLocation.toExternalForm() ) : null;
 
+        this.executorService = tool.executorService;
     }
 
     /**
@@ -359,11 +366,6 @@ public class JomcTool
      */
     public List<Listener> getListeners()
     {
-        if ( this.listeners == null )
-        {
-            this.listeners = new CopyOnWriteArrayList<Listener>();
-        }
-
         return this.listeners;
     }
 
@@ -1693,19 +1695,17 @@ public class JomcTool
                         uc = true;
                     }
                 }
+                else if ( Character.isJavaIdentifierStart( c ) )
+                {
+                    builder.append( uc
+                                        ? charString.toUpperCase( this.getLocale() )
+                                        : charString.toLowerCase( this.getLocale() ) );
+
+                    uc = false;
+                }
                 else
                 {
-                    if ( Character.isJavaIdentifierStart( c ) )
-                    {
-                        builder.append( uc ? charString.toUpperCase( this.getLocale() )
-                                            : charString.toLowerCase( this.getLocale() ) );
-
-                        uc = false;
-                    }
-                    else
-                    {
-                        uc = capitalize;
-                    }
+                    uc = capitalize;
                 }
             }
 
@@ -2695,11 +2695,6 @@ public class JomcTool
      */
     public final Map<String, Object> getTemplateParameters()
     {
-        if ( this.templateParameters == null )
-        {
-            this.templateParameters = Collections.synchronizedMap( new HashMap<String, Object>() );
-        }
-
         return this.templateParameters;
     }
 
@@ -3191,6 +3186,41 @@ public class JomcTool
     }
 
     /**
+     * Gets an {@code ExecutorService} used to run tasks in parallel.
+     *
+     * @return An {@code ExecutorService} used to run tasks in parallel or {@code null}, if no such service has been
+     * provided by an application.
+     *
+     * @since 1.10
+     *
+     * @see #setExecutorService(java.util.concurrent.ExecutorService)
+     */
+    public final ExecutorService getExecutorService()
+    {
+        return this.executorService;
+    }
+
+    /**
+     * Sets the {@code ExecutorService} to be used to run tasks in parallel.
+     * <p>
+     * The {@code ExecutorService} to be used to run tasks in parallel is an optional entity. If no such service is
+     * provided by an application, no parallelization is performed. Configuration or lifecycle management of the given
+     * {@code ExecutorService} is the responsibility of the application.
+     * </p>
+     *
+     * @param value The {@code ExecutorService} to be used to run tasks in parallel or {@code null}, to disable any
+     * parallelization.
+     *
+     * @since 1.10
+     *
+     * @see #getExecutorService()
+     */
+    public final void setExecutorService( final ExecutorService value )
+    {
+        this.executorService = value;
+    }
+
+    /**
      * Gets a velocity template for a given name.
      * <p>
      * This method searches templates at the following locations recursively in the shown order stopping whenever
@@ -3247,9 +3277,9 @@ public class JomcTool
 
         if ( this.isLoggable( level ) )
         {
-            for ( int i = this.getListeners().size() - 1; i >= 0; i-- )
+            for ( final Listener listener : this.getListeners() )
             {
-                this.getListeners().get( i ).onLog( level, message, throwable );
+                listener.onLog( level, message, throwable );
             }
         }
     }
@@ -3715,9 +3745,9 @@ public class JomcTool
     private static class TemplateData
     {
 
-        private String location;
+        private volatile String location;
 
-        private Template template;
+        private volatile Template template;
 
     }
 

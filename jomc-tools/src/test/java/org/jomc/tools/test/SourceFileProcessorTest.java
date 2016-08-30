@@ -52,7 +52,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
- * Test cases for class {@code org.jomc.tools.SourceFileProcessor} implementations.
+ * Test cases for class {@code org.jomc.tools.SourceFileProcessor}.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$

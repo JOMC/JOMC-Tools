@@ -106,17 +106,17 @@ public final class Jomc
     /**
      * Print writer of the instance.
      */
-    private PrintWriter printWriter;
+    private volatile PrintWriter printWriter;
 
     /**
      * Log level of the instance.
      */
-    private Level logLevel;
+    private volatile Level logLevel;
 
     /**
      * Greatest severity logged by the command.
      */
-    private Level severity = Level.ALL;
+    private volatile Level severity = Level.ALL;
 
     /**
      * Creates a new {@code Jomc} instance.
@@ -288,7 +288,7 @@ public final class Jomc
 
         try
         {
-            final StringBuilder commandInfo = new StringBuilder();
+            final StringBuilder commandInfo = new StringBuilder( 1024 );
 
             for ( final Command c : this.getCommands() )
             {
@@ -392,7 +392,7 @@ public final class Jomc
             {
                 for ( int i = 0; i < args.length; i++ )
                 {
-                    this.log( Level.FINER, new StringBuilder().append( "[" ).append( i ).append( "] -> '" ).
+                    this.log( Level.FINER, new StringBuilder( 128 ).append( "[" ).append( i ).append( "] -> '" ).
                               append( args[i] ).append( "'" ).append( System.getProperty( "line.separator", "\n" ) ).
                               toString(), null );
 

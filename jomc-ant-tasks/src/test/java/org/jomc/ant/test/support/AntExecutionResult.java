@@ -30,8 +30,8 @@
  */
 package org.jomc.ant.test.support;
 
-import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.tools.ant.BuildEvent;
 
 /**
@@ -46,52 +46,52 @@ public class AntExecutionResult
     /**
      * The characters written to the system output stream during execution of the target.
      */
-    private String systemOutput;
+    private volatile String systemOutput;
 
     /**
      * The characters written to the system error stream during execution of the target.
      */
-    private String systemError;
+    private volatile String systemError;
 
     /**
      * List of {@code buildStarted} events fired during execution of the target.
      */
-    private List<BuildEvent> buildStartedEvents;
+    private final List<BuildEvent> buildStartedEvents = new CopyOnWriteArrayList<BuildEvent>();
 
     /**
      * List of {@code buildFinished} events fired during execution of the target.
      */
-    private List<BuildEvent> buildFinishedEvents;
+    private final List<BuildEvent> buildFinishedEvents = new CopyOnWriteArrayList<BuildEvent>();
 
     /**
      * List of {@code targetStarted} events fired during execution of the target.
      */
-    private List<BuildEvent> targetStartedEvents;
+    private final List<BuildEvent> targetStartedEvents = new CopyOnWriteArrayList<BuildEvent>();
 
     /**
      * List of {@code targetFinished} events fired during execution of the target.
      */
-    private List<BuildEvent> targetFinishedEvents;
+    private final List<BuildEvent> targetFinishedEvents = new CopyOnWriteArrayList<BuildEvent>();
 
     /**
      * List of {@code taskStarted} events fired during execution of the target.
      */
-    private List<BuildEvent> taskStartedEvents;
+    private final List<BuildEvent> taskStartedEvents = new CopyOnWriteArrayList<BuildEvent>();
 
     /**
      * List of {@code taskFinished} events fired during execution of the target.
      */
-    private List<BuildEvent> taskFinishedEvents;
+    private final List<BuildEvent> taskFinishedEvents = new CopyOnWriteArrayList<BuildEvent>();
 
     /**
      * List of {@code messageLogged} events fired during execution of the target.
      */
-    private List<BuildEvent> messageLoggedEvents;
+    private final List<BuildEvent> messageLoggedEvents = new CopyOnWriteArrayList<BuildEvent>();
 
     /**
      * The throwable thrown by the execution of the target.
      */
-    private Throwable throwable;
+    private volatile Throwable throwable;
 
     /**
      * Creates a new {@code AntExecutionResult}.
@@ -175,11 +175,6 @@ public class AntExecutionResult
      */
     public final List<BuildEvent> getBuildStartedEvents()
     {
-        if ( this.buildStartedEvents == null )
-        {
-            this.buildStartedEvents = new LinkedList<BuildEvent>();
-        }
-
         return this.buildStartedEvents;
     }
 
@@ -195,11 +190,6 @@ public class AntExecutionResult
      */
     public final List<BuildEvent> getBuildFinishedEvents()
     {
-        if ( this.buildFinishedEvents == null )
-        {
-            this.buildFinishedEvents = new LinkedList<BuildEvent>();
-        }
-
         return this.buildFinishedEvents;
     }
 
@@ -215,11 +205,6 @@ public class AntExecutionResult
      */
     public final List<BuildEvent> getTargetStartedEvents()
     {
-        if ( this.targetStartedEvents == null )
-        {
-            this.targetStartedEvents = new LinkedList<BuildEvent>();
-        }
-
         return this.targetStartedEvents;
     }
 
@@ -235,11 +220,6 @@ public class AntExecutionResult
      */
     public final List<BuildEvent> getTargetFinishedEvents()
     {
-        if ( this.targetFinishedEvents == null )
-        {
-            this.targetFinishedEvents = new LinkedList<BuildEvent>();
-        }
-
         return this.targetFinishedEvents;
     }
 
@@ -255,11 +235,6 @@ public class AntExecutionResult
      */
     public final List<BuildEvent> getTaskStartedEvents()
     {
-        if ( this.taskStartedEvents == null )
-        {
-            this.taskStartedEvents = new LinkedList<BuildEvent>();
-        }
-
         return this.taskStartedEvents;
     }
 
@@ -275,11 +250,6 @@ public class AntExecutionResult
      */
     public final List<BuildEvent> getTaskFinishedEvents()
     {
-        if ( this.taskFinishedEvents == null )
-        {
-            this.taskFinishedEvents = new LinkedList<BuildEvent>();
-        }
-
         return this.taskFinishedEvents;
     }
 
@@ -295,11 +265,6 @@ public class AntExecutionResult
      */
     public final List<BuildEvent> getMessageLoggedEvents()
     {
-        if ( this.messageLoggedEvents == null )
-        {
-            this.messageLoggedEvents = new LinkedList<BuildEvent>();
-        }
-
         return this.messageLoggedEvents;
     }
 

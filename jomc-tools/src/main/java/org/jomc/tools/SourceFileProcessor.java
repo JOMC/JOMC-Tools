@@ -42,9 +42,9 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.channels.FileLock;
 import java.text.MessageFormat;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.Template;
@@ -329,6 +329,7 @@ public class SourceFileProcessor extends JomcTool
                 new SourceFileProcessor.SourceFileEditor( new TrailingWhitespaceEditor( this.getLineSeparator() ),
                                                           this.getLineSeparator() );
 
+            this.sourceFileEditor.setExecutorService( this.getExecutorService() );
         }
 
         return this.sourceFileEditor;
@@ -648,13 +649,13 @@ public class SourceFileProcessor extends JomcTool
          * List of sections added to the input.
          */
         @Deprecated
-        private List<Section> addedSections;
+        private final List<Section> addedSections = new CopyOnWriteArrayList<Section>();
 
         /**
          * List of sections without corresponding model entry.
          */
         @Deprecated
-        private List<Section> unknownSections;
+        private final List<Section> unknownSections = new CopyOnWriteArrayList<Section>();
 
         /**
          * Creates a new {@code SourceFileEditor} instance.
@@ -971,11 +972,6 @@ public class SourceFileProcessor extends JomcTool
         @Deprecated
         public List<Section> getAddedSections()
         {
-            if ( this.addedSections == null )
-            {
-                this.addedSections = new LinkedList<Section>();
-            }
-
             return this.addedSections;
         }
 
@@ -994,11 +990,6 @@ public class SourceFileProcessor extends JomcTool
         @Deprecated
         public List<Section> getUnknownSections()
         {
-            if ( this.unknownSections == null )
-            {
-                this.unknownSections = new LinkedList<Section>();
-            }
-
             return this.unknownSections;
         }
 
@@ -1126,13 +1117,20 @@ public class SourceFileProcessor extends JomcTool
 
                         }
 
+                        VelocityContext ctx = null;
+
                         if ( sourceSectionType.getHeadTemplate() != null
                                  && ( !sourceSectionType.isEditable()
                                       || s.getHeadContent().toString().trim().length() == 0 ) )
                         {
                             final StringWriter writer = new StringWriter();
                             final Template template = getVelocityTemplate( sourceSectionType.getHeadTemplate() );
-                            final VelocityContext ctx = getVelocityContext();
+
+                            if ( ctx == null )
+                            {
+                                ctx = (VelocityContext) this.getVelocityContext().clone();
+                            }
+
                             ctx.put( "template", template );
                             ctx.put( "ssection", sourceSectionType );
                             template.merge( ctx, writer );
@@ -1149,7 +1147,12 @@ public class SourceFileProcessor extends JomcTool
                         {
                             final StringWriter writer = new StringWriter();
                             final Template template = getVelocityTemplate( sourceSectionType.getTailTemplate() );
-                            final VelocityContext ctx = getVelocityContext();
+
+                            if ( ctx == null )
+                            {
+                                ctx = (VelocityContext) this.getVelocityContext().clone();
+                            }
+
                             ctx.put( "template", template );
                             ctx.put( "ssection", sourceSectionType );
                             template.merge( ctx, writer );
@@ -1160,30 +1163,27 @@ public class SourceFileProcessor extends JomcTool
                             ctx.remove( "ssection" );
                         }
                     }
-                    else
+                    else if ( isLoggable( Level.WARNING ) )
                     {
-                        if ( isLoggable( Level.WARNING ) )
+                        if ( this.implementation != null )
                         {
-                            if ( this.implementation != null )
-                            {
-                                final Module m =
-                                    getModules().getModuleOfImplementation( this.implementation.getIdentifier() );
+                            final Module m =
+                                getModules().getModuleOfImplementation( this.implementation.getIdentifier() );
 
-                                log( Level.WARNING, getMessage(
-                                     "unknownImplementationSection", m.getName(), this.implementation.getIdentifier(),
-                                     model.getIdentifier(), s.getName() ), null );
+                            log( Level.WARNING, getMessage(
+                                 "unknownImplementationSection", m.getName(), this.implementation.getIdentifier(),
+                                 model.getIdentifier(), s.getName() ), null );
 
-                            }
-                            else if ( this.specification != null )
-                            {
-                                final Module m =
-                                    getModules().getModuleOfSpecification( this.specification.getIdentifier() );
+                        }
+                        else if ( this.specification != null )
+                        {
+                            final Module m =
+                                getModules().getModuleOfSpecification( this.specification.getIdentifier() );
 
-                                log( Level.WARNING, getMessage(
-                                     "unknownSpecificationSection", m.getName(), this.specification.getIdentifier(),
-                                     model.getIdentifier(), s.getName() ), null );
+                            log( Level.WARNING, getMessage(
+                                 "unknownSpecificationSection", m.getName(), this.specification.getIdentifier(),
+                                 model.getIdentifier(), s.getName() ), null );
 
-                            }
                         }
 
                         this.getUnknownSections().add( s );
