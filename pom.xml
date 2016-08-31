@@ -34,7 +34,7 @@
   <parent>
     <groupId>org.jomc</groupId>
     <artifactId>jomc-pom</artifactId>
-    <version>1.4</version>
+    <version>1.5</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jomc-tools-pom</artifactId>
@@ -190,7 +190,7 @@
   </distributionManagement>
   <properties>
     <jomc-jls.artifact.version>1.7.0</jomc-jls.artifact.version>
-    <jomc-util.artifact.version>1.10-SNAPSHOT</jomc-util.artifact.version>
+    <jomc-util.artifact.version>1.10</jomc-util.artifact.version>
     <jomc-modlet.artifact.version>2.0-SNAPSHOT</jomc-modlet.artifact.version>
     <jomc-model.artifact.version>2.0-SNAPSHOT</jomc-model.artifact.version>
     <jomc-tools.artifact.version>2.0-SNAPSHOT</jomc-tools.artifact.version>
