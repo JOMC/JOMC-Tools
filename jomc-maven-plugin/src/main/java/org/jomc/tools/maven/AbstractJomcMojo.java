@@ -2899,8 +2899,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                                 final Path targetDir =
                                     target.toPath().resolve( source.toPath().relativize( sourceDir ) );
 
-                                Files.copy( sourceDir, targetDir, StandardCopyOption.REPLACE_EXISTING,
-                                            StandardCopyOption.COPY_ATTRIBUTES );
+                                if ( !Files.isDirectory( targetDir ) )
+                                {
+                                    Files.createDirectory( targetDir );
+                                }
 
                                 return FileVisitResult.CONTINUE;
                             }
