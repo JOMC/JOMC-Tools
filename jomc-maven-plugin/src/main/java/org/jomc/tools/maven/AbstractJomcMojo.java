@@ -2848,7 +2848,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 }
             }
         }
-        catch ( final ReflectiveOperationException | IOException e )
+        catch ( final ReflectiveOperationException e )
         {
             throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
