@@ -3569,7 +3569,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @throws IOException if copying fails.
      *
      * @since 1.10
+     *
+     * @deprecated This method will be removed in 2.0 due to availability of Java 7 file copying features.
      */
+    @Deprecated
     protected final void copyFile( final File source, final File target ) throws IOException
     {
         InputStream in = null;
@@ -3634,6 +3637,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *
      * @since 1.10
      */
+    @SuppressWarnings( "deprecation" )
     protected final void copyDirectory( final File source, final File target ) throws IOException
     {
         if ( !target.isDirectory() && !target.mkdirs() )
