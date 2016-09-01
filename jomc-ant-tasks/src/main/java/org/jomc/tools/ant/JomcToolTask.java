@@ -30,7 +30,6 @@
  */
 package org.jomc.tools.ant;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -762,143 +761,136 @@ public class JomcToolTask extends JomcModelTask
             throw new NullPointerException( "tool" );
         }
 
-        try
+        tool.setExecutorService( this.getExecutorService() );
+        tool.setLogLevel( Level.ALL );
+        tool.setIndentation( StringEscapeUtils.unescapeJava( this.getIndentation() ) );
+        tool.setInputEncoding( this.getInputEncoding() );
+        tool.setLineSeparator( StringEscapeUtils.unescapeJava( this.getLineSeparator() ) );
+        tool.setOutputEncoding( this.getOutputEncoding() );
+        tool.setDefaultTemplateEncoding( this.getDefaultTemplateEncoding() );
+        tool.setDefaultTemplateProfile( this.getDefaultTemplateProfile() );
+        tool.setTemplateProfile( this.getTemplateProfile() );
+        tool.getListeners().add( new JomcTool.Listener()
         {
-            tool.setExecutorService( this.getExecutorService() );
-            tool.setLogLevel( Level.ALL );
-            tool.setIndentation( StringEscapeUtils.unescapeJava( this.getIndentation() ) );
-            tool.setInputEncoding( this.getInputEncoding() );
-            tool.setLineSeparator( StringEscapeUtils.unescapeJava( this.getLineSeparator() ) );
-            tool.setOutputEncoding( this.getOutputEncoding() );
-            tool.setDefaultTemplateEncoding( this.getDefaultTemplateEncoding() );
-            tool.setDefaultTemplateProfile( this.getDefaultTemplateProfile() );
-            tool.setTemplateProfile( this.getTemplateProfile() );
-            tool.getListeners().add( new JomcTool.Listener()
+
+            @Override
+            public void onLog( final Level level, final String message, final Throwable throwable )
             {
+                super.onLog( level, message, throwable );
 
-                @Override
-                public void onLog( final Level level, final String message, final Throwable throwable )
+                if ( level.intValue() >= Level.SEVERE.intValue() )
                 {
-                    super.onLog( level, message, throwable );
-
-                    if ( level.intValue() >= Level.SEVERE.intValue() )
-                    {
-                        log( message, throwable, Project.MSG_ERR );
-                    }
-                    else if ( level.intValue() >= Level.WARNING.intValue() )
-                    {
-                        log( message, throwable, Project.MSG_WARN );
-                    }
-                    else if ( level.intValue() >= Level.INFO.intValue() )
-                    {
-                        log( message, throwable, Project.MSG_INFO );
-                    }
-                    else
-                    {
-                        log( message, throwable, Project.MSG_DEBUG );
-                    }
+                    log( message, throwable, Project.MSG_ERR );
                 }
-
-            } );
-
-            for ( int i = 0, s0 = this.getVelocityPropertyResources().size(); i < s0; i++ )
-            {
-                for ( final Map.Entry<Object, Object> e
-                          : this.getProperties( this.getVelocityPropertyResources().get( i ) ).entrySet() )
+                else if ( level.intValue() >= Level.WARNING.intValue() )
                 {
-                    if ( e.getValue() != null )
-                    {
-                        tool.getVelocityEngine().setProperty( e.getKey().toString(), e.getValue() );
-                    }
-                    else
-                    {
-                        tool.getVelocityEngine().clearProperty( e.getKey().toString() );
-                    }
+                    log( message, throwable, Project.MSG_WARN );
                 }
-            }
-
-            for ( int i = 0, s0 = this.getVelocityProperties().size(); i < s0; i++ )
-            {
-                final KeyValueType p = this.getVelocityProperties().get( i );
-                final Object object = p.getObject( this.getLocation() );
-
-                if ( object != null )
+                else if ( level.intValue() >= Level.INFO.intValue() )
                 {
-                    tool.getVelocityEngine().setProperty( p.getKey(), object );
+                    log( message, throwable, Project.MSG_INFO );
                 }
                 else
                 {
-                    tool.getVelocityEngine().clearProperty( p.getKey() );
+                    log( message, throwable, Project.MSG_DEBUG );
                 }
             }
 
-            for ( final Map.Entry<Object, Object> e : System.getProperties().entrySet() )
-            {
-                tool.getTemplateParameters().put( e.getKey().toString(), e.getValue() );
-            }
+        } );
 
-            for ( final Iterator<Map.Entry<String, Object>> it = this.getProject().getProperties().entrySet().
-                iterator(); it.hasNext(); )
+        for ( int i = 0, s0 = this.getVelocityPropertyResources().size(); i < s0; i++ )
+        {
+            for ( final Map.Entry<Object, Object> e
+                      : this.getProperties( this.getVelocityPropertyResources().get( i ) ).entrySet() )
             {
-                final Map.Entry<String, Object> e = it.next();
-                tool.getTemplateParameters().put( e.getKey(), e.getValue() );
-            }
-
-            for ( int i = 0, s0 = this.getTemplateParameterResources().size(); i < s0; i++ )
-            {
-                for ( final Map.Entry<Object, Object> e
-                          : this.getProperties( this.getTemplateParameterResources().get( i ) ).entrySet() )
+                if ( e.getValue() != null )
                 {
-                    if ( e.getValue() != null )
-                    {
-                        tool.getTemplateParameters().put( e.getKey().toString(), e.getValue() );
-                    }
-                    else
-                    {
-                        tool.getTemplateParameters().remove( e.getKey().toString() );
-                    }
-                }
-            }
-
-            for ( int i = 0, s0 = this.getTemplateParameters().size(); i < s0; i++ )
-            {
-                final KeyValueType p = this.getTemplateParameters().get( i );
-                final Object object = p.getObject( this.getLocation() );
-
-                if ( object != null )
-                {
-                    tool.getTemplateParameters().put( p.getKey(), object );
+                    tool.getVelocityEngine().setProperty( e.getKey().toString(), e.getValue() );
                 }
                 else
                 {
-                    tool.getTemplateParameters().remove( p.getKey() );
+                    tool.getVelocityEngine().clearProperty( e.getKey().toString() );
                 }
             }
+        }
 
-            if ( this.getTemplateLocation() != null )
+        for ( int i = 0, s0 = this.getVelocityProperties().size(); i < s0; i++ )
+        {
+            final KeyValueType p = this.getVelocityProperties().get( i );
+            final Object object = p.getObject( this.getLocation() );
+
+            if ( object != null )
             {
-                final URL url = this.getDirectory( this.getTemplateLocation() );
-                tool.setTemplateLocation( url );
+                tool.getVelocityEngine().setProperty( p.getKey(), object );
+            }
+            else
+            {
+                tool.getVelocityEngine().clearProperty( p.getKey() );
+            }
+        }
 
-                if ( url == null )
+        for ( final Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+        {
+            tool.getTemplateParameters().put( e.getKey().toString(), e.getValue() );
+        }
+
+        for ( final Iterator<Map.Entry<String, Object>> it = this.getProject().getProperties().entrySet().
+            iterator(); it.hasNext(); )
+        {
+            final Map.Entry<String, Object> e = it.next();
+            tool.getTemplateParameters().put( e.getKey(), e.getValue() );
+        }
+
+        for ( int i = 0, s0 = this.getTemplateParameterResources().size(); i < s0; i++ )
+        {
+            for ( final Map.Entry<Object, Object> e
+                      : this.getProperties( this.getTemplateParameterResources().get( i ) ).entrySet() )
+            {
+                if ( e.getValue() != null )
                 {
-                    this.log( Messages.getMessage( "templateLocationNotFound", this.getTemplateLocation() ),
-                              Project.MSG_WARN );
-
+                    tool.getTemplateParameters().put( e.getKey().toString(), e.getValue() );
+                }
+                else
+                {
+                    tool.getTemplateParameters().remove( e.getKey().toString() );
                 }
             }
+        }
 
-            if ( this.getLocale() != null )
+        for ( int i = 0, s0 = this.getTemplateParameters().size(); i < s0; i++ )
+        {
+            final KeyValueType p = this.getTemplateParameters().get( i );
+            final Object object = p.getObject( this.getLocation() );
+
+            if ( object != null )
             {
-                tool.setLocale( new Locale( StringUtils.defaultString( this.getLocale().getLanguage() ),
-                                            StringUtils.defaultString( this.getLocale().getCountry() ),
-                                            StringUtils.defaultString( this.getLocale().getVariant() ) ) );
+                tool.getTemplateParameters().put( p.getKey(), object );
+            }
+            else
+            {
+                tool.getTemplateParameters().remove( p.getKey() );
+            }
+        }
+
+        if ( this.getTemplateLocation() != null )
+        {
+            final URL url = this.getDirectory( this.getTemplateLocation() );
+            tool.setTemplateLocation( url );
+
+            if ( url == null )
+            {
+                this.log( Messages.getMessage( "templateLocationNotFound", this.getTemplateLocation() ),
+                          Project.MSG_WARN );
 
             }
         }
-        catch ( final IOException e )
+
+        if ( this.getLocale() != null )
         {
-            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
+            tool.setLocale( new Locale( StringUtils.defaultString( this.getLocale().getLanguage() ),
+                                        StringUtils.defaultString( this.getLocale().getCountry() ),
+                                        StringUtils.defaultString( this.getLocale().getVariant() ) ) );
+
         }
     }
 
