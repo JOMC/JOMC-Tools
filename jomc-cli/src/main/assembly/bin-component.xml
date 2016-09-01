@@ -77,6 +77,8 @@
       <includes>
         <include>PROJECT.txt</include>
         <include>PROJEKT.txt</include>
+        <include>LIZENZ.txt</include>
+        <include>LICENSE.txt</include>
       </includes>
     </fileSet>
   </fileSets>
