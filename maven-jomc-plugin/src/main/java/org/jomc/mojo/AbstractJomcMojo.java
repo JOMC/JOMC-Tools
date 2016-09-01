@@ -3558,10 +3558,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
-        catch ( final IOException e )
-        {
-            throw new MojoExecutionException( Messages.getMessage( e ), e );
-        }
     }
 
     /**
@@ -3587,7 +3583,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
                 final byte[] buffer = new byte[ 65536 ];
 
-                for ( int read = in.read();
+                for ( int read = in.read( buffer );
                       read >= 0;
                       out.write( buffer, 0, read ), read = in.read( buffer ) );
 

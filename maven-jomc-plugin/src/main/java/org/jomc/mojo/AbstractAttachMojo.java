@@ -353,7 +353,7 @@ public abstract class AbstractAttachMojo extends AbstractMojo
 
                 final byte[] buffer = new byte[ 65536 ];
 
-                for ( int read = in.read();
+                for ( int read = in.read( buffer );
                       read >= 0;
                       out.write( buffer, 0, read ), read = in.read( buffer ) );
 
