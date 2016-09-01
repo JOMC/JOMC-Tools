@@ -285,7 +285,8 @@ public abstract class AbstractAttachMojo extends AbstractMojo
 
                     }
 
-                    this.copyFile( this.getArtifactFile(), attachment );
+                    Files.copy( this.getArtifactFile().toPath(), attachment.toPath(),
+                                StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES );
 
                     this.getMavenProjectHelper().attachArtifact( this.getMavenProject(), this.getArtifactType(),
                                                                  this.getArtifactClassifier(), attachment );
@@ -328,23 +329,6 @@ public abstract class AbstractAttachMojo extends AbstractMojo
                 this.getLog().info( LOG_PREFIX + Messages.getMessage( "separator" ) );
             }
         }
-    }
-
-    /**
-     * Copies a file.
-     *
-     * @param source The file to copy.
-     * @param target The file to copy the source file to.
-     *
-     * @throws IOException if copying fails.
-     *
-     * @since 1.10
-     */
-    protected final void copyFile( final File source, final File target ) throws IOException
-    {
-        Files.copy( source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING,
-                    StandardCopyOption.COPY_ATTRIBUTES );
-
     }
 
 }

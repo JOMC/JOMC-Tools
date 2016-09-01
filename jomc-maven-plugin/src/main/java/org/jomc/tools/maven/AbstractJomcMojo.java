@@ -2855,23 +2855,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
-     * Copies a file.
-     *
-     * @param source The file to copy.
-     * @param target The file to copy the source file to.
-     *
-     * @throws IOException if copying fails.
-     *
-     * @since 1.10
-     */
-    protected final void copyFile( final File source, final File target ) throws IOException
-    {
-        Files.copy( source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING,
-                    StandardCopyOption.COPY_ATTRIBUTES );
-
-    }
-
-    /**
      * Copies a directory recursively.
      *
      * @param source The directory to copy.
