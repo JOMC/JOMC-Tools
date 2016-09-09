@@ -161,6 +161,11 @@
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
+        <artifactId>jomc-cli</artifactId>
+        <version>${jomc-cli.artifact.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jomc</groupId>
         <artifactId>maven-jomc-plugin</artifactId>
         <version>${jomc-maven-plugin.artifact.version}</version>
       </dependency>
@@ -194,6 +199,7 @@
     <jomc-modlet.artifact.version>2.0-SNAPSHOT</jomc-modlet.artifact.version>
     <jomc-model.artifact.version>2.0-SNAPSHOT</jomc-model.artifact.version>
     <jomc-tools.artifact.version>2.0-SNAPSHOT</jomc-tools.artifact.version>
+    <jomc-cli.artifact.version>2.0-SNAPSHOT</jomc-cli.artifact.version>
     <jomc-maven-plugin.artifact.version>2.0-SNAPSHOT</jomc-maven-plugin.artifact.version>
     <jomc-ant-tasks.artifact.version>2.0-SNAPSHOT</jomc-ant-tasks.artifact.version>
     <!-- Parent. -->
