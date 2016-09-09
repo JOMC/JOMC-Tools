@@ -38,7 +38,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jomc-cli</artifactId>
-  <version>1.11-SNAPSHOT</version>
+  <version>1.10.2-SNAPSHOT</version>
   <name>JOMC ⁑ CLI</name>
   <description>Object management and configuration tools command line interface.</description>
   <build>
