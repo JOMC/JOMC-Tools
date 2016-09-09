@@ -204,7 +204,7 @@
     <jomc.animal-sniffer.signature.artifactId>java17</jomc.animal-sniffer.signature.artifactId>
     <jomc.animal-sniffer.signature.version>1.0</jomc.animal-sniffer.signature.version>
     <jomc.scm.location>jomc-tools</jomc.scm.location>
-    <jomc.site.location>jomc-tools/2.0-SNAPSHOT</jomc.site.location>
-    <jomc.trac.query>order=id&amp;version=2.0-SNAPSHOT&amp;component=JOMC Tools|${project.name}</jomc.trac.query>
+    <jomc.site.location>jomc-tools/${project.version}</jomc.site.location>
+    <jomc.trac.query>order=id&amp;version=${project.version}&amp;component=JOMC Tools|${project.name}</jomc.trac.query>
   </properties>
 </project>
