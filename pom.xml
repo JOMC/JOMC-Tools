@@ -239,7 +239,7 @@
     <jomc-modlet.artifact.version>1.10</jomc-modlet.artifact.version>
     <jomc-model.artifact.version>1.10.1</jomc-model.artifact.version>
     <jomc-tools.artifact.version>1.11-SNAPSHOT</jomc-tools.artifact.version>
-    <jomc-cli.artifact.version>1.10.2-SNAPSHOT</jomc-cli.artifact.version>
+    <jomc-cli.artifact.version>1.11-SNAPSHOT</jomc-cli.artifact.version>
     <maven-jomc-plugin.artifact.version>1.11-SNAPSHOT</maven-jomc-plugin.artifact.version>
     <jomc-ant-tasks.artifact.version>1.11-SNAPSHOT</jomc-ant-tasks.artifact.version>
     <!-- Parent. -->
