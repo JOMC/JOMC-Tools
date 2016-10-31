@@ -36,7 +36,7 @@
   <body>
     <menu name="JOMC Tools" inherit="top">
       <item name="Home" href="${this.url}/index.html"/>
-      <item name="Download" href="http://repo,maven.apache.org/maven2/org/jomc/"/>
+      <item name="Download" href="http://repo.maven.apache.org/maven2/org/jomc/"/>
       <item name="Issues" href="http://www.jomc.org/project/issues"/>
     </menu>
     <menu name="Modules">

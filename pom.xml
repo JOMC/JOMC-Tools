@@ -40,7 +40,7 @@
   <artifactId>jomc-tools-pom</artifactId>
   <packaging>pom</packaging>
   <name>JOMC Tools</name>
-  <version>2.0-SNAPSHOT</version>
+  <version>2.0.0-SNAPSHOT</version>
   <description>Tools for managing object management and configuration code.</description>
   <url>${jomc.base.url}/${jomc.site.location}</url>
   <inceptionYear>2005</inceptionYear>
@@ -196,12 +196,12 @@
   <properties>
     <jomc-jls.artifact.version>1.7.0</jomc-jls.artifact.version>
     <jomc-util.artifact.version>1.10</jomc-util.artifact.version>
-    <jomc-modlet.artifact.version>2.0-SNAPSHOT</jomc-modlet.artifact.version>
-    <jomc-model.artifact.version>2.0-SNAPSHOT</jomc-model.artifact.version>
-    <jomc-tools.artifact.version>2.0-SNAPSHOT</jomc-tools.artifact.version>
-    <jomc-cli.artifact.version>2.0-SNAPSHOT</jomc-cli.artifact.version>
-    <jomc-maven-plugin.artifact.version>2.0-SNAPSHOT</jomc-maven-plugin.artifact.version>
-    <jomc-ant-tasks.artifact.version>2.0-SNAPSHOT</jomc-ant-tasks.artifact.version>
+    <jomc-modlet.artifact.version>2.0.0-SNAPSHOT</jomc-modlet.artifact.version>
+    <jomc-model.artifact.version>2.0.0-SNAPSHOT</jomc-model.artifact.version>
+    <jomc-tools.artifact.version>2.0.0-SNAPSHOT</jomc-tools.artifact.version>
+    <jomc-cli.artifact.version>2.0.0-SNAPSHOT</jomc-cli.artifact.version>
+    <jomc-maven-plugin.artifact.version>2.0.0-SNAPSHOT</jomc-maven-plugin.artifact.version>
+    <jomc-ant-tasks.artifact.version>2.0.0-SNAPSHOT</jomc-ant-tasks.artifact.version>
     <!-- Parent. -->
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
