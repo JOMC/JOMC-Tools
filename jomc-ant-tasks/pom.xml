@@ -34,12 +34,12 @@
   <parent>
     <groupId>org.jomc</groupId>
     <artifactId>jomc-tools-pom</artifactId>
-    <version>1.11-SNAPSHOT</version>
+    <version>1.11.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jomc-ant-tasks</artifactId>
   <packaging>jar</packaging>
-  <name>JOMC ⁑ Ant Tasks</name>
+  <name>JOMC Tools ⁑ Ant Tasks</name>
   <description>Object management and configuration tools for Apache Ant.</description>
   <build>
     <resources>
