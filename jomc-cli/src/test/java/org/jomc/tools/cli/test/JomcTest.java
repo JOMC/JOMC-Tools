@@ -78,6 +78,12 @@ public class JomcTest
     private static final String OUTPUT_DIRECTORY_PROPERTY_NAME = "jomc.test.outputDirectory";
 
     /**
+     * Constant for the name of the system property holding the project name the test is part of.
+     * @since 1.11.0
+     */
+    private static final String PROJECT_NAME_PROPERTY_NAME = "jomc.test.projectName";
+
+    /**
      * Test resources to copy to the resources directory.
      */
     private static final String[] TEST_RESOURCE_NAMES =
@@ -94,6 +100,12 @@ public class JomcTest
      * The output directory of the instance.
      */
     private File outputDirectory;
+
+    /**
+     * The project name of the instance.
+     * @since 1.11.0
+     */
+    private String projectName;
 
     /**
      * Gets the output directory of instance.
@@ -136,6 +148,40 @@ public class JomcTest
         }
 
         this.outputDirectory = value;
+    }
+
+    /**
+     * Gets the project name of instance.
+     *
+     * @return The project name of instance.
+     *
+     * @see #setProjectName(java.lang.String)
+     * @since 1.11.0
+     */
+    public final String getProjectName()
+    {
+        if ( this.projectName == null )
+        {
+            this.projectName = System.getProperty( PROJECT_NAME_PROPERTY_NAME );
+            assertNotNull( "Expected '" + PROJECT_NAME_PROPERTY_NAME + "' system property not found.",
+                           this.projectName );
+
+        }
+
+        return this.projectName;
+    }
+
+    /**
+     * Sets the project name of instance.
+     *
+     * @param value The new project name of instance or {@code null}.
+     *
+     * @see #getProjectName()
+     * @since 1.11.0
+     */
+    public final void setProjectName( final String value )
+    {
+        this.projectName = value;
     }
 
     @Test
@@ -209,7 +255,7 @@ public class JomcTest
         {
             "manage-sources", "-sd", '"' + testSourcesDirectory.getAbsolutePath() + '"', "-df",
             '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-mn",
-            "\"JOMC Tools ⁑ CLI\"", "-D", "-ls", "\r\n", "-idt", "\t"
+            '"' + this.getProjectName() + '"', "-D", "-ls", "\r\n", "-idt", "\t"
         };
 
         final String[] unsupportedOption = new String[]
@@ -259,13 +305,13 @@ public class JomcTest
         final String[] commitArgs = new String[]
         {
             "commit-classes", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-cd",
-            '"' + classesDirectory.getAbsolutePath() + '"', "-mn", "\"JOMC Tools ⁑ CLI\"", "-D"
+            '"' + classesDirectory.getAbsolutePath() + '"', "-mn", '"' + this.getProjectName() + '"', "-D"
         };
 
         final String[] commitArgsNoDirectory = new String[]
         {
             "commit-classes", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-cd",
-            '"' + nonExistentDirectory.getAbsolutePath() + '"', "-mn", "\"JOMC Tools ⁑ CLI\"", "-D"
+            '"' + nonExistentDirectory.getAbsolutePath() + '"', "-mn", '"' + this.getProjectName() + '"', "-D"
         };
 
         final String[] validateArgs = new String[]
@@ -306,7 +352,7 @@ public class JomcTest
         final String[] commitWithStylesheet = new String[]
         {
             "commit-classes", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-cd",
-            '"' + classesDirectory.getAbsolutePath() + '"', "-mn", "\"JOMC Tools ⁑ CLI\"",
+            '"' + classesDirectory.getAbsolutePath() + '"', "-mn", '"' + this.getProjectName() + '"',
             "-D", "-stylesheet", '"' + new File( resourcesDirectory, "model-relocations.xsl" ).getAbsolutePath() + '"'
         };
 
@@ -343,22 +389,23 @@ public class JomcTest
         {
             "merge-modules", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-xs",
             '"' + new File( resourcesDirectory, "model-relocations.xsl" ).getAbsolutePath() + '"', "-mn",
-            "\"JOMC Tools ⁑ CLI\"", "-d", '"' + targetDocument.getAbsolutePath() + '"', "-D"
+            '"' + this.getProjectName() + '"', "-d", '"' + targetDocument.getAbsolutePath() + '"', "-D"
         };
 
         final String[] includesArg = new String[]
         {
             "merge-modules", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-xs",
             '"' + new File( resourcesDirectory, "model-relocations.xsl" ).getAbsolutePath() + '"', "-mn",
-            "\"JOMC Tools ⁑ CLI\"", "-d", '"' + targetDocument.getAbsolutePath() + '"', "-minc", "\"JOMC Tools ⁑ CLI\"",
-            "-D"
+            '"' + this.getProjectName() + '"', "-d", '"' + targetDocument.getAbsolutePath() + '"', "-minc",
+            '"' + this.getProjectName() + '"', "-D"
         };
 
         final String[] excludesArg = new String[]
         {
             "merge-modules", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-xs",
             '"' + new File( resourcesDirectory, "model-relocations.xsl" ).getAbsolutePath() + '"', "-mn",
-            "\"JOMC Tools ⁑ CLI\"", "-d", '"' + targetDocument.getAbsolutePath() + '"', "-mexc", "\"JOMC Tools ⁑ CLI\"",
+            '"' + this.getProjectName() + '"', "-d", '"' + targetDocument.getAbsolutePath() + '"', "-mexc",
+            '"' + this.getProjectName() + '"',
             "-D"
         };
 
@@ -371,8 +418,8 @@ public class JomcTest
         {
             "merge-modules", "-df", '"' + new File( resourcesDirectory, "illegal-module-document.xml" ).
             getAbsolutePath() + '"', "-xs", '"' + new File( resourcesDirectory, "model-relocations.xsl" ).
-            getAbsolutePath() + '"', "-mn", "\"JOMC Tools ⁑ CLI\"", "-d", '"' + targetDocument.getAbsolutePath() + '"',
-            "-D"
+            getAbsolutePath() + '"', "-mn", '"' + this.getProjectName() + '"', "-d",
+            '"' + targetDocument.getAbsolutePath() + '"', "-D"
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
@@ -452,21 +499,21 @@ public class JomcTest
         final String[] args = new String[]
         {
             "merge-modlets", "-xs", '"' + new File( resourcesDirectory, "modlet-relocations.xsl" ).
-            getAbsolutePath() + '"', "-mdn", "\"JOMC Tools ⁑ CLI ⁑ Tests\"", "-d",
+            getAbsolutePath() + '"', "-mdn", '"' + this.getProjectName() + " ⁑ Tests\"", "-d",
             '"' + targetDocument.getAbsolutePath() + '"', "-cp", "."
         };
 
         final String[] includeArgs = new String[]
         {
             "merge-modlets", "-xs", '"' + new File( resourcesDirectory, "modlet-relocations.xsl" ).
-            getAbsolutePath() + '"', "-mdn", "\"JOMC Tools ⁑ CLI ⁑ Tests\"", "-d",
+            getAbsolutePath() + '"', "-mdn", '"' + this.getProjectName() + " ⁑ Tests\"", "-d",
             '"' + targetDocument.getAbsolutePath() + '"', "-mdinc", "\"JOMC ⁑ Model\"", "-cp", "."
         };
 
         final String[] excludeArgs = new String[]
         {
             "merge-modlets", "-xs", '"' + new File( resourcesDirectory, "modlet-relocations.xsl" ).
-            getAbsolutePath() + '"', "-mdn", "\"JOMC Tools ⁑ CLI ⁑ Tests\"", "-d",
+            getAbsolutePath() + '"', "-mdn", '"' + this.getProjectName() + " ⁑ Tests\"", "-d",
             '"' + targetDocument.getAbsolutePath() + '"',
             "-mdexc", "\"JOMC ⁑ Model" + File.pathSeparatorChar + "JOMC Tools ⁑ Modlet" + File.pathSeparatorChar
                       + "JOMC ⁑ Modlet\"", "-cp", "."
@@ -484,7 +531,7 @@ public class JomcTest
         Modlet merged = unmarshaller.unmarshal( new StreamSource( targetDocument ), Modlet.class ).getValue();
 
         assertNotNull( merged );
-        assertEquals( "JOMC Tools ⁑ CLI ⁑ Tests", merged.getName() );
+        assertEquals( this.getProjectName() + " ⁑ Tests", merged.getName() );
         assertNotNull( merged.getSchemas() );
         assertNotNull( merged.getServices() );
         assertEquals( 2, merged.getSchemas().getSchema().size() );
@@ -499,7 +546,7 @@ public class JomcTest
         merged = unmarshaller.unmarshal( new StreamSource( targetDocument ), Modlet.class ).getValue();
 
         assertNotNull( merged );
-        assertEquals( "JOMC Tools ⁑ CLI ⁑ Tests", merged.getName() );
+        assertEquals( this.getProjectName() + " ⁑ Tests", merged.getName() );
         assertNotNull( merged.getSchemas() );
         assertNotNull( merged.getServices() );
         assertEquals( 1, merged.getSchemas().getSchema().size() );
@@ -513,7 +560,7 @@ public class JomcTest
         merged = unmarshaller.unmarshal( new StreamSource( targetDocument ), Modlet.class ).getValue();
 
         assertNotNull( merged );
-        assertEquals( "JOMC Tools ⁑ CLI ⁑ Tests", merged.getName() );
+        assertEquals( this.getProjectName() + " ⁑ Tests", merged.getName() );
         assertNull( merged.getSchemas() );
         assertNull( merged.getServices() );
     }
@@ -543,39 +590,40 @@ public class JomcTest
         final String[] showSpecification = new String[]
         {
             "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-spec",
-            "\"JOMC Tools ⁑ CLI ⁑ Command\""
+            '"' + this.getProjectName() + " ⁑ Command\""
         };
 
         final String[] writeSpecification = new String[]
         {
             "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-spec",
-            "\"JOMC Tools ⁑ CLI ⁑ Command\"", "-d", '"' + targetDocument.getAbsolutePath() + '"'
+            '"' + this.getProjectName() + " ⁑ Command\"", "-d", '"' + targetDocument.getAbsolutePath() + '"'
         };
 
         final String[] showInstance = new String[]
         {
             "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"',
-            "-impl", "\"JOMC Tools ⁑ CLI ⁑ Default show-model Command\""
+            "-impl", '"' + this.getProjectName() + " ⁑ Default show-model Command\""
         };
 
         final String[] writeInstance = new String[]
         {
             "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"',
-            "-impl", "\"JOMC Tools ⁑ CLI ⁑ Default show-model Command\"",
+            "-impl", '"' + this.getProjectName() + " ⁑ Default show-model Command\"",
             "-d", '"' + targetDocument.getAbsolutePath() + '"'
         };
 
         final String[] showSpecificationAndInstance = new String[]
         {
             "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-spec",
-            "\"JOMC Tools ⁑ CLI ⁑ Command\"", "-impl", "\"JOMC Tools ⁑ CLI ⁑ Default show-model Command\""
+            '"' + this.getProjectName() + " ⁑ Command\"", "-impl",
+            '"' + this.getProjectName() + " ⁑ Default show-model Command\""
         };
 
         final String[] writeSpecificationAndInstance = new String[]
         {
             "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"',
-            "-spec", "\"JOMC Tools ⁑ CLI ⁑ Command\"",
-            "-impl", "\"JOMC Tools ⁑ CLI ⁑ Default show-model Command\"", "-d",
+            "-spec", '"' + this.getProjectName() + " ⁑ Command\"",
+            "-impl", '"' + this.getProjectName() + " ⁑ Default show-model Command\"", "-d",
             '"' + targetDocument.getAbsolutePath() + '"'
         };
 
