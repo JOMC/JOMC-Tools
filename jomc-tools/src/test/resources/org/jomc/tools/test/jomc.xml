@@ -46,6 +46,17 @@
 
   <specifications>
     <!-- *********************************************************************************************************** -->
+    <specification identifier="java.util.Locale"
+                   class="java.util.Locale"
+                   version="1.1">
+      <!--
+      Specification got added during working on 2.0.0. Recent JDKs no longer
+      provide version information. For files relying on the former behaviour,
+      this specification is added here to provide the version manually.
+      -->
+    </specification>
+
+    <!-- *********************************************************************************************************** -->
     <specification identifier="Specification" class="Specification" classDeclaration="true"
                    vendor="${project.organization.name}" version="${project.version}">
 
