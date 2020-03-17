@@ -103,7 +103,6 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>appassembler-maven-plugin</artifactId>
-          <version>1.10</version>
           <executions>
             <execution>
               <id>default-assemble</id>
@@ -201,5 +200,6 @@
   </dependencies>
   <properties>
     <org.apache.commons.cli.Option.UNLIMITED_VALUES>-2</org.apache.commons.cli.Option.UNLIMITED_VALUES>
+    <jomc.module.name>org.jomc.tools.cli</jomc.module.name>
   </properties>
 </project>

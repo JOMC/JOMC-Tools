@@ -34,7 +34,7 @@
   <parent>
     <groupId>org.jomc</groupId>
     <artifactId>jomc-pom</artifactId>
-    <version>1.6</version>
+    <version>2.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jomc-tools-pom</artifactId>
@@ -63,7 +63,12 @@
         <groupId>commons-cli</groupId>
         <artifactId>commons-cli</artifactId>
         <!-- https://issues.apache.org/jira/browse/CLI-255 -->
-        <version>1.3.1</version>
+        <version>1.4</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>3.2.2</version>
       </dependency>
       <dependency>
         <groupId>commons-lang</groupId>
@@ -73,7 +78,7 @@
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
-        <version>2.5</version>
+        <version>2.6</version>
       </dependency>
 
       <!-- Maven -->
@@ -95,12 +100,26 @@
       <dependency>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>${maven-shade-plugin.artifact.version}</version>
+        <!-- Release introducing the 'ResourceTransformer' interface. -->
+        <version>1.0-alpha-13</version>
+        <exclusions>
+          <exclusion>
+            <groupId>*</groupId>
+            <artifactId>*</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>${maven-assembly-plugin.artifact.version}</version>
+        <!-- Release introducing the 'ContainerDescriptorHandler' interface. -->
+        <version>2.2-beta-2</version>
+        <exclusions>
+          <exclusion>
+            <groupId>*</groupId>
+            <artifactId>*</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <!-- Apache Misc -->
@@ -112,12 +131,12 @@
       <dependency>
         <groupId>org.apache.bcel</groupId>
         <artifactId>bcel</artifactId>
-        <version>6.0</version>
+        <version>6.4.1</version>
       </dependency>
       <dependency>
         <groupId>org.apache.ant</groupId>
         <artifactId>ant</artifactId>
-        <version>1.9.7</version>
+        <version>1.10.7</version>
       </dependency>
 
       <!-- Test -->
@@ -193,9 +212,44 @@
       <url>${jomc.site.distribution.base.url}/${jomc.site.location}</url>
     </site>
   </distributionManagement>
+  <profiles>
+    <profile>
+      <id>jdk11</id>
+      <activation>
+        <jdk>11</jdk>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>jakarta.annotation</groupId>
+          <artifactId>jakarta.annotation-api</artifactId>
+          <version>1.3.5</version>
+          <scope>compile</scope>
+          <optional>true</optional>
+        </dependency>
+        <!-- dependency>
+          <groupId>jakarta.activation</groupId>
+          <artifactId>jakarta.activation-api</artifactId>
+          <version>1.2.2</version>
+          <scope>compile</scope>
+        </dependency -->
+        <dependency>
+          <groupId>jakarta.xml.bind</groupId>
+          <artifactId>jakarta.xml.bind-api</artifactId>
+          <version>2.3.3</version>
+          <scope>compile</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.glassfish.jaxb</groupId>
+          <artifactId>jaxb-runtime</artifactId>
+          <version>2.3.2</version>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
   <properties>
-    <jomc-jls.artifact.version>1.7.0</jomc-jls.artifact.version>
-    <jomc-util.artifact.version>1.10</jomc-util.artifact.version>
+    <jomc-jls.artifact.version>11.7.0-SNAPSHOT</jomc-jls.artifact.version>
+    <jomc-util.artifact.version>2.0.0-SNAPSHOT</jomc-util.artifact.version>
     <jomc-modlet.artifact.version>2.0.0-SNAPSHOT</jomc-modlet.artifact.version>
     <jomc-model.artifact.version>2.0.0-SNAPSHOT</jomc-model.artifact.version>
     <jomc-tools.artifact.version>2.0.0-SNAPSHOT</jomc-tools.artifact.version>
@@ -203,12 +257,8 @@
     <jomc-maven-plugin.artifact.version>2.0.0-SNAPSHOT</jomc-maven-plugin.artifact.version>
     <jomc-ant-tasks.artifact.version>2.0.0-SNAPSHOT</jomc-ant-tasks.artifact.version>
     <!-- Parent. -->
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
     <maven.surefire.memory>128m</maven.surefire.memory>
-    <jomc.animal-sniffer.signature.groupId>org.codehaus.mojo.signature</jomc.animal-sniffer.signature.groupId>
-    <jomc.animal-sniffer.signature.artifactId>java17</jomc.animal-sniffer.signature.artifactId>
-    <jomc.animal-sniffer.signature.version>1.0</jomc.animal-sniffer.signature.version>
+    <jomc.module.name>org.jomc.tools.pom</jomc.module.name>
     <jomc.scm.location>jomc-tools</jomc.scm.location>
     <jomc.site.location>jomc-tools/${project.version}</jomc.site.location>
     <jomc.trac.query>order=id&amp;version=${project.version}&amp;component=JOMC Tools|${project.name}</jomc.trac.query>

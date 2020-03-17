@@ -277,7 +277,7 @@
       </plugin>
       <plugin>
         <groupId>org.jvnet.jaxb2.maven2</groupId>
-        <artifactId>maven-jaxb21-plugin</artifactId>
+        <artifactId>maven-jaxb23-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -312,18 +312,23 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.velocity</groupId>
-      <artifactId>velocity</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>org.apache.bcel</groupId>
       <artifactId>bcel</artifactId>
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity</artifactId>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -337,4 +342,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <properties>
+    <jomc.module.name>org.jomc.tools</jomc.module.name>
+  </properties>
 </project>

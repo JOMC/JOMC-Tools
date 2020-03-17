@@ -178,4 +178,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <properties>
+    <jomc.module.name>org.jomc.tools.ant</jomc.module.name>
+  </properties>
 </project>
