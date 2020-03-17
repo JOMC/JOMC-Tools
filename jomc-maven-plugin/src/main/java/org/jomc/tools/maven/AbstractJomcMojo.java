@@ -297,7 +297,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     @Parameter( name = "modelObjectClasspathResolutionEnabled",
                 property = "jomc.modelObjectClasspathResolution",
-                defaultValue = "true" )
+                defaultValue = "false" )
     private boolean modelObjectClasspathResolutionEnabled;
 
     /**
