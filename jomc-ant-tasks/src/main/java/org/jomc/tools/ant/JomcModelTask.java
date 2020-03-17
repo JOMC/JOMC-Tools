@@ -74,7 +74,7 @@ public class JomcModelTask extends JomcTask
     /**
      * Controls model object class path resolution.
      */
-    private boolean modelObjectClasspathResolutionEnabled = true;
+    private boolean modelObjectClasspathResolutionEnabled = false;
 
     /**
      * The location to search for modules.

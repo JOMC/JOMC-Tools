@@ -97,7 +97,7 @@ Task and Type Reference
 | <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
 |                                             | implementation class backing the task.     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to false. |
 |                                             | resolution is enabled.                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
@@ -289,7 +289,7 @@ Task and Type Reference
 | <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
 |                                             | implementation class backing the task.     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to false. |
 |                                             | resolution is enabled.                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
@@ -491,7 +491,7 @@ Task and Type Reference
 | <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
 |                                             | implementation class backing the task.     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to false. |
 |                                             | resolution is enabled.                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
@@ -697,7 +697,7 @@ Task and Type Reference
 | <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
 |                                             | implementation class backing the task.     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to false. |
 |                                             | resolution is enabled.                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
@@ -892,7 +892,7 @@ Task and Type Reference
 | <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
 |                                             | implementation class backing the task.     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to false. |
 |                                             | resolution is enabled.                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
@@ -1055,7 +1055,7 @@ Task and Type Reference
 | <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
 |                                             | implementation class backing the task.     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to false. |
 |                                             | resolution is enabled.                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
@@ -1280,7 +1280,7 @@ Task and Type Reference
 | <<<modelObjectStylesheet>>>                 | The location of a style sheet to transform | No.                    |
 |                                             | the merged module with.                    |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to false. |
 |                                             | resolution is enabled.                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
@@ -1419,7 +1419,7 @@ Task and Type Reference
 |                                             |                                            | the model will be      |
 |                                             |                                            | logged instead.        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to false. |
 |                                             | resolution is enabled.                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
