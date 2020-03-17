@@ -120,15 +120,18 @@
     <dependency>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-shade-plugin</artifactId>
-      <!-- Release introducing the 'ResourceTransformer' interface. -->
-      <version>1.0-alpha-13</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-assembly-plugin</artifactId>
-      <!-- Release introducing the 'ContainerDescriptorHandler' interface. -->
-      <version>2.2-beta-2</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-archiver</artifactId>
+      <!-- Needed to compile against the assembly plugin interfaces. -->
+      <version>1.0-alpha-10</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -158,4 +161,7 @@
       </dependencies>
     </profile>
   </profiles>
+  <properties>
+    <jomc.module.name>org.jomc.tools.maven</jomc.module.name>
+  </properties>
 </project>

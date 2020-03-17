@@ -201,6 +201,7 @@
   </dependencies>
   <properties>
     <org.apache.commons.cli.Option.UNLIMITED_VALUES>-2</org.apache.commons.cli.Option.UNLIMITED_VALUES>
+    <jomc.module.name>org.jomc.tools.cli</jomc.module.name>
   </properties>
   <profiles>
     <profile>

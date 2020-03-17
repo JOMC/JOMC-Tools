@@ -307,18 +307,23 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.velocity</groupId>
-      <artifactId>velocity</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>org.apache.bcel</groupId>
       <artifactId>bcel</artifactId>
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity</artifactId>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -363,4 +368,7 @@
       </dependencies>
     </profile>
   </profiles>
+  <properties>
+    <jomc.module.name>org.jomc.tools</jomc.module.name>
+  </properties>
 </project>

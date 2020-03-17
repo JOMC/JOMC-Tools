@@ -198,4 +198,7 @@
       </dependencies>
     </profile>
   </profiles>
+  <properties>
+    <jomc.module.name>org.jomc.tools.ant</jomc.module.name>
+  </properties>
 </project>
