@@ -95,7 +95,7 @@ import org.jomc.util.VersionParser;
  * Processes class files.
  *
  * <p>
- * <b>Use Cases:</b><br/><ul>
+ * <b>Use Cases:</b><ul>
  * <li>{@link #commitModelObjects(org.jomc.modlet.ModelContext, java.io.File) }</li>
  * <li>{@link #commitModelObjects(org.jomc.model.Module, org.jomc.modlet.ModelContext, java.io.File) }</li>
  * <li>{@link #commitModelObjects(org.jomc.model.Specification, org.jomc.modlet.ModelContext, java.io.File) }</li>
@@ -1722,7 +1722,7 @@ public class ClassFileProcessor extends JomcTool
                 message = getMessage( e.getLinkedException() );
             }
 
-            throw new IOException( getMessage( e ), e );
+            throw new IOException( message, e );
         }
         catch ( final TransformerException e )
         {
@@ -1732,7 +1732,7 @@ public class ClassFileProcessor extends JomcTool
                 message = getMessage( e.getException() );
             }
 
-            throw new IOException( getMessage( e ), e );
+            throw new IOException( message, e );
         }
     }
 
@@ -1936,7 +1936,7 @@ public class ClassFileProcessor extends JomcTool
                 message = getMessage( e.getLinkedException() );
             }
 
-            throw new IOException( getMessage( e ), e );
+            throw new IOException( message, e );
         }
         catch ( final TransformerException e )
         {
@@ -1946,7 +1946,7 @@ public class ClassFileProcessor extends JomcTool
                 message = getMessage( e.getException() );
             }
 
-            throw new IOException( getMessage( e ), e );
+            throw new IOException( message, e );
         }
     }
 
@@ -2108,7 +2108,7 @@ public class ClassFileProcessor extends JomcTool
                 message = getMessage( e.getLinkedException() );
             }
 
-            throw new IOException( getMessage( e ), e );
+            throw new IOException( message, e );
         }
 
         return baos.toByteArray();
@@ -2160,7 +2160,7 @@ public class ClassFileProcessor extends JomcTool
                 message = getMessage( e.getLinkedException() );
             }
 
-            throw new IOException( getMessage( e ), e );
+            throw new IOException( message, e );
         }
 
         return element.getValue();

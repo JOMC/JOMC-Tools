@@ -64,7 +64,7 @@ import org.jomc.model.Text;
  * Processes resource files.
  *
  * <p>
- * <b>Use Cases:</b><br/><ul>
+ * <b>Use Cases:</b><ul>
  * <li>{@link #writeResourceBundleResourceFiles(File) }</li>
  * <li>{@link #writeResourceBundleResourceFiles(Module, File) }</li>
  * <li>{@link #writeResourceBundleResourceFiles(Specification, File) }</li>
