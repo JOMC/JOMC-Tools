@@ -96,7 +96,7 @@ import org.jomc.util.VersionParser;
  * Processes class files.
  *
  * <p>
- * <b>Use Cases:</b><br/><ul>
+ * <b>Use Cases:</b><ul>
  * <li>{@link #commitModelObjects(org.jomc.modlet.ModelContext, java.io.File) }</li>
  * <li>{@link #commitModelObjects(org.jomc.model.Module, org.jomc.modlet.ModelContext, java.io.File) }</li>
  * <li>{@link #commitModelObjects(org.jomc.model.Specification, org.jomc.modlet.ModelContext, java.io.File) }</li>
